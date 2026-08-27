@@ -2241,7 +2241,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, null, 40 /* PROPS, NEED_HYDRATION */, _hoisted_102), _cache[76] || (_cache[76] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Rating (Self Rating) ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" -{{ opcr_current.id }} -ratingxcxv type - {{ currentRatingType }} ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", _hoisted_103, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" @change=\"setRatingType('dpcr', opcr_current.id)\" "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
         type: "radio",
         name: "rating",
-        checked: $data.currentRatingType === '1',
+        checked: $data.opcr_current.year < 2026 ? $data.currentRatingType === '1' : $data.currentRatingType === '2',
         onChange: _cache[5] || (_cache[5] = function ($event) {
           return $options.setRatingType('ppdo_verification', $data.opcr_current.id);
         })

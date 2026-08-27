@@ -452,9 +452,9 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 // dd($item->paps->opcr_standard);
                 $mfo_desc = $item->paps ? ($item->paps->MFO ? $item->paps->MFO->mfo_desc : null) : null;
                 $mfo_created_at = $item->paps ? ($item->paps->MFO ? $item->paps->MFO->created_at : null) : null;
-                if ($item->paps === null) {
-                    dd('no paps');
-                }
+                // if ($item->paps === null) {
+                //     dd('no paps');
+                // }
                 $performance_measure = $item->paps ? ($item->paps->opcr_stardard ? $item->paps->opcr_stardard->performance_measure : null) : null;
                 $efficiency1 = $item->paps ? ($item->paps->opcr_stardard ? $item->paps->opcr_stardard->efficiency1 : null) : null;
                 $timeliness = $item->paps ? ($item->paps->opcr_stardard ? $item->paps->opcr_stardard->timeliness : null) : null;
@@ -533,6 +533,40 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     $r_e = count($eValues) > 0 ? round(array_sum($eValues) / count($eValues), 2) : 0;
 
                     // --- Compute Timeliness (t) ---
+                    $r_t = $t1 != 0 ? round($t1, 2) : 0;
+                } else if ($rating_type == "2") {
+                    $q1 = $item->opcr_rating ? $item->opcr_rating->ppdo_q1 : null;
+                    $q2 = $item->opcr_rating ? $item->opcr_rating->ppdo_q2 : null;
+                    $q3 = $item->opcr_rating ? $item->opcr_rating->ppdo_q3 : null;
+
+                    $e1 = $item->opcr_rating ? $item->opcr_rating->ppdo_e1 : null;
+                    $e2 = $item->opcr_rating ? $item->opcr_rating->ppdo_e2 : null;
+                    $e3 = $item->opcr_rating ? $item->opcr_rating->ppdo_e3 : null;
+
+                    $t1 = $item->opcr_rating ? $item->opcr_rating->ppdo_t1 : null;
+
+
+                    // Collect only non-null values for each rating group
+                    // Quality
+                    $qValues = array_filter([
+                        $item->opcr_rating ? ($item->opcr_rating->ppdo_q1 ?? 0) : 0,
+                        $item->opcr_rating ? ($item->opcr_rating->ppdo_q2 ?? 0) : 0,
+                        $item->opcr_rating ? ($item->opcr_rating->ppdo_q3 ?? 0) : 0,
+                    ], function ($v) {
+                        return $v != 0; // skip zeros
+                    });
+                    $r_q = count($qValues) > 0 ? round(array_sum($qValues) / count($qValues), 2) : 0;
+
+                    $eValues = array_filter([
+                        $item->opcr_rating ? ($item->opcr_rating->ppdo_e1 ?? 0) : 0,
+                        $item->opcr_rating ? ($item->opcr_rating->ppdo_e2 ?? 0) : 0,
+                        $item->opcr_rating ? ($item->opcr_rating->ppdo_e3 ?? 0) : 0,
+                    ], function ($v) {
+                        return $v != 0;
+                    });
+                    $r_e = count($eValues) > 0 ? round(array_sum($eValues) / count($eValues), 2) : 0;
+
+                    $t1 = $item->opcr_rating ? ($item->opcr_rating->ppdo_t1 ?? 0) : 0;
                     $r_t = $t1 != 0 ? round($t1, 2) : 0;
                 }
 
@@ -1476,7 +1510,13 @@ class OfficePerformanceCommitmentRatingController extends Controller
             'office_performance_commitment_ratings.e2',
             'office_performance_commitment_ratings.e3',
             'office_performance_commitment_ratings.t1',
-            'office_performance_commitment_ratings.e1',
+            'office_performance_commitment_ratings.ppdo_q1',
+            'office_performance_commitment_ratings.ppdo_q2',
+            'office_performance_commitment_ratings.ppdo_q3',
+            'office_performance_commitment_ratings.ppdo_e1',
+            'office_performance_commitment_ratings.ppdo_e2',
+            'office_performance_commitment_ratings.ppdo_e3',
+            'office_performance_commitment_ratings.ppdo_t1',
             'office_performance_commitment_ratings.remarks',
             'office_performance_commitment_ratings.FFUNCCOD',
             'office_performance_commitment_ratings.opcr_id',
@@ -1776,29 +1816,32 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     $ave = $request->average;
                     // dd($item->id, $item, $monthly_ratings, $monthly_ratings['q1'], $var_q);
                 } else if($rating_type == "2"){
-                    $monthly_ratings = calculateMonthlyAverages($item, [
-                        'q1',
-                        'q2',
-                        'q3',
-                        'e1',
-                        'e2',
-                        'e3',
-                        't1'
-                    ]);
+                    // $monthly_ratings = calculateMonthlyAveragesPPDO($item, [
+                    //     'ppdo_q1',
+                    //     'ppdo_q2',
+                    //     'ppdo_q3',
+                    //     'ppdo_e1',
+                    //     'ppdo_e2',
+                    //     'ppdo_e3',
+                    //     'ppdo_t1'
+                    // ]);
+                    // if($item->ppdo_q1>0){
+                    //     dd($item, $monthly_ratings);
+                    // }
                     $qValues = array_filter([
-                        $monthly_ratings['q1'] ?? 0,
-                        $monthly_ratings['q2'] ?? 0,
-                        $monthly_ratings['q3'] ?? 0
+                        $item->ppdo_q1 ?? 0,
+                        $item->ppdo_q2 ?? 0,
+                        $item->ppdo_q3 ?? 0,
                     ], fn($v) => $v != 0);
+
 
                     $eValues = array_filter([
-                        $monthly_ratings['e1'] ?? 0,
-                        $monthly_ratings['e2'] ?? 0,
-                        $monthly_ratings['e3'] ?? 0
+                        $item->ppdo_e1 ?? 0,
+                        $item->ppdo_e2 ?? 0,
+                        $item->ppdo_e3 ?? 0,
                     ], fn($v) => $v != 0);
-
                     $tValues = array_filter([
-                        $monthly_ratings['t1'] ?? 0
+                        $item->ppdo_t1?? 0
                     ], fn($v) => $v != 0);
 
                     // --- Compute averages, default to 0 if no non-zero values ---
@@ -1918,6 +1961,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     }
                     $ave = $request->average;
                 }
+                // dd($rating_type);
                 $adj = "Outstanding";
 
                 if ($ave >= 4.51) {

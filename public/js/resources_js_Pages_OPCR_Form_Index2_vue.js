@@ -290,6 +290,53 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
       // this.total_ave = aver;
       // return this.format_number_conv(aver, 2, true)
     },
+    calculatePpdoAverage: function calculatePpdoAverage() {
+      var _this2 = this;
+      var total = 0;
+      var count = 0;
+      this.opcr_data.forEach(function (item) {
+        var qAvg = _this2.average([item.ppdo_q1, item.ppdo_q2, item.ppdo_q3]);
+        var eAvg = _this2.average([item.ppdo_e1, item.ppdo_e2, item.ppdo_e3]);
+        var tAvg = _this2.average([item.ppdo_t1]);
+        [qAvg, eAvg, tAvg].forEach(function (avg) {
+          if (avg > 0) {
+            total += avg;
+            count++;
+          }
+        });
+      });
+      return count ? Number((total / count).toFixed(2)) : 0;
+    },
+    getAverageAll2: function getAverageAll2() {
+      var _this3 = this;
+      var total = 0;
+      this.form.opcrs.forEach(function (item) {
+        var divisor = 0;
+        var qAvg = _this3.average([item.q1, item.q2, item.q3]);
+        var eAvg = _this3.average([item.e1, item.e2, item.e3]);
+        var tAvg = _this3.average([item.t1]);
+        if (parseFloat(qAvg) > 0) {
+          divisor += 1;
+        }
+        if (parseFloat(eAvg) > 0) {
+          divisor += 1;
+        }
+        if (parseFloat(tAvg) > 0) {
+          divisor += 1;
+        }
+        total += (qAvg + eAvg + tAvg) / divisor;
+      });
+      return Number(total.toFixed(2));
+    },
+    average: function average(values) {
+      var valid = values.map(Number).filter(function (v) {
+        return !isNaN(v) && v > 0;
+      });
+      if (!valid.length) return 0;
+      return valid.reduce(function (sum, val) {
+        return sum + val;
+      }, 0) / valid.length;
+    },
     numberInput: function numberInput(value) {
       if (value < 0) {
         this.numberInput = 0;
@@ -379,24 +426,24 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
       this.displayModal = true;
     },
     showModalMOV: function showModalMOV(id) {
-      var _this2 = this;
+      var _this4 = this;
       return _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
         var url;
         return _regenerator().w(function (_context) {
           while (1) switch (_context.n) {
             case 0:
               // alert(id)
-              _this2.opcr_rating_id = id;
+              _this4.opcr_rating_id = id;
               url = '/movs/get/mov/' + id; // let url = '/monthly-details/monthly/accomplishments/object/' + empl_id + '/' + sem + '/' + e_year + '/' + idsemestral + '/' + my_month;
               // alert(empl_id);
               _context.n = 1;
               return axios.get(url).then(function (response) {
-                _this2.movs = response.data;
+                _this4.movs = response.data;
               })["finally"](function () {
-                _this2.isLoading = false;
+                _this4.isLoading = false;
               });
             case 1:
-              _this2.displayModalMOV = true;
+              _this4.displayModalMOV = true;
             case 2:
               return _context.a(2);
           }
@@ -404,16 +451,16 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
       }))();
     },
     showModalAccomplishmentMOV: function showModalAccomplishmentMOV(idpaps, department_code, year, semester, opcr) {
-      var _this3 = this;
+      var _this5 = this;
       return _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2() {
         var response, _t;
         return _regenerator().w(function (_context2) {
           while (1) switch (_context2.p = _context2.n) {
             case 0:
-              _this3.displayModalAccomplishmentMOV = true;
+              _this5.displayModalAccomplishmentMOV = true;
               // Optional: clear previous data
-              _this3.mov_accomplishment = [];
-              _this3.opcr_current = opcr;
+              _this5.mov_accomplishment = [];
+              _this5.opcr_current = opcr;
               _context2.p = 1;
               _context2.n = 2;
               return axios.get('/api/opcr-mov-api', {
@@ -426,14 +473,14 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
               });
             case 2:
               response = _context2.v;
-              _this3.mov_accomplishment = response.data;
+              _this5.mov_accomplishment = response.data;
               _context2.n = 4;
               break;
             case 3:
               _context2.p = 3;
               _t = _context2.v;
               console.error('Failed to fetch MOV accomplishment:', _t);
-              _this3.mov_accomplishment = [];
+              _this5.mov_accomplishment = [];
             case 4:
               return _context2.a(2);
           }
@@ -449,13 +496,13 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
     //     await axios.post('/movs/save/'+this.opcr_rating_id+'/'+this.opcr_id, payload)
     // },
     uploadFiles: function uploadFiles() {
-      var _this4 = this;
+      var _this6 = this;
       return _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3() {
         var formData;
         return _regenerator().w(function (_context3) {
           while (1) switch (_context3.n) {
             case 0:
-              if (!(_this4.files && _this4.files.length < 1)) {
+              if (!(_this6.files && _this6.files.length < 1)) {
                 _context3.n = 1;
                 break;
               }
@@ -468,32 +515,32 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
               }
               return _context3.a(2);
             case 2:
-              _this4.show_warnings = true;
+              _this6.show_warnings = true;
               formData = new FormData(); // Single file (optional)
-              if (_this4.file) {
-                formData.append("file", _this4.file);
+              if (_this6.file) {
+                formData.append("file", _this6.file);
               }
 
               // Multiple files
-              if (_this4.files && _this4.files.length > 0) {
+              if (_this6.files && _this6.files.length > 0) {
                 // this.files.forEach((f, i) => {
                 //     formData.append("files[]", f); // use files[] so Laravel can treat it as an array
                 // });
-                _this4.files.forEach(function (f) {
+                _this6.files.forEach(function (f) {
                   formData.append("files[]", f);
                 });
               }
               _context3.n = 3;
-              return axios.post("/movs/save/".concat(_this4.opcr_rating_id, "/").concat(_this4.opcr_id), formData, {
+              return axios.post("/movs/save/".concat(_this6.opcr_rating_id, "/").concat(_this6.opcr_id), formData, {
                 headers: {
                   "Content-Type": "multipart/form-data"
                 }
               }).then(function (response) {
                 console.log("Upload success:", response.data);
-                _this4.showModalMOV(_this4.opcr_rating_id);
-                _this4.files = [];
+                _this6.showModalMOV(_this6.opcr_rating_id);
+                _this6.files = [];
               })["finally"](function (response) {
-                _this4.cancelFiles();
+                _this6.cancelFiles();
               })["catch"](function (error) {
                 var _error$response;
                 console.error("Upload error:", ((_error$response = error.response) === null || _error$response === void 0 ? void 0 : _error$response.data) || error);
@@ -570,7 +617,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
       }
     },
     deleteFile: function deleteFile(id) {
-      var _this5 = this;
+      var _this7 = this;
       return _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4() {
         var ids;
         return _regenerator().w(function (_context4) {
@@ -589,7 +636,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
                 }
               }).then(function (response) {
                 console.log("Files deleted successfully", response.data);
-                _this5.showModalMOV(_this5.opcr_rating_id);
+                _this7.showModalMOV(_this7.opcr_rating_id);
               })["catch"](function (error) {
                 var _error$response2;
                 console.error("Failed to delete files", ((_error$response2 = error.response) === null || _error$response2 === void 0 ? void 0 : _error$response2.data) || error);
@@ -601,13 +648,13 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
       }))();
     },
     deleteFiles: function deleteFiles() {
-      var _this6 = this;
+      var _this8 = this;
       return _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5() {
         var _t2;
         return _regenerator().w(function (_context5) {
           while (1) switch (_context5.p = _context5.n) {
             case 0:
-              if (_this6.file_ids.length) {
+              if (_this8.file_ids.length) {
                 _context5.n = 1;
                 break;
               }
@@ -624,14 +671,14 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
               _context5.n = 3;
               return axios["delete"]("/movs/delete-multiple/many", {
                 data: {
-                  file_ids: _this6.file_ids
+                  file_ids: _this8.file_ids
                 }
               }).then(function (response) {
                 console.log("Files deleted successfully", response.data);
-                _this6.showModalMOV(_this6.opcr_rating_id);
+                _this8.showModalMOV(_this8.opcr_rating_id);
               })["finally"](function (response) {
-                _this6.file_ids = [];
-                _this6.allSelected = false;
+                _this8.file_ids = [];
+                _this8.allSelected = false;
               })["catch"](function (error) {
                 var _error$response3;
                 console.error("Failed to delete files", ((_error$response3 = error.response) === null || _error$response3 === void 0 ? void 0 : _error$response3.data) || error);
@@ -750,7 +797,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
     },
     //SUBMIT
     submitRecallRating: function submitRecallRating(curr_stat, staged_for, staged_status, question) {
-      var _this7 = this;
+      var _this9 = this;
       return _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee6() {
         return _regenerator().w(function (_context6) {
           while (1) switch (_context6.n) {
@@ -762,7 +809,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
               return _context6.a(2);
             case 1:
               _context6.n = 2;
-              return axios.post("/opcr/form/" + _this7.opcr_id + "/submit", {
+              return axios.post("/opcr/form/" + _this9.opcr_id + "/submit", {
                 data: {
                   curr_stat: curr_stat,
                   staged_for: staged_for
@@ -773,7 +820,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
               })["finally"](function (response) {
                 // this.file_ids = [];
                 // this.allSelected=false;
-                _this7.rating_status_dt = staged_for;
+                _this9.rating_status_dt = staged_for;
                 alert(staged_status);
               })["catch"](function (error) {
                 console.error("Failed to submit OPCR Rating Form", error);
@@ -1567,7 +1614,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     colspan: "5"
   }, null, -1 /* CACHED */)), _cache[34] || (_cache[34] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     colspan: "7"
-  }, "FINAL AVERAGE RATING", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getAverageAll()), 1 /* TEXT */), _cache[35] || (_cache[35] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */))])])])])], 32 /* NEED_HYDRATION */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_38, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_39, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [_cache[42] || (_cache[42] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "Assessed by PMT Secretariat:"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "Reviewed by:")], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_cache[41] || (_cache[41] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  }, "FINAL AVERAGE RATING", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getAverageAll()) + " ", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" -- {{ getAverageAll2() }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ list }} ")]), _cache[35] || (_cache[35] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */))])])])])], 32 /* NEED_HYDRATION */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_38, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_39, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [_cache[42] || (_cache[42] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "Assessed by PMT Secretariat:"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "Reviewed by:")], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_cache[41] || (_cache[41] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     "class": "text-center"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "ALICIA M. GRACIADAS")], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_40, [_cache[39] || (_cache[39] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), _cache[40] || (_cache[40] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ opcr_date }} "), $options.isPA($props.opcr_date, 'PA 1') ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_41, _toConsumableArray(_cache[37] || (_cache[37] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "LEWIS JAKE G. CAIMAN", -1 /* CACHED */)])))) : $options.isPA($props.opcr_date, 'PA 2') ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_42, _toConsumableArray(_cache[38] || (_cache[38] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "IVAN KLEB N. ULGASAN", -1 /* CACHED */)])))) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), _cache[43] || (_cache[43] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     "class": "text-center",

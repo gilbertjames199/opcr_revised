@@ -298,7 +298,10 @@
                                 <tr>
                                     <td colspan="5"></td>
                                     <td colspan="7">FINAL AVERAGE RATING</td>
-                                    <td>{{ getAverageAll() }}</td>
+                                    <td>{{ getAverageAll() }}
+                                        <!-- -- {{ getAverageAll2() }} -->
+                                        <!-- {{ list }} -->
+                                    </td>
                                     <td></td>
                                 </tr>
                             </tbody>
@@ -1014,6 +1017,74 @@ export default {
             // //(parseFloat(this.form.opcrs.length));
             // this.total_ave = aver;
             // return this.format_number_conv(aver, 2, true)
+        },
+        calculatePpdoAverage() {
+            let total = 0;
+            let count = 0;
+
+            this.opcr_data.forEach(item => {
+                const qAvg = this.average([
+                    item.ppdo_q1,
+                    item.ppdo_q2,
+                    item.ppdo_q3
+                ]);
+
+                const eAvg = this.average([
+                    item.ppdo_e1,
+                    item.ppdo_e2,
+                    item.ppdo_e3
+                ]);
+
+                const tAvg = this.average([
+                    item.ppdo_t1
+                ]);
+
+                [qAvg, eAvg, tAvg].forEach(avg => {
+                    if (avg > 0) {
+                        total += avg;
+                        count++;
+                    }
+                });
+            });
+
+            return count ? Number((total / count).toFixed(2)) : 0;
+        },
+        getAverageAll2() {
+            let total = 0;
+
+            this.form.opcrs.forEach(item => {
+                var divisor =0;
+                const qAvg = this.average([
+                    item.q1,
+                    item.q2,
+                    item.q3
+                ]);
+
+                const eAvg = this.average([
+                    item.e1,
+                    item.e2,
+                    item.e3
+                ]);
+
+                const tAvg = this.average([
+                    item.t1
+                ]);
+                if(parseFloat(qAvg)>0){divisor+=1}
+                if(parseFloat(eAvg)>0){divisor+=1}
+                if(parseFloat(tAvg)>0){divisor+=1}
+                total += (qAvg + eAvg + tAvg)/divisor;
+            });
+
+            return Number(total.toFixed(2));
+        },
+        average(values) {
+            const valid = values
+                .map(Number)
+                .filter(v => !isNaN(v) && v > 0);
+
+            if (!valid.length) return 0;
+
+            return valid.reduce((sum, val) => sum + val, 0) / valid.length;
         },
         numberInput(value) {
             if (value < 0) {
