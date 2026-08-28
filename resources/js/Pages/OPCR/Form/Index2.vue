@@ -141,6 +141,7 @@
 
                                          <!-- {{ opcr.opcr_rating_id }} -->
                                         <select v-model="opcr_data[index].q1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
+                                            :disabled="list.rating_status==2"
                                             @change="saveRating(opcr.q1, opcr.opcr_rating_id, 'q1', index)">
                                             <option>1</option>
                                             <option>2</option>
@@ -157,6 +158,7 @@
                                         <!-- {{  dat }} -->
                                         <!-- width: 2.5em;  -->
                                         <select v-model="opcr_data[index].q2" type="number" class="form-select" style="width: 4.2em; text-align: center;"
+                                            :disabled="list.rating_status==2"
                                             @change="saveRating(opcr.q2, opcr.opcr_rating_id, 'q2', index)"
                                         >
                                             <option>1</option>
@@ -173,6 +175,7 @@
                                     <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
                                         <!-- width: 2.5em;  -->
                                         <select v-model="opcr_data[index].q3" type="number" class="form-select" style="width: 4.2em; text-align: center;"
+                                            :disabled="list.rating_status==2"
                                             @change="saveRating(opcr_data[index].q3, opcr_data[index].opcr_rating_id, 'q3', index)"
                                         >
                                             <option>1</option>
@@ -190,8 +193,8 @@
                                         <!--  width: 2.5em; -->
                                         <select v-model="opcr_data[index].e1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                             @change="saveRating(opcr_data[index].e1, opcr_data[index].opcr_rating_id, 'e1', index)"
-                                            :disabled="opcr.e1_standard === 'No'"
-                                            :style="opcr.e1_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''"
+                                            :disabled="list.rating_status==2 || opcr.e1_standard === 'No'"
+                                            :style="list.rating_status==2 || opcr.e1_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''"
                                         >
                                             <option>1</option>
                                             <option>2</option>
@@ -208,8 +211,8 @@
                                         <!-- width: 2.5em;  -->
                                         <select v-model="opcr_data[index].e2" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                             @change="saveRating(opcr_data[index].e2, opcr_data[index].opcr_rating_id, 'e2', index)"
-                                            :disabled="opcr.e2_standard === 'No'"
-                                            :style="opcr.e2_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''"
+                                            :disabled="list.rating_status==2 || opcr.e2_standard === 'No'"
+                                            :style="list.rating_status==2 || opcr.e2_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''"
                                         >
                                             <option>1</option>
                                             <option>2</option>
@@ -226,8 +229,8 @@
                                         <!-- style="width: 2.5em; text-align: center;"   -->
                                         <select v-model="opcr_data[index].e3" class="form-select" style="width: 4.2em; text-align: center;" type="number"
                                             @change="saveRating(opcr_data[index].e3, opcr_data[index].opcr_rating_id, 'e3', index)"
-                                            :disabled="opcr.e3_standard === 'No'"
-                                            :style="opcr.e3_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''"
+                                            :disabled="list.rating_status==2 || opcr.e3_standard === 'No'"
+                                            :style="list.rating_status==2 || opcr.e3_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''"
                                         >
                                             <option>1</option>
                                             <option>2</option>
@@ -248,12 +251,14 @@
                                             @change="saveRating(opcr_data[index].t1, opcr_data[index].opcr_rating_id, 't1', index)"
 
                                             :disabled="
+                                                list.rating_status==2 ||
                                                 opcr.t1_standard === 'No' ||
                                                 opcr.t1_standard === null ||
                                                 opcr.t1_standard === undefined ||
                                                 Number.isNaN(opcr.t1_standard)
                                             "
                                             :style="
+                                                list.rating_status==2 ||
                                                 opcr.t1_standard === 'No' ||
                                                 opcr.t1_standard === null ||
                                                 opcr.t1_standard === undefined ||
@@ -299,7 +304,7 @@
                                     <td colspan="5"></td>
                                     <td colspan="7">FINAL AVERAGE RATING</td>
                                     <td>
-                                        <span v-if="list.rating_status=='2'"> 
+                                        <span v-if="list.rating_status=='2'">
                                             <span v-if="list.rating_type==2">
                                                 {{ calculatePpdoAverage()}}
                                             </span>
@@ -1303,7 +1308,7 @@ export default {
             var ave = 0;
             if(this.list.rating_status==2){
 
-            
+
                 if(this.list.rating_type=='2') {
                     ave = this.calculatePpdoAverage();
                 }else{
@@ -1311,7 +1316,7 @@ export default {
                 }
             }else{
 
-            
+
                 ave = this.getAverageAll();
             }
             // var linkt = "abcdefghijklo534gdmoivndfigudfhgdyfugdhfugidhfuigdhfiugmccxcxcxzczczxczxczxcxzc5fghjkliuhghghghaaa555l&&&&-";
@@ -1558,6 +1563,15 @@ export default {
             if(!rating){
                 rating="rating is null";
             }
+
+            if(this.list.rating_status==2){
+
+                alert('already approved!')
+                return;
+
+            }
+
+
 
             if(column === 'q1' || column === 'q2' || column === 'q3'){
                 // this.opcr_data[index].rating_q = parseFloat(this.opcr_data[index].q1)+parseFloat(this.opcr_data[index].q2)+parseFloat(this.opcr_data[index].q3);
