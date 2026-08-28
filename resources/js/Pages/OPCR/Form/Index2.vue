@@ -1091,15 +1091,15 @@ export default {
                     item.t1
                 ]);
 
-                [qAvg, eAvg, tAvg].forEach(avg => {
-                    if (avg > 0) {
-                        total += avg;
-                        count++;
-                    }
-                });
+                const validAverages = [qAvg, eAvg, tAvg].filter(avg => avg > 0);
+
+                if (validAverages.length > 0) {
+                    total += validAverages.reduce((sum, avg) => sum + avg, 0) / validAverages.length;
+                    count++;
+                }
             });
 
-            return total;
+            return Number(total.toFixed(2));
         },
         getAverageAll2() {
             let total = 0;
