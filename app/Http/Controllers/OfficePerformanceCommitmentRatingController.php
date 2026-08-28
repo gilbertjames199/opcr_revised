@@ -220,17 +220,50 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     $rid = "";
                     $show_mov = false;
                     $count_movs = 0;
+                    $rating_status = optional(optional($item)->opcrList)->rating_status;
+                    $rating_type =optional(optional($item)->opcrList)->rating_type;
+                    // dd($rating_status);
                     if (!empty($item->opcr_rating2)) {
                         //
                         $rating = collect($item->opcr_rating2)->where('opcr_id', $opcr_id)->first();
-                        // dd($rating,'collect');
-                        $q1 = optional($rating)->q1;
-                        $q2 = optional($rating)->q2;
-                        $q3 = optional($rating)->q3;
-                        $e1 = optional($rating)->e1;
-                        $e2 = optional($rating)->e2;
-                        $e3 = optional($rating)->e3;
-                        $t1 = optional($rating)->t1;
+                        if($rating_status==2){
+
+                            // dd(optional($item)->opcrList);
+                            // dd($rating,'collect');
+                            if($rating_type=="2"){
+                                // dd("ppdo");
+
+                                $q1 = optional($rating)->ppdo_q1;
+                                $q2 = optional($rating)->ppdo_q2;
+                                $q3 = optional($rating)->ppdo_q3;
+                                $e1 = optional($rating)->ppdo_e1;
+                                $e2 = optional($rating)->ppdo_e2;
+                                $e3 = optional($rating)->ppdo_e3;
+                                $t1 = optional($rating)->ppdo_t1;
+                                // if($rating->accomplishments=='Provided assistance (12 out of 10) in the Maintenance and Operation of the LFC with very satisfactory feedback.'){
+                                //     dd($rating, $q1,$q2, $q3, $e1, $e2, $e3, $t1);
+                                // }
+                            }else{
+                                dd("self");
+                                $q1 = optional($rating)->q1;
+                                $q2 = optional($rating)->q2;
+                                $q3 = optional($rating)->q3;
+                                $e1 = optional($rating)->e1;
+                                $e2 = optional($rating)->e2;
+                                $e3 = optional($rating)->e3;
+                                $t1 = optional($rating)->t1;
+                            }
+
+                        }else{
+                            $q1 = optional($rating)->q1;
+                            $q2 = optional($rating)->q2;
+                            $q3 = optional($rating)->q3;
+                            $e1 = optional($rating)->e1;
+                            $e2 = optional($rating)->e2;
+                            $e3 = optional($rating)->e3;
+                            $t1 = optional($rating)->t1;
+                        }
+
                         $rid = optional($rating)->id;
                         // dd($rating);
                         $movs = optional($item->opcr_rating)->movs;
@@ -478,6 +511,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     't1'
                 ]);
                 $rating_type = optional(optional($item)->opcrList)->rating_type ?? "0";
+                $rating_status =optional(optional($item)->opcrList)->rating_status ?? "0";
                 if ($rating_type == "0") {
                     $q1 = $item->opcr_rating ? $item->opcr_rating->q1 : null;
                     $q2 = $item->opcr_rating ? $item->opcr_rating->q2 : null;
@@ -588,13 +622,24 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     //
                     $rating = collect($item->opcr_rating2)->where('opcr_id', $opcr_id)->first();
                     // dd($rating,'collect');
-                    $q1 = optional($rating)->q1;
-                    $q2 = optional($rating)->q2;
-                    $q3 = optional($rating)->q3;
-                    $e1 = optional($rating)->e1;
-                    $e2 = optional($rating)->e2;
-                    $e3 = optional($rating)->e3;
-                    $t1 = optional($rating)->t1;
+                    if($rating_status=='2'){
+                        $q1 = optional($rating)->ppdo_q1;
+                        $q2 = optional($rating)->ppdo_q2;
+                        $q3 = optional($rating)->ppdo_q3;
+                        $e1 = optional($rating)->ppdo_e1;
+                        $e2 = optional($rating)->ppdo_e2;
+                        $e3 = optional($rating)->ppdo_e3;
+                        $t1 = optional($rating)->ppdo_t1;
+                    }else{
+                        $q1 = optional($rating)->q1;
+                        $q2 = optional($rating)->q2;
+                        $q3 = optional($rating)->q3;
+                        $e1 = optional($rating)->e1;
+                        $e2 = optional($rating)->e2;
+                        $e3 = optional($rating)->e3;
+                        $t1 = optional($rating)->t1;
+                    }
+                    
                     $rid = optional($rating)->id;
                     // dd($rating);
                     $movs = optional($item->opcr_rating)->movs;
@@ -723,6 +768,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
         // dd($rating_status);
         // dd($baseUrl);
         // dd($component);
+        // dd($opcrs);
         return inertia($component, [
             'total' => $total,
             'ave' => $ave,

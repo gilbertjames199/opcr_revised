@@ -298,7 +298,14 @@
                                 <tr>
                                     <td colspan="5"></td>
                                     <td colspan="7">FINAL AVERAGE RATING</td>
-                                    <td>{{ getAverageAll() }}
+                                    <td>
+                                        <span v-if="list.rating_status=='2'"> 
+                                            <span v-if="list.rating_type==2">
+                                                {{ calculatePpdoAverage()}}
+                                            </span>
+                                        </span>
+                                        <span v-else>{{ getAverageAll() }}</span>
+                                        <!-- {{ getAverageAll() }} -->
                                         <!-- -- {{ getAverageAll2() }} -->
                                         <!-- {{ list }} -->
                                     </td>
@@ -803,7 +810,9 @@ export default {
             allSelected: false,
             rating_status_dt: null,
             show_warnings: false,
-            opcr_data: []
+            opcr_data: [],
+            rating_type: '-2',
+            rating_status: '-2'
         }
     },
     computed: {
@@ -1024,19 +1033,19 @@ export default {
 
             this.opcr_data.forEach(item => {
                 const qAvg = this.average([
-                    item.ppdo_q1,
-                    item.ppdo_q2,
-                    item.ppdo_q3
+                    item.q1,
+                    item.q2,
+                    item.q3
                 ]);
 
                 const eAvg = this.average([
-                    item.ppdo_e1,
-                    item.ppdo_e2,
-                    item.ppdo_e3
+                    item.e1,
+                    item.e2,
+                    item.e3
                 ]);
 
                 const tAvg = this.average([
-                    item.ppdo_t1
+                    item.t1
                 ]);
 
                 [qAvg, eAvg, tAvg].forEach(avg => {
@@ -1291,7 +1300,20 @@ export default {
         },
         viewlink() {
             var tot = this.getTotalAverage();
-            var ave = this.getAverageAll();
+            var ave = 0;
+            if(this.list.rating_status==2){
+
+            
+                if(this.list.rating_type=='2') {
+                    ave = this.calculatePpdoAverage();
+                }else{
+                    ave = this.getAverageAll();
+                }
+            }else{
+
+            
+                ave = this.getAverageAll();
+            }
             // var linkt = "abcdefghijklo534gdmoivndfigudfhgdyfugdhfugidhfuigdhfiugmccxcxcxzczczxczxczxcxzc5fghjkliuhghghghaaa555l&&&&-";
             var linkt = "https://";
             var jasper_ip = this.jasper_ip;
