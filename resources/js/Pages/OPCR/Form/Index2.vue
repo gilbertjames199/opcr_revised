@@ -300,7 +300,7 @@
                                     <td>
                                         <span v-if="list.rating_status=='2'">
                                             <span v-if="list.rating_type==2">
-                                                {{ calculatePpdoTotal()}}
+                                                {{ calculatePpdoTotal()*calculatePpdoAverage()}}
                                             </span>
                                         </span>
                                         <span v-else>{{ getTotalAverage() }}</span>
@@ -1099,7 +1099,8 @@ export default {
                 }
             });
 
-            return Number(total.toFixed(2));
+            // return Number(total.toFixed(2));
+            return count;
         },
         getAverageAll2() {
             let total = 0;
