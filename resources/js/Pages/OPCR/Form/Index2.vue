@@ -297,7 +297,14 @@
                                 <tr>
                                     <td colspan="5"></td>
                                     <td colspan="7">TOTAL RATING</td>
-                                    <td>{{ getTotalAverage() }}</td>
+                                    <td>
+                                        <span v-if="list.rating_status=='2'">
+                                            <span v-if="list.rating_type==2">
+                                                {{ calculatePpdoTotal()}}
+                                            </span>
+                                        </span>
+                                        <span v-else>{{ getTotalAverage() }}</span>
+                                    </td>
                                     <td></td>
                                 </tr>
                                 <tr>
@@ -1062,6 +1069,37 @@ export default {
             });
 
             return count ? Number((total / count).toFixed(2)) : 0;
+        },
+        calculatePpdoTotal(){
+            let total = 0;
+            let count = 0;
+
+            this.opcr_data.forEach(item => {
+                const qAvg = this.average([
+                    item.q1,
+                    item.q2,
+                    item.q3
+                ]);
+
+                const eAvg = this.average([
+                    item.e1,
+                    item.e2,
+                    item.e3
+                ]);
+
+                const tAvg = this.average([
+                    item.t1
+                ]);
+
+                [qAvg, eAvg, tAvg].forEach(avg => {
+                    if (avg > 0) {
+                        total += avg;
+                        count++;
+                    }
+                });
+            });
+
+            return total;
         },
         getAverageAll2() {
             let total = 0;
