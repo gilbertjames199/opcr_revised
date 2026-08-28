@@ -585,8 +585,11 @@ class TargetAccomplishmentReviewApproveController extends Controller
     public function update_rating_score(Request $request, $column, $opcr_rating_id, $item_score)
     {
         // dd($column, $opcr_rating_id, $item_score);
-        $rating = OfficePerformanceCommitmentRating::find($opcr_rating_id);
+        $rating = OfficePerformanceCommitmentRating::with('opcrList')->find($opcr_rating_id);
         // dd($item_score, $column, $opcr_rating_id, $rating);
+        if($rating->opcrList->rating_status==2){
+            return redirect()->back();
+        }
         if ($item_score == "rating is null") {
             $item_score = "";
         }
