@@ -303,7 +303,9 @@
                                                 {{ calculatePpdoTotal()*calculatePpdoAverage()}}
                                             </span>
                                         </span>
+
                                         <span v-else>{{ getTotalAverage() }}</span>
+                                        <!-- getTotalAverage: {{ getTotalAverage() }} -->
                                     </td>
                                     <td></td>
                                 </tr>
@@ -317,7 +319,7 @@
                                             </span>
                                         </span>
                                         <span v-else>{{ getAverageAll() }}</span>
-                                        <!-- {{ getAverageAll() }} -->
+                                         <!-- {{ getAverageAll() }} -->
                                         <!-- -- {{ getAverageAll2() }} -->
                                         <!-- {{ list }} -->
                                     </td>
@@ -1043,6 +1045,10 @@ export default {
             let total = 0;
             let count = 0;
 
+            let d1=1;
+            let d2=1;
+            let d3=1;
+            let divisor=0;
             this.opcr_data.forEach(item => {
                 const qAvg = this.average([
                     item.q1,
@@ -1059,15 +1065,22 @@ export default {
                 const tAvg = this.average([
                     item.t1
                 ]);
+                if(qAvg>0){d1=1}else{d1=0}
+                if(eAvg>0){d2=1}else{d2=0}
+                if(tAvg>0){d3=1}else{d3=0}
+                divisor = d1 + d2 + d3;
+                if(divisor<1){divisor=1}else{count++}
+                total += (qAvg + eAvg + tAvg)/divisor;
+                // [qAvg, eAvg, tAvg].forEach(avg => {
+                //     if (avg > 0) {
+                //         total += avg;
+                //         console.log("count: "+count+" total: "+total+" avg: "+avg);
+                //         count++;
+                //     }
+                // });
 
-                [qAvg, eAvg, tAvg].forEach(avg => {
-                    if (avg > 0) {
-                        total += avg;
-                        count++;
-                    }
-                });
             });
-
+            // alert("total: "+total+" count: "+count);
             return count ? Number((total / count).toFixed(2)) : 0;
         },
         calculatePpdoTotal(){

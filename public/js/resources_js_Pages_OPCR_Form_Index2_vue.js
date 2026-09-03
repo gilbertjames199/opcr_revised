@@ -296,17 +296,45 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
       var _this2 = this;
       var total = 0;
       var count = 0;
+      var d1 = 1;
+      var d2 = 1;
+      var d3 = 1;
+      var divisor = 0;
       this.opcr_data.forEach(function (item) {
         var qAvg = _this2.average([item.q1, item.q2, item.q3]);
         var eAvg = _this2.average([item.e1, item.e2, item.e3]);
         var tAvg = _this2.average([item.t1]);
-        [qAvg, eAvg, tAvg].forEach(function (avg) {
-          if (avg > 0) {
-            total += avg;
-            count++;
-          }
-        });
+        if (qAvg > 0) {
+          d1 = 1;
+        } else {
+          d1 = 0;
+        }
+        if (eAvg > 0) {
+          d2 = 1;
+        } else {
+          d2 = 0;
+        }
+        if (tAvg > 0) {
+          d3 = 1;
+        } else {
+          d3 = 0;
+        }
+        divisor = d1 + d2 + d3;
+        if (divisor < 1) {
+          divisor = 1;
+        } else {
+          count++;
+        }
+        total += (qAvg + eAvg + tAvg) / divisor;
+        // [qAvg, eAvg, tAvg].forEach(avg => {
+        //     if (avg > 0) {
+        //         total += avg;
+        //         console.log("count: "+count+" total: "+total+" avg: "+avg);
+        //         count++;
+        //     }
+        // });
       });
+      // alert("total: "+total+" count: "+count);
       return count ? Number((total / count).toFixed(2)) : 0;
     },
     calculatePpdoTotal: function calculatePpdoTotal() {
@@ -1668,7 +1696,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     colspan: "5"
   }, null, -1 /* CACHED */)), _cache[31] || (_cache[31] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     colspan: "7"
-  }, "TOTAL RATING", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [$props.list.rating_status == '2' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_38, [$props.list.rating_type == 2 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_39, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.calculatePpdoTotal() * $options.calculatePpdoAverage()), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_40, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getTotalAverage()), 1 /* TEXT */))]), _cache[32] || (_cache[32] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_cache[33] || (_cache[33] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  }, "TOTAL RATING", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [$props.list.rating_status == '2' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_38, [$props.list.rating_type == 2 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_39, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.calculatePpdoTotal() * $options.calculatePpdoAverage()), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_40, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getTotalAverage()), 1 /* TEXT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" getTotalAverage: {{ getTotalAverage() }} ")]), _cache[32] || (_cache[32] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_cache[33] || (_cache[33] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     colspan: "5"
   }, null, -1 /* CACHED */)), _cache[34] || (_cache[34] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     colspan: "7"

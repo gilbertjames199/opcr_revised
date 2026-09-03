@@ -954,16 +954,42 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
       var _this12 = this;
       var total = 0;
       var count = 0;
+      var d1 = 1;
+      var d2 = 1;
+      var d3 = 1;
+      var divisor = 0;
       this.opcr_data.forEach(function (item) {
         var qAvg = _this12.average([item.ppdo_q1, item.ppdo_q2, item.ppdo_q3]);
         var eAvg = _this12.average([item.ppdo_e1, item.ppdo_e2, item.ppdo_e3]);
         var tAvg = _this12.average([item.ppdo_t1]);
-        [qAvg, eAvg, tAvg].forEach(function (avg) {
-          if (avg > 0) {
-            total += avg;
-            count++;
-          }
-        });
+        if (qAvg > 0) {
+          d1 = 1;
+        } else {
+          d1 = 0;
+        }
+        if (eAvg > 0) {
+          d2 = 1;
+        } else {
+          d2 = 0;
+        }
+        if (tAvg > 0) {
+          d3 = 1;
+        } else {
+          d3 = 0;
+        }
+        divisor = d1 + d2 + d3;
+        if (divisor < 1) {
+          divisor = 1;
+        } else {
+          count++;
+        }
+        total += (qAvg + eAvg + tAvg) / divisor;
+        // [qAvg, eAvg, tAvg].forEach(avg => {
+        //     if (avg > 0) {
+        //         total += avg;
+        //         count++;
+        //     }
+        // });
       });
       return count ? Number((total / count).toFixed(2)) : 0;
     },

@@ -2189,6 +2189,10 @@ export default {
             let total = 0;
             let count = 0;
 
+            let d1=1;
+            let d2=1;
+            let d3=1;
+            let divisor=0;
             this.opcr_data.forEach(item => {
                 const qAvg = this.average([
                     item.ppdo_q1,
@@ -2205,13 +2209,18 @@ export default {
                 const tAvg = this.average([
                     item.ppdo_t1
                 ]);
-
-                [qAvg, eAvg, tAvg].forEach(avg => {
-                    if (avg > 0) {
-                        total += avg;
-                        count++;
-                    }
-                });
+                if(qAvg>0){d1=1}else{d1=0}
+                if(eAvg>0){d2=1}else{d2=0}
+                if(tAvg>0){d3=1}else{d3=0}
+                divisor = d1 + d2 + d3;
+                if(divisor<1){divisor=1}else{count++}
+                total += (qAvg + eAvg + tAvg)/divisor;
+                // [qAvg, eAvg, tAvg].forEach(avg => {
+                //     if (avg > 0) {
+                //         total += avg;
+                //         count++;
+                //     }
+                // });
             });
 
             return count ? Number((total / count).toFixed(2)) : 0;
