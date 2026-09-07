@@ -1021,7 +1021,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <!-- <table>
+                        <table>
                             <tr v-for="(item, index) in opcr_data" :key="index">
                                 <td>Q:
                                         {{ average([
@@ -1081,7 +1081,7 @@
                                 </td>
                                 <td>TOTAL: {{ calculatePpdoTotal() }}</td>
                             </tr>
-                        </table> -->
+                        </table>
                     </div>
 
                 </div>
