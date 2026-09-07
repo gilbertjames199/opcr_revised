@@ -993,7 +993,7 @@
                                     <td colspan="5"></td>
                                     <td colspan="3">TOTAL RATING (Self Rating)</td>
                                     <td>
-                                        {{ getTotalAverage() }}
+                                        {{ getTotalAverage2() }}
 
                                     </td>
 
@@ -1009,7 +1009,7 @@
                                 <tr class="table-summary-row">
                                     <td colspan="5"></td>
                                     <td colspan="3">FINAL AVERAGE RATING (Self Rating)</td>
-                                    <td>{{ getAverageAll() }}</td>
+                                    <td>{{ getAverageAll2() }}</td>
                                     <td colspan="3">FINAL AVERAGE RATING (PPDO)</td>
                                     <td>
                                         {{ calculatePpdoAverage() }}
@@ -1021,7 +1021,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <table>
+                        <!-- <table>
                             <tr v-for="(item, index) in opcr_data" :key="index">
                                 <td>Q:
                                         {{ average([
@@ -1081,7 +1081,7 @@
                                 </td>
                                 <td>TOTAL: {{ calculatePpdoTotal() }}</td>
                             </tr>
-                        </table>
+                        </table> -->
                     </div>
 
                 </div>
@@ -1857,6 +1857,7 @@ export default {
                 if(parseFloat(qAvg)>0){divisor+=1}
                 if(parseFloat(eAvg)>0){divisor+=1}
                 if(parseFloat(tAvg)>0){divisor+=1}
+                if(divisor==0){divisor=1}
                 total += (qAvg + eAvg + tAvg)/divisor;
             });
 
@@ -1906,9 +1907,43 @@ export default {
 
         },
         getAverageAll2() {
+            // let total = 0;
+            // let count = 0;
+
+            // this.opcr_data.forEach(item => {
+            //     const qAvg = this.average([
+            //         item.q1,
+            //         item.q2,
+            //         item.q3
+            //     ]);
+
+            //     const eAvg = this.average([
+            //         item.e1,
+            //         item.e2,
+            //         item.e3
+            //     ]);
+
+            //     const tAvg = this.average([
+            //         item.t1
+            //     ]);
+
+            //     [qAvg, eAvg, tAvg].forEach(avg => {
+            //         if (avg > 0) {
+            //             total += avg;
+            //             count++;
+            //         }
+            //     });
+            // });
+
+            // const divisor = count || 1; // Avoid division by zero
+            // return Number((total / divisor).toFixed(2));
             let total = 0;
             let count = 0;
 
+            let d1=1;
+            let d2=1;
+            let d3=1;
+            let divisor=0;
             this.opcr_data.forEach(item => {
                 const qAvg = this.average([
                     item.q1,
@@ -1925,13 +1960,18 @@ export default {
                 const tAvg = this.average([
                     item.t1
                 ]);
-
-                [qAvg, eAvg, tAvg].forEach(avg => {
-                    if (avg > 0) {
-                        total += avg;
-                        count++;
-                    }
-                });
+                if(qAvg>0){d1=1}else{d1=0}
+                if(eAvg>0){d2=1}else{d2=0}
+                if(tAvg>0){d3=1}else{d3=0}
+                divisor = d1 + d2 + d3;
+                if(divisor<1){divisor=1}else{count++}
+                total += (qAvg + eAvg + tAvg)/divisor;
+                // [qAvg, eAvg, tAvg].forEach(avg => {
+                //     if (avg > 0) {
+                //         total += avg;
+                //         count++;
+                //     }
+                // });
             });
 
             return count ? Number((total / count).toFixed(2)) : 0;
