@@ -828,7 +828,6 @@
                                     <td>{{ computeDPCRAverage(opcr_data) }}</td> -->
                                     <td></td>
                                     <td></td>
-
                                 </tr>
 
                             </tbody>
@@ -1021,71 +1020,72 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <!-- <table>
-                            <tr v-for="(item, index) in opcr_data" :key="index">
-                                <td>Q:
-                                        {{ average([
-                                        item.ppdo_q1,
-                                        item.ppdo_q2,
-                                        item.ppdo_q3
-                                    ]) }}
-                                </td>
-                                <td>E:
-                                    {{
-                                        average([
-                                                item.ppdo_e1,
-                                                item.ppdo_e2,
-                                                item.ppdo_e3
-                                            ])
-                                    }}
-                                </td>
 
-                                <td>T:
-                                    {{
-                                        average([
-                                                item.ppdo_t1
-                                            ])
-                                    }}
-                                </td>
-                                <td>
-                                    Row:
-                                    {{
-                                        (() => {
-                                            const qAvg = average([
-                                                item.ppdo_q1,
-                                                item.ppdo_q2,
-                                                item.ppdo_q3
-                                            ]);
-
-                                            const eAvg = average([
-                                                item.ppdo_e1,
-                                                item.ppdo_e2,
-                                                item.ppdo_e3
-                                            ]);
-
-                                            const tAvg = average([
-                                                item.ppdo_t1
-                                            ]);
-
-                                            let divisor = 0;
-
-                                            if (parseFloat(qAvg) > 0) divisor++;
-                                            if (parseFloat(eAvg) > 0) divisor++;
-                                            if (parseFloat(tAvg) > 0) divisor++;
-
-                                            return divisor > 0
-                                                ? ((qAvg + eAvg + tAvg) / divisor).toFixed(2)
-                                                : '0.00';
-                                        })()
-                                    }}
-                                </td>
-                                <td>TOTAL: {{ calculatePpdoTotal() }}</td>
-                            </tr>
-                        </table> -->
                     </div>
 
                 </div>
             </div>
+            <!-- <table>
+                <tr v-for="(item, index) in opcr_data" :key="index">
+                    <td>Q:
+                            {{ average([
+                            item.ppdo_q1,
+                            item.ppdo_q2,
+                            item.ppdo_q3
+                        ]) }}
+                    </td>
+                    <td>E:
+                        {{
+                            average([
+                                    item.ppdo_e1,
+                                    item.ppdo_e2,
+                                    item.ppdo_e3
+                                ])
+                        }}
+                    </td>
+
+                    <td>T:
+                        {{
+                            average([
+                                    item.ppdo_t1
+                                ])
+                        }}
+                    </td>
+                    <td>
+                        Row:
+                        {{
+                            (() => {
+                                const qAvg = average([
+                                    item.ppdo_q1,
+                                    item.ppdo_q2,
+                                    item.ppdo_q3
+                                ]);
+
+                                const eAvg = average([
+                                    item.ppdo_e1,
+                                    item.ppdo_e2,
+                                    item.ppdo_e3
+                                ]);
+
+                                const tAvg = average([
+                                    item.ppdo_t1
+                                ]);
+
+                                let divisor = 0;
+
+                                if (parseFloat(qAvg) > 0) divisor++;
+                                if (parseFloat(eAvg) > 0) divisor++;
+                                if (parseFloat(tAvg) > 0) divisor++;
+
+                                return divisor > 0
+                                    ? ((qAvg + eAvg + tAvg) / divisor).toFixed(2)
+                                    : '0.00';
+                            })()
+                        }}
+                    </td>
+                    <td>TOTAL: {{ calculatePpdoTotal() }}</td>
+                </tr>
+            </table> -->
             <!-- {{ opcr_data }} -->
             <!-- opcr remarks -->
             <table v-if="hasOpcrRemarks" class="table table-sm table-bordered border-dark table-striped table-hover modern-rating-table" style="table-layout: fixed;">

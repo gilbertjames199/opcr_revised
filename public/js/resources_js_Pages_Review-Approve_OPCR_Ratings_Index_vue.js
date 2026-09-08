@@ -581,6 +581,9 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
         if (parseFloat(tAvg) > 0) {
           divisor += 1;
         }
+        if (divisor == 0) {
+          divisor = 1;
+        }
         total += (qAvg + eAvg + tAvg) / divisor;
       });
       return Number(total.toFixed(2));
@@ -637,18 +640,74 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
     },
     getAverageAll2: function getAverageAll2() {
       var _this9 = this;
+      // let total = 0;
+      // let count = 0;
+
+      // this.opcr_data.forEach(item => {
+      //     const qAvg = this.average([
+      //         item.q1,
+      //         item.q2,
+      //         item.q3
+      //     ]);
+
+      //     const eAvg = this.average([
+      //         item.e1,
+      //         item.e2,
+      //         item.e3
+      //     ]);
+
+      //     const tAvg = this.average([
+      //         item.t1
+      //     ]);
+
+      //     [qAvg, eAvg, tAvg].forEach(avg => {
+      //         if (avg > 0) {
+      //             total += avg;
+      //             count++;
+      //         }
+      //     });
+      // });
+
+      // const divisor = count || 1; // Avoid division by zero
+      // return Number((total / divisor).toFixed(2));
       var total = 0;
       var count = 0;
+      var d1 = 1;
+      var d2 = 1;
+      var d3 = 1;
+      var divisor = 0;
       this.opcr_data.forEach(function (item) {
         var qAvg = _this9.average([item.q1, item.q2, item.q3]);
         var eAvg = _this9.average([item.e1, item.e2, item.e3]);
         var tAvg = _this9.average([item.t1]);
-        [qAvg, eAvg, tAvg].forEach(function (avg) {
-          if (avg > 0) {
-            total += avg;
-            count++;
-          }
-        });
+        if (qAvg > 0) {
+          d1 = 1;
+        } else {
+          d1 = 0;
+        }
+        if (eAvg > 0) {
+          d2 = 1;
+        } else {
+          d2 = 0;
+        }
+        if (tAvg > 0) {
+          d3 = 1;
+        } else {
+          d3 = 0;
+        }
+        divisor = d1 + d2 + d3;
+        if (divisor < 1) {
+          divisor = 1;
+        } else {
+          count++;
+        }
+        total += (qAvg + eAvg + tAvg) / divisor;
+        // [qAvg, eAvg, tAvg].forEach(avg => {
+        //     if (avg > 0) {
+        //         total += avg;
+        //         count++;
+        //     }
+        // });
       });
       return count ? Number((total / count).toFixed(2)) : 0;
     },
@@ -2326,15 +2385,28 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         colspan: "5"
       }, null, -1 /* CACHED */)), _cache[89] || (_cache[89] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
         colspan: "3"
-      }, "TOTAL RATING (Self Rating)", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getTotalAverage()), 1 /* TEXT */), _cache[90] || (_cache[90] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+      }, "TOTAL RATING (Self Rating)", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getTotalAverage2()), 1 /* TEXT */), _cache[90] || (_cache[90] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
         colspan: "3"
       }, "TOTAL RATING (PPDO)", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.calculatePpdoTotal()) + " ", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("DPCR {{ computeDPCRTotal(opcr_data) }} ")]), _cache[91] || (_cache[91] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */)), _cache[92] || (_cache[92] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" AVERAGES "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", _hoisted_112, [_cache[93] || (_cache[93] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
         colspan: "5"
       }, null, -1 /* CACHED */)), _cache[94] || (_cache[94] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
         colspan: "3"
-      }, "FINAL AVERAGE RATING (Self Rating)", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getAverageAll()), 1 /* TEXT */), _cache[95] || (_cache[95] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+      }, "FINAL AVERAGE RATING (Self Rating)", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getAverageAll2()), 1 /* TEXT */), _cache[95] || (_cache[95] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
         colspan: "3"
-      }, "FINAL AVERAGE RATING (PPDO)", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.calculatePpdoAverage()) + " ", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" DPCR "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ computeDPCRAverage(opcr_data) }} ")]), _cache[96] || (_cache[96] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */)), _cache[97] || (_cache[97] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */))])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <table>\n                            <tr v-for=\"(item, index) in opcr_data\" :key=\"index\">\n                                <td>Q:\n                                        {{ average([\n                                        item.ppdo_q1,\n                                        item.ppdo_q2,\n                                        item.ppdo_q3\n                                    ]) }}\n                                </td>\n                                <td>E:\n                                    {{\n                                        average([\n                                                item.ppdo_e1,\n                                                item.ppdo_e2,\n                                                item.ppdo_e3\n                                            ])\n                                    }}\n                                </td>\n\n                                <td>T:\n                                    {{\n                                        average([\n                                                item.ppdo_t1\n                                            ])\n                                    }}\n                                </td>\n                                <td>\n                                    Row:\n                                    {{\n                                        (() => {\n                                            const qAvg = average([\n                                                item.ppdo_q1,\n                                                item.ppdo_q2,\n                                                item.ppdo_q3\n                                            ]);\n\n                                            const eAvg = average([\n                                                item.ppdo_e1,\n                                                item.ppdo_e2,\n                                                item.ppdo_e3\n                                            ]);\n\n                                            const tAvg = average([\n                                                item.ppdo_t1\n                                            ]);\n\n                                            let divisor = 0;\n\n                                            if (parseFloat(qAvg) > 0) divisor++;\n                                            if (parseFloat(eAvg) > 0) divisor++;\n                                            if (parseFloat(tAvg) > 0) divisor++;\n\n                                            return divisor > 0\n                                                ? ((qAvg + eAvg + tAvg) / divisor).toFixed(2)\n                                                : '0.00';\n                                        })()\n                                    }}\n                                </td>\n                                <td>TOTAL: {{ calculatePpdoTotal() }}</td>\n                            </tr>\n                        </table> ")])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ opcr_data }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" opcr remarks "), _ctx.hasOpcrRemarks ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("table", _hoisted_113, [_cache[98] || (_cache[98] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Remarks"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Created at"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Action")])], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)((_$data$opcr_current2 = $data.opcr_current) === null || _$data$opcr_current2 === void 0 ? void 0 : _$data$opcr_current2.opcr_remarks, function (remark) {
+      }, "FINAL AVERAGE RATING (PPDO)", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.calculatePpdoAverage()) + " ", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" DPCR "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ computeDPCRAverage(opcr_data) }} ")]), _cache[96] || (_cache[96] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */)), _cache[97] || (_cache[97] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */))])])])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.opcr_data, function (item, index) {
+        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
+          key: index
+        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "Q: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.average([item.ppdo_q1, item.ppdo_q2, item.ppdo_q3])), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "E: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.average([item.ppdo_e1, item.ppdo_e2, item.ppdo_e3])), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "T: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.average([item.ppdo_t1])), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, " Row: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(function () {
+          var qAvg = $options.average([item.ppdo_q1, item.ppdo_q2, item.ppdo_q3]);
+          var eAvg = $options.average([item.ppdo_e1, item.ppdo_e2, item.ppdo_e3]);
+          var tAvg = $options.average([item.ppdo_t1]);
+          var divisor = 0;
+          if (parseFloat(qAvg) > 0) divisor++;
+          if (parseFloat(eAvg) > 0) divisor++;
+          if (parseFloat(tAvg) > 0) divisor++;
+          return divisor > 0 ? ((qAvg + eAvg + tAvg) / divisor).toFixed(2) : '0.00';
+        }()), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "TOTAL: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.calculatePpdoTotal()), 1 /* TEXT */)]);
+      }), 128 /* KEYED_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ opcr_data }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" opcr remarks "), _ctx.hasOpcrRemarks ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("table", _hoisted_113, [_cache[98] || (_cache[98] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Remarks"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Created at"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Action")])], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)((_$data$opcr_current2 = $data.opcr_current) === null || _$data$opcr_current2 === void 0 ? void 0 : _$data$opcr_current2.opcr_remarks, function (remark) {
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
           key: remark.id
         }, [remark.remarks && remark.remarks.trim() !== '' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", _hoisted_114, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(remark.remarks), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(remark.created_at), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {

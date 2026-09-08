@@ -419,7 +419,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
     }
     public function index_rating(Request $request)
     {
-        
+
         $disk = 'public';
         if ((auth()->user()->department_code == '04') && $request->source!='ppdo_approval') {
             // DB::flushQueryLog();
@@ -503,9 +503,9 @@ class TargetAccomplishmentReviewApproveController extends Controller
                 'disk' => $disk,
                 'source'=>$request->source
             ]);
-            
 
-            
+
+
         } else if ((auth()->user()->department_code == '02' && auth()->user()->recid == '795') ||
             ((auth()->user()->department_code == '04') && $request->source=='ppdo_approval')
         ) {
@@ -679,6 +679,9 @@ class TargetAccomplishmentReviewApproveController extends Controller
         // dd($request->type);
         // dd($opcr_list_id);
         $data = [];
+        $opcr_list = OfficePerformanceCommitmentRatingList::where('id', $opcr_list_id)->first();
+            $opcr_id = $opcr_list_id;
+            $FFUNCCOD = $opcr_list->FFUNCCOD;
         if ($request->type == 'Review') {
             // dd(OpcrTarget::where('office_performance_commitment_rating_list_id', $opcr_list_id)->where('is_included', '1')->get());
             $data = OpcrTarget::with([
@@ -697,6 +700,15 @@ class TargetAccomplishmentReviewApproveController extends Controller
             ])
                 ->where('office_performance_commitment_rating_list_id', $opcr_list_id)
                 ->where('is_included', '1')
+                ->whereHas('paps', function ($query) use ($FFUNCCOD) {
+                    $query->whereHas('MFO', function ($query) use ($FFUNCCOD) {
+                        $query->where('mfo_desc', '<>', '');
+                    });
+                })
+                ->whereHas('opcrList', function ($query) use ($opcr_id, $FFUNCCOD) {
+                    $query->where('id', $opcr_id)
+                        ->where('FFUNCCOD', $FFUNCCOD);
+                })
                 ->get()
                 // ->pluck('id');
                 ->map(function ($item) use ($opcr_list_id) {
@@ -906,9 +918,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
                 // dd($data->pluck('idpaps'));
             // dd($data);
         } else {
-            $opcr_list = OfficePerformanceCommitmentRatingList::where('id', $opcr_list_id)->first();
-            $opcr_id = $opcr_list_id;
-            $FFUNCCOD = $opcr_list->FFUNCCOD;
+
             $data = OpcrTarget::with([
                 'opcr_rating',
                 'opcr_rating2',
@@ -1747,7 +1757,7 @@ class TargetAccomplishmentReviewApproveController extends Controller
             //     ->get();
             // dd($data1, $data1->pluck('FFUNCCOD'), $data1[5]);
 
-            
+
         } else if ((auth()->user()->department_code == '02' && auth()->user()->recid == '795') ||
             ((auth()->user()->department_code == '04') && $request->source=='ppdo_approval')
         ) {
