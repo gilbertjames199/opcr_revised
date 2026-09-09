@@ -707,7 +707,7 @@
                                             <i class="fas fa-plus-circle"></i>
                                             <span class="ms-1">Generate Project Design</span>
                                         </button>
-
+                                        <!-- {{ dat.status }} {{ parseInt(dat.number_of_clones_design) }} {{ dat.type }} {{ parseInt(dat.year) }} -->
                                         <!-- Generate SIP Profile button -->
                                         <button v-if="dat.status == 1 && parseInt(dat.number_of_clones)<1 && source==='sip'"
                                                 @click="generateProjectDesign(dat.id, 'sip')"

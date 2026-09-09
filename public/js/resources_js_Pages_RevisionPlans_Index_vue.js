@@ -2090,7 +2090,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       "class": "fas fa-plus-circle"
     }, null, -1 /* CACHED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
       "class": "ms-1"
-    }, "Generate Project Design", -1 /* CACHED */)])), 8 /* PROPS */, _hoisted_66)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Generate SIP Profile button "), dat.status == 1 && parseInt(dat.number_of_clones) < 1 && $props.source === 'sip' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    }, "Generate Project Design", -1 /* CACHED */)])), 8 /* PROPS */, _hoisted_66)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ dat.status }} {{ parseInt(dat.number_of_clones_design) }} {{ dat.type }} {{ parseInt(dat.year) }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Generate SIP Profile button "), dat.status == 1 && parseInt(dat.number_of_clones) < 1 && $props.source === 'sip' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
       key: 3,
       onClick: function onClick($event) {
         return $options.generateProjectDesign(dat.id, 'sip');
