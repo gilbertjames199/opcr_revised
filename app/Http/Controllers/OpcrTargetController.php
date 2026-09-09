@@ -433,8 +433,13 @@ class OpcrTargetController extends Controller
             ->orderBy('program_and_projects.idmfo', 'ASC')
             ->orderBy('program_and_projects.id', 'ASC')
             ->get()
-            ->map(function ($item) use ($opcr_list_id, &$counter) {
+            ->map(function ($item) use ($opcr_list_id, &$counter, $opcr_list) {
                 $counter += 1;
+                $is_shared_paps =0;
+                if($item->sharedProgramAndProjects->isNotEmpty()){
+                    // dd($item->sharedProgramAndProjects,$opcr_list, ' sharedPAPS Test');
+                    $is_shared_paps = 1;
+                }
                 // dd('rrererer');
                 // if (count($item->opcrtarget) > 0) {
                 // dd($item->opcrtarget);
@@ -501,6 +506,7 @@ class OpcrTargetController extends Controller
                 //     dd($targ);
                 // }
                 // dd($item->opcr_stardard);
+                // dd($item->sharedProgramAndProjects);
 
                 return [
                     'mfo_desc' => $item->MFO ? $item->MFO->mfo_desc : "",
@@ -519,7 +525,8 @@ class OpcrTargetController extends Controller
                     'division_outputs' => $item->divisionOutputs,
                     'allotted' => $allotted,
                     'opcr_target_budget_id' => $opcr_target_budget_id,
-                    'opcr_standard'=>optional($item)->opcr_stardard
+                    'opcr_standard'=>optional($item)->opcr_stardard,
+                    'is_shared_paps'=>$is_shared_paps
                 ];
             });
 

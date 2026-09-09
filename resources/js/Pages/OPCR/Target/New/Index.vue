@@ -49,7 +49,7 @@
                 </u>
             </p>
         </div>
-
+        <!-- {{ auth }} -->
         <div class="masonry-item w-100">
             <div class="row gap-20"></div>
             <div class="bgc-white p-20 bd">
@@ -80,7 +80,7 @@
                                         :disabled="!dat.opcr_target_binary && !dat.opcr_standard"
                                         @click="toggleTarget(dat, dat.opcr_target_binary)"
                                     >
-                                    <div v-if="!dat.opcr_standard || Object.keys(dat.opcr_standard).length === 0">
+                                    <div v-if="!dat.opcr_standard || Object.keys(dat.opcr_standard).length === 0 && parseFloat(dat.is_shared_paps)==0">
                                         <button
                                             type="button"
                                             class="btn btn-sm btn-primary text-white"
@@ -88,7 +88,7 @@
                                         >
                                             Create Standard
                                         </button>
-
+                                        <!-- {{ dat.is_shared_paps }} -->
                                         <!-- {{ dat.idpaps }} -->
                                     </div>
                                     <div
@@ -186,7 +186,8 @@ export default {
         mooe: String,
         ps: String,
         opcr_list: Object,
-        office: Object
+        office: Object,
+        auth: Object,
     },
     data() {
         return {
