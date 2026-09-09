@@ -1997,7 +1997,7 @@
                         >
                             Return
                         </button> &nbsp;
-                        <button
+                        <1--<button
                             v-if="['0'].includes(paps.return_request_status)"
                             @click="statusAction(paps, 7)"
                             :style="{
@@ -2011,7 +2011,7 @@
                             }"
                         >
                             Approve Return Request
-                        </button> &nbsp;
+                        </button> &nbsp;-->
                         <!-- <button
                             @click="generatePDF()"
                             :style="{
