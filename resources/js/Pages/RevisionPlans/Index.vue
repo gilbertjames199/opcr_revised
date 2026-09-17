@@ -681,7 +681,10 @@
                                         <!-- {{ hasAnyWarning(dat) }} -->
 
                                         <!-- SUBMIT*************************************** -->
-                                        <button v-if="(dat.status == '-1' || dat.status == '-2') && !hasAnyWarning(dat) && isSubmissionAllowed(dat.year)"
+                                        <!-- {{dat.status}} {{ hasAnyWarning(dat) }} {{ isSubmissionAllowed(dat.year) }} {{ allowed }} -->
+                                        <button v-if="(dat.status == '-1' || dat.status == '-2') &&
+                                                !hasAnyWarning(dat) &&
+                                                isSubmissionAllowed(dat.year)"
                                                 @click="submitItem(dat, 0)"
                                                 :disabled="hasAnyWarning(dat) || !isSubmissionAllowed(dat.year)"
                                                 :class="!hasAnyWarning(dat) && isSubmissionAllowed(dat.year) ? 'btn btn-success btn-sm btn-icon text-white' : 'btn btn-secondary btn-sm btn-icon'"

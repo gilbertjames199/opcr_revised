@@ -3,7 +3,7 @@
         <title>Edit Project Profile</title>
     </Head>
     <div class="relative row gap-20 masonry pos-r">
-        <h4>v2</h4>
+        <h4>v2 </h4>
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>{{ pageTitle }}
                 <span v-if="editData.type === 'p'">Profile</span>
@@ -31,7 +31,7 @@
         </div>
         <!-- {{ form }}
         {{ selPaps }} -->
-
+        <!-- {{editData}} -->
         <div class="col-md-12">
 
                 <input type="hidden" required>
@@ -518,9 +518,16 @@
                                 Implementation Schedule/Workplan
                             </Link>
                         </h3>
-                        <p>
+                        <!-- v-if="editData.type === 'p'" -->
+                        <p >
                             <button class="btn btn-success btn-sm text-white"
+                                v-if="editData.type === 'p'"
                                 @click="showStrategyModal()">
+                                    Add Strategies
+                            </button>
+                            <button class="btn btn-success btn-sm text-white"
+                                v-if="editData.type === 'd'"
+                                @click="showStrategyRequestModal()">
                                     Add Strategies
                             </button>
                         </p>
@@ -644,7 +651,9 @@
                                             </td>
 
                                             <td>
+                                                <!-- v-if="editData.type === 'p'" -->
                                                 <button class="btn btn-primary btn-sm text-white"
+
                                                 @click="showActivityModal(dat.id)">
                                                     Add Activities
                                                 </button>
@@ -2505,9 +2514,10 @@
             </tr>
         </table>
 
-
+        <!-- v-if="editData.type === 'p'" -->
         <button @click="addStrategy" class="btn btn-primary mt-2">Add Strategy</button>
-        <button @click="saveStrategies" class="btn btn-success mt-2">Save</button>
+        <button @click="saveStrategies" class="btn btn-success mt-2" v-if="editData.type === 'p'">Save</button>
+        <button @click="saveStrategiesProjectDesign" class="btn btn-success mt-2" v-if="editData.type === 'd'">Save</button>
         <!-- {{strategies}} -->
     </StrategyModal>
     <ActivityModal v-if="ActivityModalVisible" @close-modal-event="closeActivityModal" title="ACTIVITIES MODAL">
@@ -3285,6 +3295,123 @@
         </table>
         <!-- {{activity_active}} -->
     </ActivityModalEdit>
+    <NewActivityStrategyRequestModal v-if="NewActivityStrategyRequestModalVisible" @close-modal-event="closeNewActivityStrategyRequestModal" title="NEW ACTIVITY/STRATEGY REQUEST">
+        <div class="table-responsive">
+            {{ strategy_request_array}}
+            <table class="table table-sm table-bordered table-hover" style="min-width: 1200px;">
+                <thead>
+                    <tr class="bg-secondary text-white">
+                        <th style="width: 80px;">ID</th>
+                        <th style="width: 220px;">Description</th>
+                        <th>Activities </th>
+                        <th style="width: 60px;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template v-for="(strategyRow, strategyIndex) in strategy_request_array" :key="strategyIndex">
+                        <tr>
+                            <td>
+                                id: {{ strategyRow.id ?? 'null' }}
+                                strategy_activity_request_id:{{ strategyRow.strategy_activity_request_id ?? 'null' }}
+                            </td>
+                            <!-- <td></td> -->
+                            <td>
+                                <textarea v-model="strategyRow.description" class="form-control" rows="2" placeholder="Enter strategy description"></textarea>
+                            </td>
+                            <td>
+                                <button class="btn btn-primary btn-sm text-white" @click="addActivityRequest(strategyIndex)">Add Activity</button>
+                            </td>
+                            <td>
+                                <button class="btn btn-danger btn-sm" @click="removeStrategyRequest(strategyIndex)">X</button>
+                            </td>
+                        </tr>
+                        <tr v-if="strategyRow.activities && strategyRow.activities.length">
+                            <td colspan="5" class="p-0 bg-light">
+                                <div class="p-2">
+                                    <table class="table table-sm table-bordered mb-0">
+                                        <thead>
+                                            <tr class="bg-light">
+                                                <th style="width: 90px;">Ids:</th>
+                                                <th>Description</th>
+                                                <th>GAD Issue</th>
+                                                <th>Timeline</th>
+                                                <th>PS</th>
+                                                <th>MOOE</th>
+                                                <th>CO</th>
+                                                <th>FE</th>
+                                                <th>CCET</th>
+                                                <th>Responsible</th>
+                                                <th style="width: 60px;">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(activityRow, activityIndex) in strategyRow.activities" :key="activityIndex">
+                                                <td>
+                                                    activity_id: {{ activityRow.activity_id ?? 'null' }}
+                                                    strategy_id: {{ activityRow.strategy_id ?? 'null' }}
+                                                    strategy_activity_request_id: {{ activityRow.strategy_activity_request_id ?? 'null' }}
+                                                </td>
+                                                <!-- <td></td>
+                                                <td></td> -->
+                                                <td>
+                                                    <textarea v-model="activityRow.description" class="form-control" rows="2"></textarea>
+                                                </td>
+                                                <td>
+                                                    <textarea v-model="activityRow.gad_issue" class="form-control" rows="2"></textarea>
+                                                </td>
+                                                <td>
+                                                    <input v-model="activityRow.date_from" type="date" class="form-control mb-1" />
+                                                    <input v-model="activityRow.date_to" type="date" class="form-control" />
+                                                </td>
+                                                <td>
+                                                    <input v-model.number="activityRow.ps_q1" type="number" class="form-control mb-1" />
+                                                    <input v-model.number="activityRow.ps_q2" type="number" class="form-control mb-1" />
+                                                    <input v-model.number="activityRow.ps_q3" type="number" class="form-control mb-1" />
+                                                    <input v-model.number="activityRow.ps_q4" type="number" class="form-control" />
+                                                </td>
+                                                <td>
+                                                    <input v-model.number="activityRow.mooe_q1" type="number" class="form-control mb-1" />
+                                                    <input v-model.number="activityRow.mooe_q2" type="number" class="form-control mb-1" />
+                                                    <input v-model.number="activityRow.mooe_q3" type="number" class="form-control mb-1" />
+                                                    <input v-model.number="activityRow.mooe_q4" type="number" class="form-control" />
+                                                </td>
+                                                <td>
+                                                    <input v-model.number="activityRow.co_q1" type="number" class="form-control mb-1" />
+                                                    <input v-model.number="activityRow.co_q2" type="number" class="form-control mb-1" />
+                                                    <input v-model.number="activityRow.co_q3" type="number" class="form-control mb-1" />
+                                                    <input v-model.number="activityRow.co_q4" type="number" class="form-control" />
+                                                </td>
+                                                <td>
+                                                    <input v-model.number="activityRow.fe_q1" type="number" class="form-control mb-1" />
+                                                    <input v-model.number="activityRow.fe_q2" type="number" class="form-control mb-1" />
+                                                    <input v-model.number="activityRow.fe_q3" type="number" class="form-control mb-1" />
+                                                    <input v-model.number="activityRow.fe_q4" type="number" class="form-control" />
+                                                </td>
+                                                <td>
+                                                    <input v-model="activityRow.ccet_code" type="text" class="form-control" />
+                                                </td>
+                                                <td>
+                                                    <input v-model="activityRow.responsible" type="text" class="form-control" />
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-danger btn-sm" @click="removeActivityRequest(strategyIndex, activityIndex)">X</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="d-flex justify-content-between mt-3">
+            <button class="btn btn-primary text-white" @click="addStrategyRequestRow">Add Strategy</button>
+            <button class="btn btn-success text-white" @click="saveStrategyRequestArray">Done</button>
+        </div>
+    </NewActivityStrategyRequestModal>
 </template>
 <script>
 import { useForm } from "@inertiajs/inertia-vue3";
@@ -3301,6 +3428,7 @@ import MonitoringModal from "@/Shared/ModalDynamicTitle";
 import SignatoryModal from "@/Shared/ModalDynamicTitle";
 import ExpectedOutputModal from "@/Shared/ModalDynamicTitle";
 import ExpectedOutcomeModal from "@/Shared/ModalDynamicTitle";
+import NewActivityStrategyRequestModal from "@/Shared/ModalDynamicTitleLarge";
 import axios from 'axios';
 import debounce from 'lodash/debounce';
 
@@ -3367,7 +3495,8 @@ export default {
         MonitoringModal,
         SignatoryModal,
         ExpectedOutputModal,
-        ExpectedOutcomeModal
+        ExpectedOutcomeModal,
+        NewActivityStrategyRequestModal
 
     },
     data() {
@@ -3483,6 +3612,11 @@ export default {
             ExpectedOutcomeModalVisible: false,
             expected_outcomes_current: [],
             expected_outcomes_new: [],
+
+            // NewActivityStrategyRequestModal ****************
+            NewActivityStrategyRequestModalVisible: false,
+            strategy_request_array: [],
+            activity_request_array: [],
 
         };
     },
@@ -4429,6 +4563,144 @@ export default {
             this.ActivityModalVisibleEdit=false;
              this.activity_active = [];
         },
+
+        // STRATEGY/ACTIVITY REQUESTS *********************
+        showStrategyRequestModal(){
+            this.strategy_request_array = [];
+            this.activity_request_array = [];
+            this.addStrategyRequestRow();
+            this.NewActivityStrategyRequestModalVisible = true;
+        },
+        closeNewActivityStrategyRequestModal(){
+            this.NewActivityStrategyRequestModalVisible = false;
+        },
+        getDefaultActivityRequestRow() {
+            return {
+                activity_id: null,
+                strategy_id: null,
+                strategy_activity_request_id: null,
+                description: '',
+                gad_issue: '',
+                date_from: '',
+                date_to: '',
+                ps_q1: 0,
+                ps_q2: 0,
+                ps_q3: 0,
+                ps_q4: 0,
+                mooe_q1: 0,
+                mooe_q2: 0,
+                mooe_q3: 0,
+                mooe_q4: 0,
+                co_q1: 0,
+                co_q2: 0,
+                co_q3: 0,
+                co_q4: 0,
+                fe_q1: 0,
+                fe_q2: 0,
+                fe_q3: 0,
+                fe_q4: 0,
+                ccet_code: null,
+                responsible: '',
+            };
+        },
+        getDefaultStrategyRequestRow() {
+            return {
+                id: null,
+                strategy_activity_request_id: null,
+                description: '',
+                activities: [],
+            };
+        },
+        addStrategyRequestRow() {
+            this.strategy_request_array.push(this.getDefaultStrategyRequestRow());
+        },
+        removeStrategyRequest(index) {
+            this.strategy_request_array.splice(index, 1);
+            this.syncActivityRequestArray();
+        },
+        addActivityRequest(strategyIndex) {
+            if (!this.strategy_request_array[strategyIndex]) {
+                return;
+            }
+
+            const newActivity = this.getDefaultActivityRequestRow();
+            newActivity.strategy_id = this.strategy_request_array[strategyIndex].id;
+            newActivity.strategy_activity_request_id = this.strategy_request_array[strategyIndex].strategy_activity_request_id;
+
+            if (!this.strategy_request_array[strategyIndex].activities) {
+                this.strategy_request_array[strategyIndex].activities = [];
+            }
+
+            this.strategy_request_array[strategyIndex].activities.push(newActivity);
+            this.syncActivityRequestArray();
+        },
+        removeActivityRequest(strategyIndex, activityIndex) {
+            if (!this.strategy_request_array[strategyIndex]) {
+                return;
+            }
+
+            if (!Array.isArray(this.strategy_request_array[strategyIndex].activities)) {
+                return;
+            }
+
+            this.strategy_request_array[strategyIndex].activities.splice(activityIndex, 1);
+            this.syncActivityRequestArray();
+        },
+        syncActivityRequestArray() {
+            const flatActivities = [];
+
+            this.strategy_request_array.forEach((strategyRow) => {
+                const activities = Array.isArray(strategyRow.activities) ? strategyRow.activities : [];
+
+                activities.forEach((activityRow) => {
+                    flatActivities.push({
+                        ...activityRow,
+                        strategy_id: strategyRow.id ?? activityRow.strategy_id ?? null,
+                        strategy_activity_request_id: strategyRow.strategy_activity_request_id ?? activityRow.strategy_activity_request_id ?? null,
+                    });
+                });
+            });
+
+            this.activity_request_array = flatActivities;
+        },
+        saveStrategyRequestArray() {
+            // this.strategy_request_array.forEach((strategyRow) => {
+            //     if (!Array.isArray(strategyRow.activities)) {
+            //         strategyRow.activities = [];
+            //     }
+
+            //     strategyRow.activities.forEach((activityRow) => {
+            //         activityRow.strategy_id = strategyRow.id ?? activityRow.strategy_id ?? null;
+            //         activityRow.strategy_activity_request_id = strategyRow.strategy_activity_request_id ?? activityRow.strategy_activity_request_id ?? null;
+            //     });
+            // });
+
+            // this.syncActivityRequestArray();
+
+            this.$inertia.post('/strategy-and-activity-request/create', {
+                strategy_request_array: this.strategy_request_array,
+                activity_request_array: this.activity_request_array,
+                revision_plan_id: this.editData?.id ?? this.editData?.id ?? null,
+                program_and_project_id: this.paps_specific?.id ?? this.paps?.id ?? null,
+                idpaps: this.editData?.idpaps ?? this.paps_specific?.id ?? null,
+                // revision_plan_id: this.editData?.id ?? null,
+                created_by: this.auth?.user?.id ?? null,
+            }, {
+                preserveScroll: true,
+                preserveState: true,
+                onSuccess: () => {
+                    this.closeNewActivityStrategyRequestModal();
+                    alert('Strategy and activity request saved successfully.');
+                },
+                onError: () => {
+                    alert('Failed to save strategy and activity request.');
+                }
+            });
+        },
+        saveStrategiesProjectDesign(){
+            alert("strategy Project Design")
+        },
+
         //IMPLEMENTING TEAM *******************************
         showTeamModal(){
             this.action_type_team = 'store'

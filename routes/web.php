@@ -108,6 +108,7 @@ use App\Http\Controllers\SentenceParserController;
 use App\Http\Controllers\SharedProgramAndProjectController;
 use App\Http\Controllers\AllowedSubmissionController;
 use App\Http\Controllers\SangguniangPanlalawiganApproverController;
+use App\Http\Controllers\StrategyActivityRequestController;
 use App\Http\Controllers\StrategyProjectController;
 use App\Http\Controllers\TimeRangeController;
 use App\Http\Controllers\UserController;
@@ -599,6 +600,17 @@ Route::middleware('auth')->group(function () {
         Route::patch('/{id}', [StrategyProjectController::class, 'update']);
         Route::delete('/{id}', [StrategyProjectController::class, 'destroy']);
         Route::get('/refresh/data/now/{idrevplan}', [StrategyProjectController::class, 'refresh']);
+    });
+    // Strategy and Activities Request
+    Route::prefix('/strategy-and-activity-request')->group(function () {
+        // /strategies-and-activities/strategies/create
+        // Route::get('/{idrevplan}', [StrategyProjectController::class, 'index']);
+        // Route::get('/create/{idrevplan}', [StrategyProjectController::class, 'create']);
+        Route::post('/create', [StrategyActivityRequestController::class, 'store']);
+        // Route::get('/{id}/edit', [StrategyProjectController::class, 'edit']);
+        // Route::patch('/{id}', [StrategyProjectController::class, 'update']);
+        // Route::delete('/{id}', [StrategyProjectController::class, 'destroy']);
+        // Route::get('/refresh/data/now/{idrevplan}', [StrategyProjectController::class, 'refresh']);
     });
     //Strategies and Projects
     Route::prefix('/strategies-project/r')->group(function () {
