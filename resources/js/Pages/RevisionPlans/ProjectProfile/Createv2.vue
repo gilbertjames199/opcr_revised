@@ -518,6 +518,153 @@
                                 Implementation Schedule/Workplan
                             </Link>
                         </h3>
+                        <div v-if="editData.type === 'd'">
+                            <div v-if="strategy_requests && strategy_requests.length" class="accordion accordion-flush" id="strategyRequestsAccordion">
+                                <div v-for="(request, index) in strategy_requests" :key="request.id ?? index" class="accordion-item border rounded mb-2">
+                                    <h2 class="accordion-header d-flex align-items-center">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            :data-bs-target="`#strategy-request-${request.id ?? index}`" aria-expanded="false">
+                                            <span class="fw-bold">Strategy Request {{ index + 1 }}</span>
+                                        </button>
+                                        <!-- status: {{ request.status}} -->
+                                        <!-- <button
+                                            type="button" class="btn btn-success btn-sm text-white mx-2 text-nowrap"
+                                            @click="updateStrategyActivityRequestField(request.id, 'strategy_activity_requests', 'status', '0')">
+                                            Submit Request</button>
+                                        <br> -->
+                                        <button type="button" class="btn btn-success btn-sm text-white mx-2 text-nowrap" @click="openStrategyOnlyModal(request.id)">Add Strategy</button>
+                                        <!-- @click="submitStrategyActivityRequest(request)" -->
+                                         <!-- @click="updateStrategyActivityRequestField(request.id, 'strategy_activity_requests', 'status', '0')" -->
+                                        <!-- parseFloat(request.status):  {{parseFloat(request.status)}} -->
+                                        <button v-if="parseFloat(request.status) < 0"
+                                            type="button"
+                                            class="btn btn-primary btn-sm text-white me-2 text-nowrap"
+                                            @click="submitStrategyActivityRequest(request)"
+
+                                        >
+                                            Submit Request
+                                        </button>
+                                        <button type="button" class="btn btn-outline-primary btn-sm me-2 text-nowrap" @click.stop="showStrategyRequestFiles(request)">
+                                            View File
+                                        </button>
+                                    </h2>
+                                    <div :id="`strategy-request-${request.id ?? index}`" class="accordion-collapse collapse">
+                                        <div class="accordion-body p-0">
+                                            <table class="table table-bordered mb-0">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th style="width: 50%;">Strategy</th>
+                                                        <th style="width: 25%;">Status</th>
+                                                        <th style="width: 25%;">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td colspan="3" class="p-0">
+                                                            <div v-if="!request.strategy || !request.strategy.length" class="p-3 text-muted">No strategy linked to this request.</div>
+                                                            <div v-else v-for="(strategy, strategyIndex) in request.strategy" :key="strategy.id ?? strategyIndex" class="accordion accordion-flush" :id="`strategyDetailAccordion-${request.id ?? index}`">
+                                                                <div class="accordion-item border-0">
+                                                                    <h3 class="accordion-header">
+                                                                        <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                                                                            :data-bs-target="`#strategy-detail-${request.id ?? index}-${strategy.id ?? strategyIndex}`" aria-expanded="false">
+                                                                            {{ strategy.name || strategy.description || 'Strategy' }}
+                                                                        </button>
+                                                                    </h3>
+                                                                    <div :id="`strategy-detail-${request.id ?? index}-${strategy.id ?? strategyIndex}`" class="accordion-collapse collapse">
+                                                                        <div class="accordion-body p-0">
+                                                                            <div class="p-2 border-bottom d-flex justify-content-between align-items-center">
+                                                                                <label class="fw-bold mb-0">Strategy Description</label>
+                                                                                <button class="btn btn-danger btn-sm text-white" @click="deleteStrategyActivityRequest(strategy.id, 'strategies')">Delete Strategy</button>
+                                                                            </div>
+                                                                            <div class="p-2 border-bottom d-flex align-items-start gap-2">
+                                                                                <textarea class="form-control" rows="2" v-model="strategy.description"
+                                                                                    @change="updateStrategyActivityRequestField(strategy.id, 'strategies', 'description', strategy.description)"></textarea>
+                                                                                <button type="button" class="btn btn-primary btn-sm text-white text-nowrap" @click="openActivityOnlyModal(strategy.id, strategy.description)">Add Activity</button>
+                                                                            </div>
+
+                                                                            <div class="table-responsive">
+                                                                            <table class="table table-sm table-bordered mb-0" style="min-width: 1500px;">
+                                                                                <thead class="table-light">
+                                                                                    <tr>
+                                                                                        <th>Activity</th>
+                                                                                        <th>Timeline</th>
+                                                                                        <th>GAD Issue</th>
+                                                                                        <th>PS (Q1-Q4)</th>
+                                                                                        <th>MOOE (Q1-Q4)</th>
+                                                                                        <th>CO (Q1-Q4)</th>
+                                                                                        <th>FE (Q1-Q4)</th>
+                                                                                        <th>Responsible</th>
+                                                                                        <th>CCET</th>
+                                                                                        <th>Action</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <tr v-if="!(strategy.activity || []).length">
+                                                                                        <td colspan="10" class="text-muted text-center py-3">No activities available.</td>
+                                                                                    </tr>
+                                                                                    <template v-else>
+                                                                                        <tr v-for="(activity, activityIndex) in (strategy.activity || [])" :key="activity.id ?? activity.activity_id ?? `${request.id ?? index}-${strategyIndex}-${activityIndex}`">
+                                                                                            <td>
+                                                                                                <!-- {{activity}} -->
+                                                                                                <textarea class="form-control" rows="2" v-model="activity.description"
+                                                                                                    @change="updateStrategyActivityRequestField(activity.id, 'activities', 'description', activity.description)"></textarea>
+                                                                                            </td>
+                                                                                            <td v-if="activity.activity_project && activity.activity_project.length">
+                                                                                                <input type="date" class="form-control mb-1" v-model="activity.activity_project[0].date_from"
+                                                                                                    @change="updateStrategyActivityRequestField(activity.activity_project[0].id, 'activity_projects', 'date_from', activity.activity_project[0].date_from)">
+                                                                                                <input type="date" class="form-control" v-model="activity.activity_project[0].date_to"
+                                                                                                    @change="updateStrategyActivityRequestField(activity.activity_project[0].id, 'activity_projects', 'date_to', activity.activity_project[0].date_to)">
+                                                                                            </td>
+                                                                                            <td v-else class="text-muted">Project details unavailable</td>
+                                                                                            <td v-if="activity.activity_project && activity.activity_project.length">
+                                                                                                <textarea class="form-control" rows="2" v-model="activity.activity_project[0].gad_issue"
+                                                                                                    @change="updateStrategyActivityRequestField(activity.activity_project[0].id, 'activity_projects', 'gad_issue', activity.activity_project[0].gad_issue)"></textarea>
+                                                                                            </td>
+                                                                                            <td v-else class="text-muted">—</td>
+                                                                                            <template v-for="category in ['ps', 'mooe', 'co', 'fe']" :key="`${activity.id}-${category}`">
+                                                                                                <td v-if="activity.activity_project && activity.activity_project.length">
+                                                                                                    <div v-for="quarter in ['q1', 'q2', 'q3', 'q4']" :key="`${activity.id}-${category}-${quarter}`" class="mb-1">
+                                                                                                        <input type="number" min="0" step="0.01" class="form-control form-control-sm"
+                                                                                                            :aria-label="`${category.toUpperCase()} ${quarter.toUpperCase()}`"
+                                                                                                            :placeholder="quarter.toUpperCase()"
+                                                                                                            v-model.number="activity.activity_project[0][`${category}_${quarter}`]"
+                                                                                                            @change="updateStrategyActivityRequestField(activity.activity_project[0].id, 'activity_projects', `${category}_${quarter}`, activity.activity_project[0][`${category}_${quarter}`])">
+                                                                                                    </div>
+                                                                                                </td>
+                                                                                                <td v-else class="text-muted">—</td>
+                                                                                            </template>
+                                                                                            <td v-if="activity.activity_project && activity.activity_project.length">
+                                                                                                <input type="text" class="form-control" v-model="activity.activity_project[0].responsible"
+                                                                                                    @change="updateStrategyActivityRequestField(activity.activity_project[0].id, 'activity_projects', 'responsible', activity.activity_project[0].responsible)">
+                                                                                            </td>
+                                                                                            <td v-else class="text-muted">—</td>
+                                                                                            <td v-if="activity.activity_project && activity.activity_project.length">
+                                                                                                <input type="text" class="form-control" v-model="activity.activity_project[0].ccet_code"
+                                                                                                    @change="updateStrategyActivityRequestField(activity.activity_project[0].id, 'activity_projects', 'ccet_code', activity.activity_project[0].ccet_code)">
+                                                                                            </td>
+                                                                                            <td v-else class="text-muted">—</td>
+                                                                                            <td>
+                                                                                                <button class="btn btn-danger btn-sm text-white" @click="deleteStrategyActivityRequest(activity.id, 'activities')">Delete</button>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </template>
+                                                                                </tbody>
+                                                                            </table>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-else class="alert alert-light border mt-2 mb-0">No strategy requests available.</div>
+                        </div>
                         <!-- v-if="editData.type === 'p'" -->
                         <p >
                             <button class="btn btn-success btn-sm text-white"
@@ -3296,8 +3443,33 @@
         <!-- {{activity_active}} -->
     </ActivityModalEdit>
     <NewActivityStrategyRequestModal v-if="NewActivityStrategyRequestModalVisible" @close-modal-event="closeNewActivityStrategyRequestModal" title="NEW ACTIVITY/STRATEGY REQUEST">
+        <div class="mb-3">
+            <label class="form-label" for="strategy-request-files">Supporting files</label>
+            <input id="strategy-request-files" ref="strategyRequestFiles" type="file" class="form-control" accept=".pdf,.doc,.docx,image/*" multiple @change="handleStrategyRequestFiles">
+            <small class="text-muted">PDF, DOC, DOCX, or image files. Maximum 2 files and 1 MB total.</small>
+            <div v-if="strategy_request_files.length" class="table-responsive mt-2">
+                <table class="table table-sm table-bordered mb-0">
+                    <thead>
+                        <tr class="bg-light">
+                            <th>File name</th>
+                            <th>Type</th>
+                            <th>Size</th>
+                            <th style="width: 60px;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(file, index) in strategy_request_files" :key="file.file_name + index">
+                            <td>{{ file.file_name }}</td>
+                            <td>{{ file.file_type }}</td>
+                            <td>{{ formatFileSize(file.file_size) }}</td>
+                            <td><button type="button" class="btn btn-danger btn-sm" @click="removeStrategyRequestFile(index)">X</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <div class="table-responsive">
-            {{ strategy_request_array}}
+            <!-- {{ strategy_request_array}} -->
             <table class="table table-sm table-bordered table-hover" style="min-width: 1200px;">
                 <thead>
                     <tr class="bg-secondary text-white">
@@ -3311,8 +3483,8 @@
                     <template v-for="(strategyRow, strategyIndex) in strategy_request_array" :key="strategyIndex">
                         <tr>
                             <td>
-                                id: {{ strategyRow.id ?? 'null' }}
-                                strategy_activity_request_id:{{ strategyRow.strategy_activity_request_id ?? 'null' }}
+                                <!-- id: {{ strategyRow.id ?? 'null' }}
+                                strategy_activity_request_id:{{ strategyRow.strategy_activity_request_id ?? 'null' }} -->
                             </td>
                             <!-- <td></td> -->
                             <td>
@@ -3347,9 +3519,9 @@
                                         <tbody>
                                             <tr v-for="(activityRow, activityIndex) in strategyRow.activities" :key="activityIndex">
                                                 <td>
-                                                    activity_id: {{ activityRow.activity_id ?? 'null' }}
+                                                    <!-- activity_id: {{ activityRow.activity_id ?? 'null' }}
                                                     strategy_id: {{ activityRow.strategy_id ?? 'null' }}
-                                                    strategy_activity_request_id: {{ activityRow.strategy_activity_request_id ?? 'null' }}
+                                                    strategy_activity_request_id: {{ activityRow.strategy_activity_request_id ?? 'null' }}-->
                                                 </td>
                                                 <!-- <td></td>
                                                 <td></td> -->
@@ -3406,11 +3578,149 @@
                 </tbody>
             </table>
         </div>
-
+        <!-- {{ strategy_requests}} -->
         <div class="d-flex justify-content-between mt-3">
             <button class="btn btn-primary text-white" @click="addStrategyRequestRow">Add Strategy</button>
             <button class="btn btn-success text-white" @click="saveStrategyRequestArray">Done</button>
         </div>
+    </NewActivityStrategyRequestModal>
+
+    <NewActivityStrategyRequestModal v-if="strategyOnlyModalVisible" @close-modal-event="closeStrategyOnlyModal" title="NEW STRATEGY">
+        <div class="mb-3">
+            <label class="form-label">Strategy description</label>
+            <textarea v-model="strategy_only_form.description" class="form-control" rows="4" placeholder="Enter strategy description"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Year period</label>
+            <input v-model.number="strategy_only_form.year_period" type="number" class="form-control" min="2024" />
+        </div>
+
+        <div class="d-flex justify-content-end gap-2 mt-3">
+            <button type="button" class="btn btn-outline-secondary" @click="closeStrategyOnlyModal">Cancel</button>
+            <button type="button" class="btn btn-primary text-white" @click="saveStrategyOnly">Save Strategy</button>
+        </div>
+    </NewActivityStrategyRequestModal>
+
+    <NewActivityStrategyRequestModal v-if="activityOnlyModalVisible" @close-modal-event="closeActivityOnlyModal" title="NEW ACTIVITY">
+        <div class="mb-3">
+            <label class="form-label">Parent strategy</label>
+            <div class="form-control bg-light" aria-readonly="true">{{ activity_only_form.parent_strategy_description }}</div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Activity description</label>
+            <textarea v-model="activity_only_form.description" class="form-control" rows="3" placeholder="Enter activity description"></textarea>
+        </div>
+
+        <div class="row g-2 mb-3">
+            <div class="col-md-6">
+                <label class="form-label">Date from</label>
+                <input v-model="activity_only_form.date_from" type="date" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Date to</label>
+                <input v-model="activity_only_form.date_to" type="date" class="form-control" />
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">GAD issue</label>
+            <textarea v-model="activity_only_form.gad_issue" class="form-control" rows="2"></textarea>
+        </div>
+
+        <div class="row g-2 mb-3">
+            <div class="col-md-6">
+                <label class="form-label">CCET code</label>
+                <input v-model="activity_only_form.ccet_code" type="text" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Responsible</label>
+                <input v-model="activity_only_form.responsible" type="text" class="form-control" />
+            </div>
+        </div>
+
+        <div class="row g-2 mb-3">
+            <div v-for="category in ['ps', 'mooe', 'co', 'fe']" :key="category" class="col-md-6">
+                <fieldset class="border rounded p-2">
+                    <legend class="float-none w-auto px-1 fs-6 text-uppercase">{{ category }}</legend>
+                    <div class="row g-2">
+                        <div v-for="quarter in ['q1', 'q2', 'q3', 'q4']" :key="`${category}_${quarter}`" class="col-3">
+                            <label class="form-label">{{ quarter.toUpperCase() }}</label>
+                            <input v-model.number="activity_only_form[`${category}_${quarter}`]" type="number" min="0" step="0.01" class="form-control" />
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2 mt-3">
+            <button type="button" class="btn btn-outline-secondary" @click="closeActivityOnlyModal">Cancel</button>
+            <button type="button" class="btn btn-primary text-white" @click="saveActivityOnly">Save Activity</button>
+        </div>
+    </NewActivityStrategyRequestModal>
+
+    <NewActivityStrategyRequestModal v-if="strategyRequestFilesModalVisible" @close-modal-event="closeStrategyRequestFilesModal" title="STRATEGY REQUEST FILES">
+        <div class="mb-3 d-flex align-items-end gap-2">
+            <div class="flex-grow-1">
+                <label class="form-label" for="strategy-request-extra-file">Add a file</label>
+                <input id="strategy-request-extra-file" ref="strategyRequestFileInput" type="file" class="form-control" accept=".pdf,.doc,.docx,image/*" @change="handleAdditionalStrategyRequestFile">
+            </div>
+            <button type="button" class="btn btn-primary text-white" :disabled="!strategyRequestFileToUpload" @click="addStrategyRequestFile">Upload</button>
+        </div>
+        <div v-if="strategyRequestFiles.length" class="table-responsive">
+            <table class="table table-sm table-bordered align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Strategy Activity Request ID</th>
+                        <th>File name</th>
+                        <th>File path</th>
+                        <th>File type</th>
+                        <th>File size</th>
+                        <th>Uploaded by</th>
+                        <th>Created at</th>
+                        <th>Updated at</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template v-for="(file, fileIndex) in strategyRequestFiles" :key="file.id ?? fileIndex">
+                        <tr>
+                            <td>{{ file.id }}</td>
+                            <td>{{ file.strategy_activity_request_id }}</td>
+                            <td>{{ file.file_name }}</td>
+                            <td>{{ file.file_path }}</td>
+                            <td>{{ file.file_type }}</td>
+                            <td>{{ formatFileSize(file.file_size) }}</td>
+                            <td>{{ file.uploaded_by }}</td>
+                            <td>{{ file.created_at }}</td>
+                            <td>{{ file.updated_at }}</td>
+                            <td>
+                                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="collapse"
+                                    :data-bs-target="`#strategy-request-file-${file.id ?? fileIndex}`" aria-expanded="false"
+                                    :aria-controls="`strategy-request-file-${file.id ?? fileIndex}`">
+                                    Preview
+                                </button>
+                                <button type="button" class="btn btn-danger btn-sm text-white ms-1" @click="deleteStrategyRequestFile(file.id)">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="10" class="p-0">
+                                <div :id="`strategy-request-file-${file.id ?? fileIndex}`" class="accordion-collapse collapse">
+                                    <div class="p-3 text-center">
+                                        <img v-if="isStrategyRequestImage(file)" :src="getStrategyRequestFileUrl(file)" :alt="file.file_name" class="img-fluid" style="max-height: 70vh;" />
+                                        <iframe v-else-if="isStrategyRequestPdf(file)" :src="getStrategyRequestFileUrl(file)" :title="file.file_name" class="w-100 border" style="height: 70vh;"></iframe>
+                                        <a v-else :href="getStrategyRequestFileUrl(file)" target="_blank" rel="noopener">Open {{ file.file_name }}</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+        <div v-else class="text-muted p-3">No files attached to this request.</div>
     </NewActivityStrategyRequestModal>
 </template>
 <script>
@@ -3476,6 +3786,9 @@ export default {
 
         // CCET CODE
         ccet_codes: Object,
+
+        // STRATEGY REQUESTS
+        strategy_requests: Object,
     },
     components: {
 
@@ -3617,10 +3930,68 @@ export default {
             NewActivityStrategyRequestModalVisible: false,
             strategy_request_array: [],
             activity_request_array: [],
+            strategy_request_files: [],
+            strategyOnlyModalVisible: false,
+            activityOnlyModalVisible: false,
+            strategyRequestFilesModalVisible: false,
+            strategyRequestFiles: [],
+            strategyRequestId: null,
+            strategyRequestFileToUpload: null,
+            strategy_only_form: {
+                description: '',
+                strategy_activity_request_id: null,
+                project_id: null,
+                idpaps: null,
+                idmfo: null,
+                FFUNCCOD: null,
+                year_period: new Date().getFullYear() + 1,
+            },
+            activity_only_form: {
+                strategy_id: null,
+                parent_strategy_description: '',
+                description: '',
+                project_id: null,
+                date_from: '',
+                date_to: '',
+                gad_issue: '',
+                ccet_code: '',
+                responsible: '',
+                ps_q1: 0,
+                ps_q2: 0,
+                ps_q3: 0,
+                ps_q4: 0,
+                mooe_q1: 0,
+                mooe_q2: 0,
+                mooe_q3: 0,
+                mooe_q4: 0,
+                co_q1: 0,
+                co_q2: 0,
+                co_q3: 0,
+                co_q4: 0,
+                fe_q1: 0,
+                fe_q2: 0,
+                fe_q3: 0,
+                fe_q4: 0,
+            },
 
         };
     },
     computed: {
+        strategyRequestOptions() {
+            const rows = Array.isArray(this.strategy_requests) ? this.strategy_requests : [];
+            const strategies = [];
+
+            rows.forEach((request) => {
+                const list = Array.isArray(request?.strategy) ? request.strategy : [];
+                list.forEach((strategy) => {
+                    if (strategy?.id) {
+                        strategies.push(strategy);
+                    }
+                });
+            });
+
+            return strategies;
+        },
         wordsRemaining() {
             const wordCount = this.form.rationale.trim().split(/\s+/).length;
             var returner = this.maxWords - wordCount;
@@ -4568,6 +4939,7 @@ export default {
         showStrategyRequestModal(){
             this.strategy_request_array = [];
             this.activity_request_array = [];
+            this.strategy_request_files = [];
             this.addStrategyRequestRow();
             this.NewActivityStrategyRequestModalVisible = true;
         },
@@ -4663,6 +5035,115 @@ export default {
 
             this.activity_request_array = flatActivities;
         },
+        formatFileSize(size) {
+            return `${(size / 1024).toFixed(1)} KB`;
+        },
+        handleStrategyRequestFiles(event) {
+            const selectedFiles = Array.from(event.target.files || []);
+            const files = [...this.strategy_request_files.map(file => file.file), ...selectedFiles];
+            const allowedFile = /^(application\/pdf|application\/msword|application\/vnd\.openxmlformats-officedocument\.wordprocessingml\.document|image\/)/i;
+            const totalSize = files.reduce((total, file) => total + file.size, 0);
+
+            if (files.length > 2) {
+                alert('You can upload a maximum of 2 files.');
+            } else if (files.some(file => !allowedFile.test(file.type))) {
+                alert('Only PDF, DOC, DOCX, or image files are allowed.');
+            } else if (totalSize > 1024 * 1024) {
+                alert('The total file size must not exceed 1 MB.');
+            } else {
+                this.strategy_request_files = files.map(file => ({
+                    file,
+                    file_name: file.name,
+                    file_path: '',
+                    file_type: file.type,
+                    file_size: file.size,
+                }));
+            }
+
+            event.target.value = '';
+        },
+        removeStrategyRequestFile(index) {
+            this.strategy_request_files.splice(index, 1);
+        },
+        showStrategyRequestFiles(request) {
+            this.strategyRequestId = request?.id ?? null;
+            this.strategyRequestFiles = Array.isArray(request?.files) ? [...request.files] : [];
+            this.strategyRequestFileToUpload = null;
+            this.strategyRequestFilesModalVisible = true;
+        },
+        closeStrategyRequestFilesModal() {
+            this.strategyRequestFilesModalVisible = false;
+            this.strategyRequestFiles = [];
+            this.strategyRequestId = null;
+            this.strategyRequestFileToUpload = null;
+        },
+        handleAdditionalStrategyRequestFile(event) {
+            const file = event.target.files?.[0] ?? null;
+            const allowedFile = /^(application\/pdf|application\/msword|application\/vnd\.openxmlformats-officedocument\.wordprocessingml\.document|image\/)/i;
+
+            if (file && !allowedFile.test(file.type)) {
+                alert('Only PDF, DOC, DOCX, or image files are allowed.');
+                event.target.value = '';
+                return;
+            }
+
+            if (file && file.size > 1024 * 1024) {
+                alert('The file size must not exceed 1 MB.');
+                event.target.value = '';
+                return;
+            }
+
+            this.strategyRequestFileToUpload = file;
+        },
+        async addStrategyRequestFile() {
+            if (!this.strategyRequestId || !this.strategyRequestFileToUpload) {
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('strategy_activity_request_id', this.strategyRequestId);
+            formData.append('file', this.strategyRequestFileToUpload);
+
+            try {
+                const response = await axios.post('/strategy-and-activity-request/files/store', formData);
+                this.strategyRequestFiles.push(response.data.file);
+                this.strategyRequestFileToUpload = null;
+                if (this.$refs.strategyRequestFileInput) {
+                    this.$refs.strategyRequestFileInput.value = '';
+                }
+            } catch (error) {
+                console.error('Failed to upload strategy request file:', error);
+                alert('Failed to upload the selected file.');
+            }
+        },
+        async deleteStrategyRequestFile(id) {
+            if (!id || !confirm('Are you sure you want to delete this file?')) {
+                return;
+            }
+
+            try {
+                await axios.delete(`/strategy-and-activity-request/files/delete/${id}`);
+                this.strategyRequestFiles = this.strategyRequestFiles.filter(file => file.id !== id);
+            } catch (error) {
+                console.error('Failed to delete strategy request file:', error);
+                alert('Failed to delete the selected file.');
+            }
+        },
+        getStrategyRequestFileUrl(file) {
+            const directory = String(file?.file_path || '')
+                .replace(/\\/g, '/')
+                .replace(/^\/+|\/+$/g, '')
+                .replace(/^public\//, '');
+            const fileName = encodeURIComponent(file?.file_name || '');
+
+            return `/${directory}/${fileName}`;
+        },
+        isStrategyRequestImage(file) {
+            return String(file?.file_type || '').toLowerCase().startsWith('image/');
+        },
+        isStrategyRequestPdf(file) {
+            return String(file?.file_type || '').toLowerCase() === 'application/pdf';
+        },
         saveStrategyRequestArray() {
             // this.strategy_request_array.forEach((strategyRow) => {
             //     if (!Array.isArray(strategyRow.activities)) {
@@ -4677,15 +5158,24 @@ export default {
 
             // this.syncActivityRequestArray();
 
-            this.$inertia.post('/strategy-and-activity-request/create', {
-                strategy_request_array: this.strategy_request_array,
-                activity_request_array: this.activity_request_array,
-                revision_plan_id: this.editData?.id ?? this.editData?.id ?? null,
-                program_and_project_id: this.paps_specific?.id ?? this.paps?.id ?? null,
-                idpaps: this.editData?.idpaps ?? this.paps_specific?.id ?? null,
-                // revision_plan_id: this.editData?.id ?? null,
-                created_by: this.auth?.user?.id ?? null,
-            }, {
+            const formData = new FormData();
+            formData.append('strategy_request_array', JSON.stringify(this.strategy_request_array));
+            formData.append('activity_request_array', JSON.stringify(this.activity_request_array));
+            formData.append('revision_plan_id', this.editData?.id ?? '');
+            formData.append('program_and_project_id', this.paps_specific?.id ?? this.paps?.id ?? '');
+            formData.append('idpaps', this.editData?.idpaps ?? this.paps_specific?.id ?? '');
+            formData.append('created_by', this.auth?.user?.id ?? '');
+            formData.append('strategy_activity_request_files', JSON.stringify(this.strategy_request_files.map(file => ({
+                strategy_activity_request_id: null,
+                file_name: file.file_name,
+                file_path: file.file_path,
+                file_type: file.file_type,
+                file_size: file.file_size,
+            }))));
+            this.strategy_request_files.forEach(file => formData.append('strategy_request_uploads[]', file.file));
+
+            this.$inertia.post('/strategy-and-activity-request/create', formData, {
+                forceFormData: true,
                 preserveScroll: true,
                 preserveState: true,
                 onSuccess: () => {
@@ -4699,6 +5189,157 @@ export default {
         },
         saveStrategiesProjectDesign(){
             alert("strategy Project Design")
+        },
+        updateStrategyActivityRequestField(id, tableName, columnName, newValue) {
+            if (!id || !tableName || !columnName) {
+                return Promise.resolve();
+            }
+
+            return axios.patch('/strategy-and-activity-request/update', {
+                id: id,
+                table_name: tableName,
+                column_name: columnName,
+                new_value: newValue ?? ''
+            }, {
+                preserveScroll: true,
+                preserveState: true
+            })
+            .then((response) => {
+                this.unsaved = false;
+                return response;
+            })
+            .catch((error) => {
+                console.error('Failed to update strategy/activity row:', error);
+                alert('Failed to update the selected row.');
+                return false;
+            });
+        },
+        submitStrategyActivityRequest(request) {
+            return this.updateStrategyActivityRequestField(
+                request.id,
+                'strategy_activity_request',
+                'status',
+                0
+            ).then((response) => {
+                if (response) {
+                    request.status = 0;
+                }
+            });
+        },
+        deleteStrategyActivityRequest(id, tableName) {
+            if (!id || !tableName) {
+                return;
+            }
+
+            const confirmed = confirm('Are you sure you want to delete this record?');
+            if (!confirmed) {
+                return;
+            }
+
+            axios.delete(`/strategy-and-activity-request/delete/${id}/${tableName}`)
+            .then(() => {
+                this.$inertia.reload({ preserveScroll: true });
+            })
+            .catch((error) => {
+                console.error('Failed to delete strategy/activity row:', error);
+                alert('Failed to delete the selected row.');
+            });
+        },
+
+        openStrategyOnlyModal(strategyActivityRequestId) {
+            this.strategy_only_form = {
+                description: '',
+            strategy_activity_request_id: strategyActivityRequestId ?? null,
+                project_id: this.editData?.id ?? this.paps?.id ?? this.paps_specific?.id ?? null,
+                idpaps: this.paps_specific?.id ?? this.paps?.id ?? null,
+                idmfo: this.paps_specific?.idmfo ?? null,
+                FFUNCCOD: this.paps_specific?.FFUNCCOD ?? null,
+                year_period: new Date().getFullYear() + 1,
+            };
+            this.strategyOnlyModalVisible = true;
+        },
+        closeStrategyOnlyModal() {
+            this.strategyOnlyModalVisible = false;
+        },
+        saveStrategyOnly() {
+            if (!this.strategy_only_form.description || !this.strategy_only_form.description.trim()) {
+                alert('Strategy description is required.');
+                return;
+            }
+
+            axios.post('/strategy-and-activity-request/strategy/store', {
+                ...this.strategy_only_form,
+                idpaps: this.editData?.idpaps,
+                project_id: this.editData?.id,
+            })
+                .then(() => {
+                    this.closeStrategyOnlyModal();
+                    this.$inertia.reload({ preserveScroll: true });
+                    alert('Strategy saved successfully.');
+                })
+                .catch((error) => {
+                    console.error('Failed to save strategy:', error);
+                    alert('Failed to save strategy.');
+                });
+        },
+        openActivityOnlyModal(strategyId, strategyDescription) {
+            this.activity_only_form = {
+            strategy_id: strategyId ?? null,
+            parent_strategy_description: strategyDescription ?? '',
+                description: '',
+                project_id: this.editData?.id ?? this.paps?.id ?? this.paps_specific?.id ?? null,
+                date_from: '',
+                date_to: '',
+                gad_issue: '',
+                ccet_code: '',
+                responsible: '',
+                ps_q1: 0,
+                ps_q2: 0,
+                ps_q3: 0,
+                ps_q4: 0,
+                mooe_q1: 0,
+                mooe_q2: 0,
+                mooe_q3: 0,
+                mooe_q4: 0,
+                co_q1: 0,
+                co_q2: 0,
+                co_q3: 0,
+                co_q4: 0,
+                fe_q1: 0,
+                fe_q2: 0,
+                fe_q3: 0,
+                fe_q4: 0,
+            };
+            this.activityOnlyModalVisible = true;
+        },
+        closeActivityOnlyModal() {
+            this.activityOnlyModalVisible = false;
+        },
+        saveActivityOnly() {
+            if (!this.activity_only_form.strategy_id) {
+                alert('Please select a strategy first.');
+                return;
+            }
+
+            if (!this.activity_only_form.description || !this.activity_only_form.description.trim()) {
+                alert('Activity description is required.');
+                return;
+            }
+
+            axios.post('/strategy-and-activity-request/activity/store', {
+                ...this.activity_only_form,
+                idpaps: this.editData?.idpaps,
+                project_id: this.editData?.id,
+            })
+                .then(() => {
+                    this.closeActivityOnlyModal();
+                    this.$inertia.reload({ preserveScroll: true });
+                    alert('Activity saved successfully.');
+                })
+                .catch((error) => {
+                    console.error('Failed to save activity:', error);
+                    alert('Failed to save activity.');
+                });
         },
 
         //IMPLEMENTING TEAM *******************************

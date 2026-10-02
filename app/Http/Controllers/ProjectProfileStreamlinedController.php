@@ -17,6 +17,7 @@ use App\Models\RevisionPlanComment;
 use App\Models\Risk_manangement;
 use App\Models\Signatory;
 use App\Models\Strategy;
+use App\Models\StrategyActivityRequest;
 use App\Models\StrategyProject;
 use App\Models\User;
 use App\Models\TeamPlan;
@@ -233,6 +234,8 @@ class ProjectProfileStreamlinedController extends Controller
         // dd($this->signatories($editData->id));
         // <!-- dd($implementation); -->
         // dd($request->source);
+        // dd($this->getStrategyRequest($editData->id));
+        // dd($editData);
         return inertia($view_returned, [
             "idpaps" => $id,
             "hgdgs" => $hgdg,
@@ -242,6 +245,7 @@ class ProjectProfileStreamlinedController extends Controller
             "office" => $office,
             "all_comments" => $all_comments,
             "editData" => $editData,
+
             // BUDGETARY REQUIREMENTS
             "account_code" => $acc,
             "budget_requirements" => $budgetRequirements,
@@ -270,7 +274,27 @@ class ProjectProfileStreamlinedController extends Controller
                 'can_access_validation' => $this->userCan('can_access_validation', User::class),
                 'can_access_indicators' => $this->userCan('can_access_indicators', User::class)
             ],
+            "strategy_requests" => $this->getStrategyRequest($editData->id)
         ]);
+    }
+
+    public function getStrategyRequest($revision_plan_id){
+        $strategy_return_request = StrategyActivityRequest::with(['strategy',
+                'strategy.strategyProject',
+                'strategy.activity',
+                'strategy.activity.activityProject',
+                'files'
+            ])
+                ->where(function($query) {
+                    $query->where('status', '-1')
+                        ->orWhere('status', '-2')
+                        ->orWhere('status', '0');
+                })
+                ->where('revision_plan_id', $revision_plan_id)
+                ->get();
+
+
+                return $strategy_return_request;
     }
     public function getCurrentAipYear()
     {
@@ -757,7 +781,8 @@ class ProjectProfileStreamlinedController extends Controller
             'activity' => function ($query) use ($paps, $id) {
                 if ($paps->is_strategy_based == 0) {
                     $query->whereHas('activityProject', function ($q) {
-                        $q->where('is_active', '1');
+                        $q->where('is_active', '1')
+                            ->where('status', '1');
                     });
                 }
             },
@@ -775,34 +800,10 @@ class ProjectProfileStreamlinedController extends Controller
         ])->whereHas('strategyProject', function ($query)use ($id) {
             $query->where('project_id', $id)->where('is_active', '1');
         })
-        // ->where(function ($q) use ($id) {
-        //     $q->whereHas('activity', function ($q2) use ($id) {
-        //         $q2->whereHas('activityProject', function ($q3) use ($id) {
-        //             $q3->where('project_id', $id)
-        //             ->where('is_active', '1');
-        //         });
-        //     })
-        //     ->orWhereDoesntHave('activity');
-        // })
-        // ->join('strategy_projects', function ($join) use ($id) {
-        //         $join->on('strategy_projects.strategy_id', '=', 'strategies.id')
-        //             ->where('strategy_projects.project_id', $id)
-        //             ->where('strategy_projects.is_active', '1');
-        //     })
-        // ->whereHas('activity', function($q)use ($id){
-        //     $q->whereHas('activityProject', function($q2)use ($id){
-        //         $q2->where('project_id', $id)->where('is_active','1')->orderBy('activity_id', 'asc');
-        //     });
-        // })
+
+            ->where('status', '1')
             ->where('idpaps', $idpaps)
-            // ->orderBy(
-            //     StrategyProject::select('seq_no')
-            //         ->whereColumn('strategy_projects.strategy_id', 'strategies.id')
-            //         ->where('project_id', $id)
-            //         ->where('is_active', '1')
-            //         ->limit(1),
-            //     'asc'
-            // )
+
             ->get()
             ->map(function ($item) {
                 // dd($item);
@@ -872,6 +873,9 @@ class ProjectProfileStreamlinedController extends Controller
                 })
                 ->sortBy('seq_no')   // 👈 ORDER BY ASC
                 ->values();          // 👈 reset array indexes;
+                if($item->id==2589){
+                    // dd($item->strategyProject, $item->activity);
+                }
                 $ps_q1 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->ps_q1 > 0 ? $item->strategyProject[0]->ps_q1 : 0) : 0;
                 $ps_q2 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->ps_q2 > 0 ? $item->strategyProject[0]->ps_q2 : 0) : 0;
                 $ps_q3 = $item->strategyProject->count() > 0 ? ($item->strategyProject[0]->ps_q3 > 0 ? $item->strategyProject[0]->ps_q3 : 0) : 0;

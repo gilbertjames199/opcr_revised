@@ -704,6 +704,13 @@
                             <span class="title">Rating (For Approval)</span>
                             </Link>
                         </li>
+                        <li v-if="$page.props.auth.user.department_code == '04'">
+                            <Link class="sidebar-link" href="/strategy-and-activity-request"
+                                :class="{ 'active': $page.url === '/strategy-and-activity-request' }">
+                            <span class="title">Strategy and Activity Request</span>
+                            </Link>
+                        </li>
+
                         <!-- <li v-if="$page.props.auth.user.department_code == '04'">
                             <Link class="sidebar-link" href="/review-approve/ratings?source=approved"
                                 :class="{ 'active': $page.url === '/review-approve/ratings?source=approved' }">

@@ -15,7 +15,7 @@ class CreateStrategyActivityRequestsTable extends Migration
     {
         Schema::create('strategy_activity_requests', function (Blueprint $table) {
             $table->id();
-            $table->string('status')->default('0')->comment('1= Approved, 0=Pending');
+            $table->string('status')->default('-1')->comment('1= Approved, 0=Submitted, -1=Saved');
             $table->string('program_and_project_id');
             $table->string('revision_plan_id');
             $table->string('created_by');

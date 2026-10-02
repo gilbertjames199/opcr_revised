@@ -603,14 +603,16 @@ Route::middleware('auth')->group(function () {
     });
     // Strategy and Activities Request
     Route::prefix('/strategy-and-activity-request')->group(function () {
-        // /strategies-and-activities/strategies/create
-        // Route::get('/{idrevplan}', [StrategyProjectController::class, 'index']);
-        // Route::get('/create/{idrevplan}', [StrategyProjectController::class, 'create']);
         Route::post('/create', [StrategyActivityRequestController::class, 'store']);
-        // Route::get('/{id}/edit', [StrategyProjectController::class, 'edit']);
-        // Route::patch('/{id}', [StrategyProjectController::class, 'update']);
-        // Route::delete('/{id}', [StrategyProjectController::class, 'destroy']);
-        // Route::get('/refresh/data/now/{idrevplan}', [StrategyProjectController::class, 'refresh']);
+        Route::post('/strategy/store', [StrategyActivityRequestController::class, 'storeStrategy']);
+        Route::post('/activity/store', [StrategyActivityRequestController::class, 'storeActivity']);
+        Route::post('/files/store', [StrategyActivityRequestController::class, 'storeRequestFile']);
+        Route::delete('/files/delete/{id}', [StrategyActivityRequestController::class, 'deleteRequestFile']);
+        Route::patch('/update', [StrategyActivityRequestController::class, 'updateField']);
+        Route::patch('/update/status', [StrategyActivityRequestController::class, 'updateFieldApproveReturn']);
+        Route::delete('/delete/{id}/{table_name}', [StrategyActivityRequestController::class, 'deleteRecord']);
+        // Index
+        Route::get('/', [StrategyActivityRequestController::class, 'index']);
     });
     //Strategies and Projects
     Route::prefix('/strategies-project/r')->group(function () {
