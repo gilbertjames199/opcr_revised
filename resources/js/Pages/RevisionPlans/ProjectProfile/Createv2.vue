@@ -667,16 +667,23 @@
                         </div>
                         <!-- v-if="editData.type === 'p'" -->
                         <p >
-                            <button class="btn btn-success btn-sm text-white"
-                                v-if="editData.type === 'p'"
-                                @click="showStrategyModal()">
-                                    Add Strategies
-                            </button>
-                            <button class="btn btn-success btn-sm text-white"
-                                v-if="editData.type === 'd'"
-                                @click="showStrategyRequestModal()">
-                                    Add Strategies
-                            </button>
+                            <span v-if="editData.type === 'p'">
+                                <button class="btn btn-success btn-sm text-white"
+
+                                    @click="showStrategyModal()">
+                                        Add Strategies
+                                </button>
+                            </span>
+                            <span v-else>
+                                <span v-if="strategy_requests && strategy_requests.length"></span>
+                                <span v-else>
+                                    <button class="btn btn-success btn-sm text-white"
+                                        @click="showStrategyRequestModal()">
+                                            Add Strategies
+                                    </button>
+                                </span>
+                            </span>
+
                         </p>
                         <!-- class="table-responsive" style="max-height: 500px; overflow-y: auto;" -->
                         <div style="overflow-x: auto; width: 100%;">
@@ -5215,6 +5222,13 @@ export default {
             });
         },
         submitStrategyActivityRequest(request) {
+            const confirmed = window.confirm(
+                'Are you sure you want to submit this strategy activity request?'
+            );
+
+            if (!confirmed) {
+                return Promise.resolve(false);
+            }
             return this.updateStrategyActivityRequestField(
                 request.id,
                 'strategy_activity_request',

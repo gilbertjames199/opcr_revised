@@ -88,14 +88,22 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
       return String((file === null || file === void 0 ? void 0 : file.file_type) || '').toLowerCase() === 'application/pdf';
     },
     submitStrategyActivityRequest: function submitStrategyActivityRequest(request, status) {
+      if (status === '1') {
+        stat = 'approve';
+      } else if (status === '-2') {
+        stat = 'return';
+      }
+      var confirmed = window.confirm('Are you sure you want to ' + stat + ' this strategy activity request?');
+      if (!confirmed) {
+        return Promise.resolve(false);
+      }
       return this.updateStrategyActivityRequestField(request.id, 'strategy_activity_requests', 'status', status).then(function (response) {
-        if (response) {
-          request.status = status;
-        }
+        // if (response) {
+        //     request.status = status;
+        // }
       });
     },
     updateStrategyActivityRequestField: function updateStrategyActivityRequestField(id, tableName, columnName, newValue) {
-      var _this = this;
       if (!id || !tableName || !columnName) {
         return Promise.resolve();
       }
@@ -108,12 +116,12 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
         preserveScroll: true,
         preserveState: true
       }).then(function (response) {
-        _this.unsaved = false;
-        return response;
+        // this.unsaved = false;
+        // return response;
       })["catch"](function (error) {
-        console.error('Failed to update strategy/activity row:', error);
-        alert('Failed to update the selected row.');
-        return false;
+        // console.error('Failed to update strategy/activity row:', error);
+        // alert('Failed to update the selected row.');
+        // return false;
       });
     } // showCreate() {
     //     this.$inertia.get(

@@ -354,15 +354,27 @@ export default {
             return String(file?.file_type || '').toLowerCase() === 'application/pdf';
         },
         submitStrategyActivityRequest(request, status) {
+            if(status==='1'){
+                stat = 'approve';
+            }else if(status==='-2'){
+                stat = 'return';
+            }
+            const confirmed = window.confirm(
+                'Are you sure you want to '+stat+' this strategy activity request?'
+            );
+
+            if (!confirmed) {
+                return Promise.resolve(false);
+            }
             return this.updateStrategyActivityRequestField(
                 request.id,
                 'strategy_activity_requests',
                 'status',
                 status
             ).then((response) => {
-                if (response) {
-                    request.status = status;
-                }
+                // if (response) {
+                //     request.status = status;
+                // }
             });
         },
         updateStrategyActivityRequestField(id, tableName, columnName, newValue) {
@@ -380,13 +392,13 @@ export default {
                 preserveState: true
             })
             .then((response) => {
-                this.unsaved = false;
-                return response;
+                // this.unsaved = false;
+                // return response;
             })
             .catch((error) => {
-                console.error('Failed to update strategy/activity row:', error);
-                alert('Failed to update the selected row.');
-                return false;
+                // console.error('Failed to update strategy/activity row:', error);
+                // alert('Failed to update the selected row.');
+                // return false;
             });
         },
         // showCreate() {
