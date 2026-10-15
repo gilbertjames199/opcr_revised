@@ -41,35 +41,35 @@ class ProjectDesignController extends Controller
         }
 
         // Check if budget prep is ready
-        $response = Http::get(
-            'https://dev.davaodeoro.gov.ph/api/reports/lb2/approved',
-            [
-                'revision_plan_id' => $id,
-            ]
-        );
+        // $response = Http::get(
+        //     'https://dev.davaodeoro.gov.ph/api/reports/lb2/approved',
+        //     [
+        //         'revision_plan_id' => $id,
+        //     ]
+        // );
         // dd($response->json());
-        if ($response->successful()) {
-            $data = $response->json();
+        // if ($response->successful()) {
+        //     $data = $response->json();
 
-            $projects = $data['projects'] ?? [];
+        //     $projects = $data['projects'] ?? [];
 
-            $categories = collect($projects)
-                ->flatMap(function ($project) {
-                    return $project['categories'] ?? [];
-                });
+        //     $categories = collect($projects)
+        //         ->flatMap(function ($project) {
+        //             return $project['categories'] ?? [];
+        //         });
 
-            if ($categories->isEmpty()) {
-                $msg= 'Budget Prep not ready';
-                return redirect()->back()->with('error', $msg);
-            }
+        //     if ($categories->isEmpty()) {
+        //         $msg= 'Budget Prep not ready';
+        //         return redirect()->back()->with('error', $msg);
+        //     }
 
-            // Budget Prep is ready
-            // Continue processing $data here.
+        //     // Budget Prep is ready
+        //     // Continue processing $data here.
 
-        } else {
-            $msg = 'Failed to retrieve Budget Prep data';
-            return redirect()->back()->with('error', $msg);
-        }
+        // } else {
+        //     $msg = 'Failed to retrieve Budget Prep data';
+        //     return redirect()->back()->with('error', $msg);
+        // }
 
         // 2️⃣ Proceed with cloning
         $result = $this->cloneRevisionPlan($id, $request->input('type'));
