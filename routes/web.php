@@ -113,6 +113,7 @@ use App\Http\Controllers\StrategyProjectController;
 use App\Http\Controllers\TimeRangeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserEmployeesController;
+use App\Http\Controllers\BudgetPrepDetailController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\AnnualInvestmentPlan;
@@ -449,6 +450,11 @@ Route::middleware('auth')->group(function () {
     // Project Profile Trackings
     Route::prefix('/project-profile-tracking')->group(function () {
         Route::get('/', [ProjectProfileTrackingController::class, 'tracking']);
+    });
+
+    // Sync Budget Prep
+    Route::prefix('/budget_prep')->group(function(){
+        Route::post('/sync/{id}', [BudgetPrepDetailController::class,'syncBudgetPreparationData']);
     });
     //Revision Plan
     Route::prefix('/revision')->group(function () {

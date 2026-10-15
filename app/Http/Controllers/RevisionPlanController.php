@@ -278,6 +278,9 @@ class RevisionPlanController extends Controller
             // ->where('revision_plans.idmfo', '0')
             // ->where('revision_plans.idmfo', '0')
             ->where('revision_plans.scope', 'GAS')
+            ->when($request->search, function ($query) use ($request) {
+                $query->where('project_title', 'LIKE', '%' . $request->search . '%');
+            })
             ->when($year_filtering, function ($query) use ($year_filtering) {
                 $query->where('revision_plans.date_start', $year_filtering);
             })
@@ -286,6 +289,7 @@ class RevisionPlanController extends Controller
                 // $budgetary_requirement = BudgetRequirement::where('revision_plan_id', $item->id)
                 //     ->sum('amount');
                 $budgetary_requirement = 0;
+                $budget_ceiling = 0;
                 $budget_ps_total   = 0;
                 $budget_mooe_total = 0;
                 $budget_co_total   = 0;
@@ -377,6 +381,15 @@ class RevisionPlanController extends Controller
                 // }else{
                 //     dd("incorrect");
                 // }
+                $reference_profile_id = $item->reference_profile_id;
+
+                if ($item->type == 'd') {
+                    $budget_ceiling = BudgetRequirement::where('revision_plan_id', $reference_profile_id)
+                        ->sum('amount');
+                } else {
+                    $budget_ceiling = $budgetary_requirement;
+                }
+                // dd($budget_ceiling);
                 return [
                     'FFUNCTION' => $item->FFUNCTION,
                     'id' => $item->id,
@@ -400,6 +413,7 @@ class RevisionPlanController extends Controller
                     'return_request_status' => $item->return_request_status,
                     // 'year'=>$currentYear
                     'year' => $item->year_period,
+                    'budget_ceiling' => $budget_ceiling,
                     'gad_status' => $item->gad_status
                 ];
             });
@@ -538,6 +552,7 @@ class RevisionPlanController extends Controller
                         $total->sum('co_q1') + $total->sum('co_q2') + $total->sum('co_q3') + $total->sum('co_q4') +
                         $total->sum('fe_q1') + $total->sum('fe_q2') + $total->sum('fe_q3') + $total->sum('fe_q4');
                 }
+                $budget_ceiling = $budgetary_requirement;
                 return [
                     // 'FFUNCTION' => $item->FFUNCTION,
                     'FFUNCTION' => optional(optional(optional($item)->paps)->office)->FFUNCTION,
@@ -551,7 +566,9 @@ class RevisionPlanController extends Controller
                     'status' => $item->status,
                     'number_of_clones' => $item->clonedVersions->count(),
                     'year' => $year,
-                    'gad_status' => $item->gad_status
+                    'gad_status' => $item->gad_status,
+                    'budget_ceiling' => $budget_ceiling,
+                    'created_at' => $item->created_at,
                     // 'paps'=>$item->paps
                 ];
             });
@@ -559,7 +576,14 @@ class RevisionPlanController extends Controller
     public function getDirect(Request $request, $dept_id, $popsp_agency, $budget_controller, $year_filtering)
     {
         // dd($dept_id);
-        $data = RevisionPlan::with(['paps', 'paps.sharedProgramAndProjects', 'paps.office', 'clonedVersions', 'projectProfileTrackings'])
+        $data = RevisionPlan::with([
+                'paps',
+                'paps.sharedProgramAndProjects',
+                'paps.office',
+                'clonedVersions',
+                'projectProfileTrackings',
+                'budgetPrepDetails'
+            ])
             ->whereHas('paps', function ($query) use ($dept_id, $popsp_agency) {
                 $query->where('department_code', $dept_id)
                     ->orWhereHas('sharedProgramAndProjects', function ($q) use ($dept_id, $popsp_agency) {
@@ -664,6 +688,7 @@ class RevisionPlanController extends Controller
             ->get()
             ->map(function ($item) use ($budget_controller) {
                 $year = Carbon::parse($item->date_start)->year;
+
                 // COUNT THE COMMENTS
                 if (!empty($item) && !empty($item->projectProfileTrackings)) {
 
@@ -682,12 +707,18 @@ class RevisionPlanController extends Controller
                 // dd($latestSubmit);
 
                 // dd($latestSubmit);
-                $revision_comment = RevisionPlanComment::where('table_row_id', $item->id)->where('table_name', 'revision_plans')->count();
+                // $revision_comment = RevisionPlanComment::where('table_row_id', $item->id)->where('table_name', 'revision_plans')->count();
                 // dd($revision_comment);
-
+                // dd($item);
                 // BUDGERTARY REQUIREMENTs
-                $budgetary_requirement = BudgetRequirement::where('revision_plan_id', $item->id)
-                    ->sum('amount');
+                if ($item->type === 'd') {
+                    $budgetary_requirement = $item->budgetPrepDetails->sum('amount');
+                    $budget_prep_count = $item->budgetPrepDetails->count();
+                } else{
+                    $budgetary_requirement = BudgetRequirement::where('revision_plan_id', $item->id)
+                                ->sum('amount');
+                }
+                
 
                 $imp_amount = 0.00;
                 // DB::table('targets')
@@ -718,6 +749,14 @@ class RevisionPlanController extends Controller
                 // if($item->id==91){
                 //     dd($item);
                 // }
+                $reference_profile_id = $item->reference_profile_id;
+
+                if ($item->type == 'd') {
+                    $budget_ceiling = BudgetRequirement::where('revision_plan_id', $reference_profile_id)
+                        ->sum('amount');
+                } else {
+                    $budget_ceiling = $budgetary_requirement;
+                }
                 return [
                     // 'FFUNCTION' => $item->FFUNCTION,
                     'FFUNCTION' => optional(optional(optional($item)->paps)->office)->FFUNCTION,
@@ -727,6 +766,7 @@ class RevisionPlanController extends Controller
                     'type' => $item->type,
                     'version' => $item->version,
                     'budget_sum' => $budgetary_requirement,
+                    'budget_prep_count' => $budget_prep_count ?? 0,
                     'imp_amount' => $imp_amount,
                     'status' => $item->status,
                     'number_of_clones_design' => $item->clonedVersions->where('type', 'd')->count(),
@@ -734,6 +774,7 @@ class RevisionPlanController extends Controller
                     'return_request_status' => $item->return_request_status,
                     'year' => $year,
                     'gad_status' => $item->gad_status,
+                    'budget_ceiling' => $budget_ceiling,
                     'created_at' => $latestSubmit
                     // 'paps'=>$item->paps
                 ];
@@ -884,6 +925,7 @@ class RevisionPlanController extends Controller
                 // if ($item->id == 201) {
                 //     dd($item);
                 // }
+                $budget_ceiling = $budgetary_requirement;
                 return [
                     // 'FFUNCTION' => $item->FFUNCTION,
                     'FFUNCTION' => optional(optional(optional($item)->paps)->office)->FFUNCTION,
@@ -897,6 +939,7 @@ class RevisionPlanController extends Controller
                     'status' => $item->status,
                     'number_of_clones' => $item->clonedVersions->count(),
                     'return_request_status' => $item->return_request_status,
+                    'budget_ceiling' => $budget_ceiling,
                     'year' => $year
                     // 'paps'=>$item->paps
                 ];

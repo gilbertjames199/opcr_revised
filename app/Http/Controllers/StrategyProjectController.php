@@ -52,7 +52,8 @@ class StrategyProjectController extends Controller
                 'activity.activityProject' => function ($q) use ($request) {
                     $q->where('project_id', $request->idrevplan);
                     // ->where('is_active', '1');
-                }
+                },
+                'activity.activityProject.referenceActivityProject'
             ])
                 // ->where('idpaps', $revision_plan->idpaps)
                 ->whereHas('strategyProject', function ($query) use ($request) {
@@ -226,6 +227,7 @@ class StrategyProjectController extends Controller
                         "finance_visible" => 0,
                         "is_active" => $item->strategyProject->count() > 0 ? $item->strategyProject[0]->is_active : 0,
                         "activity_visible" => $show_act,
+                        // "reference_activity_project_id"=> $item->activity->referenceProjectId
                         // "expected_outcome" => $item->expected_outcome,
                         // "expected_output" => $item->expected_output,
                     ];

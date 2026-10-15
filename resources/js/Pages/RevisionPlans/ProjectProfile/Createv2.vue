@@ -3,7 +3,7 @@
         <title>Edit Project Profile</title>
     </Head>
     <div class="relative row gap-20 masonry pos-r">
-        <h4>v2 </h4>
+        <h4>v2</h4>
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>{{ pageTitle }}
                 <span v-if="editData.type === 'p'">Profile</span>
@@ -33,14 +33,12 @@
         {{ selPaps }} -->
         <!-- {{editData}} -->
         <div class="col-md-12">
-
                 <input type="hidden" required>
                 <div class="d-none">
                     <label for="">ID</label>
                     <input type="text" v-model="form.id" class="form-control" autocomplete="chrome-off">
                     <div class="fs-6 c-red-500" v-if="form.errors.id">{{ form.errors.idooe }}</div>
                 </div>
-
                 <div class="d-flex justify-content-center">
                     <img :src="getImagePath('logo.png')" alt="" class="img-fluid" style="width:100px; height:100px">
 
@@ -61,7 +59,6 @@
                         <div v-else>PROJECT DESIGN</div>
                     </h4>
                 </div>
-
                 <div class="bgc-white p-20 bd">
                     <section id="revision_plans">
                         <h3>I.&nbsp;&nbsp;&nbsp;
@@ -688,8 +685,6 @@
                         <!-- class="table-responsive" style="max-height: 500px; overflow-y: auto;" -->
                         <div style="overflow-x: auto; width: 100%;">
                             <p><em>Use the <strong>numeric SEQ#</strong> to order strategies and activities from lowest to highest. After making changes, click outside the field and refresh the page (<strong>Ctrl+R</strong>) to apply them.</em></p>
-
-
                             <table class="table table-hover table-bordered border-dark">
                                 <thead >
                                     <tr class="bg-secondary text-white" >
@@ -773,6 +768,7 @@
                                             <td><span v-if="paps.is_strategy_based==1">{{ dat.ccet_code }}</span></td>
                                             <td><span v-if="paps.is_strategy_based==1">{{ dat.responsible }}</span> </td>
                                         </tr>
+                                        <!-- STRATEGIES (WORKPLAN NOT BASED ON STRATEGIES) -->
                                         <tr :id="dat.strategy_id + '_strategy_projects_strategy'" style="background-color:lightgrey; font-weight: bold;" v-if="paps.is_strategy_based==0">
                                             <!-- SEQUENCE NUMBER -->
                                             <td>
@@ -1063,28 +1059,28 @@
                                                                 type="number"
                                                                 v-model="act.ps_q1"
                                                                 @input="setUnsaved(true)"
-                                                                @change="updateRevisionPlans('activity_projects', 'ps_q1', act.activity_id, act.ps_q1)"
+                                                                @change="editData.type === 'd' ? updateImplementationAmount('activity_projects', 'ps_q1', act.activity_id, act.ps_q1, act) : updateRevisionPlans('activity_projects', 'ps_q1', act.activity_id, act.ps_q1)"
                                                             />
                                                         </p>
                                                         <p>Q2:<input class="form-control"
                                                                 type="number"
                                                                 v-model="act.ps_q2"
                                                                 @input="setUnsaved(true)"
-                                                                @change="updateRevisionPlans('activity_projects', 'ps_q2', act.activity_id, act.ps_q2)"
+                                                                @change="editData.type === 'd' ? updateImplementationAmount('activity_projects', 'ps_q2', act.activity_id, act.ps_q2, act) : updateRevisionPlans('activity_projects', 'ps_q2', act.activity_id, act.ps_q2)"
                                                             />
                                                         </p>
                                                         <p>Q3:<input class="form-control"
                                                                 type="number"
                                                                 v-model="act.ps_q3"
                                                                 @input="setUnsaved(true)"
-                                                                @change="updateRevisionPlans('activity_projects', 'ps_q3', act.activity_id, act.ps_q3)"
+                                                                @change="editData.type === 'd' ? updateImplementationAmount('activity_projects', 'ps_q3', act.activity_id, act.ps_q3, act) : updateRevisionPlans('activity_projects', 'ps_q3', act.activity_id, act.ps_q3)"
                                                             />
                                                         </p>
                                                         <p>Q4:<input class="form-control"
                                                                 type="number"
                                                                 v-model="act.ps_q4"
                                                                 @input="setUnsaved(true)"
-                                                                @change="updateRevisionPlans('activity_projects', 'ps_q4', act.activity_id, act.ps_q4)"
+                                                                @change="editData.type === 'd' ? updateImplementationAmount('activity_projects', 'ps_q4', act.activity_id, act.ps_q4, act) : updateRevisionPlans('activity_projects', 'ps_q4', act.activity_id, act.ps_q4)"
                                                             />
                                                         </p>
                                                         {{ format_number_conv((parseFloat(act.ps_q1)+parseFloat(act.ps_q2)+parseFloat(act.ps_q3)+parseFloat(act.ps_q4)),2,true) }}
@@ -1106,28 +1102,28 @@
                                                                 type="number"
                                                                 v-model="act.mooe_q1"
                                                                 @input="setUnsaved(true)"
-                                                                @change="updateRevisionPlans('activity_projects', 'mooe_q1', act.activity_id, act.mooe_q1)"
+                                                                @change="editData.type === 'd' ? updateImplementationAmount('activity_projects', 'mooe_q1', act.activity_id, act.mooe_q1, act) : updateRevisionPlans('activity_projects', 'mooe_q1', act.activity_id, act.mooe_q1)"
                                                             />
                                                         </p>
                                                         <p>Q2:<input class="form-control"
                                                                 type="number"
                                                                 v-model="act.mooe_q2"
                                                                 @input="setUnsaved(true)"
-                                                                @change="updateRevisionPlans('activity_projects', 'mooe_q2', act.activity_id, act.mooe_q2)"
+                                                                @change="editData.type === 'd' ? updateImplementationAmount('activity_projects', 'mooe_q2', act.activity_id, act.mooe_q2, act) : updateRevisionPlans('activity_projects', 'mooe_q2', act.activity_id, act.mooe_q2)"
                                                             />
                                                         </p>
                                                         <p>Q3:<input class="form-control"
                                                                 type="number"
                                                                 v-model="act.mooe_q3"
                                                                 @input="setUnsaved(true)"
-                                                                @change="updateRevisionPlans('activity_projects', 'mooe_q3', act.activity_id, act.mooe_q3)"
+                                                                @change="editData.type === 'd' ? updateImplementationAmount('activity_projects', 'mooe_q3', act.activity_id, act.mooe_q3, act) : updateRevisionPlans('activity_projects', 'mooe_q3', act.activity_id, act.mooe_q3)"
                                                             />
                                                         </p>
                                                         <p>Q4:<input class="form-control"
                                                                 type="number"
                                                                 v-model="act.mooe_q4"
                                                                 @input="setUnsaved(true)"
-                                                                @change="updateRevisionPlans('activity_projects', 'mooe_q4', act.activity_id, act.mooe_q4)"
+                                                                @change="editData.type === 'd' ? updateImplementationAmount('activity_projects', 'mooe_q4', act.activity_id, act.mooe_q4, act) : updateRevisionPlans('activity_projects', 'mooe_q4', act.activity_id, act.mooe_q4)"
                                                             />
                                                         </p>
                                                         {{ format_number_conv((parseFloat(act.mooe_q1)+parseFloat(act.mooe_q2)+parseFloat(act.mooe_q3)+parseFloat(act.mooe_q4)),2,true) }}
@@ -1150,28 +1146,28 @@
                                                                 type="number"
                                                                 v-model="act.fe_q1"
                                                                 @input="setUnsaved(true)"
-                                                                @change="updateRevisionPlans('activity_projects', 'fe_q1', act.activity_id, act.fe_q1)"
+                                                                @change="editData.type === 'd' ? updateImplementationAmount('activity_projects', 'fe_q1', act.activity_id, act.fe_q1, act) : updateRevisionPlans('activity_projects', 'fe_q1', act.activity_id, act.fe_q1)"
                                                             />
                                                         </p>
                                                         <p>Q2:<input class="form-control"
                                                                 type="number"
                                                                 v-model="act.fe_q2"
                                                                 @input="setUnsaved(true)"
-                                                                @change="updateRevisionPlans('activity_projects', 'fe_q2', act.activity_id, act.fe_q2)"
+                                                                @change="editData.type === 'd' ? updateImplementationAmount('activity_projects', 'fe_q2', act.activity_id, act.fe_q2, act) : updateRevisionPlans('activity_projects', 'fe_q2', act.activity_id, act.fe_q2)"
                                                             />
                                                         </p>
                                                         <p>Q3:<input class="form-control"
                                                                 type="number"
                                                                 v-model="act.fe_q3"
                                                                 @input="setUnsaved(true)"
-                                                                @change="updateRevisionPlans('activity_projects', 'fe_q3', act.activity_id, act.fe_q3)"
+                                                                @change="editData.type === 'd' ? updateImplementationAmount('activity_projects', 'fe_q3', act.activity_id, act.fe_q3, act) : updateRevisionPlans('activity_projects', 'fe_q3', act.activity_id, act.fe_q3)"
                                                             />
                                                         </p>
                                                         <p>Q4:<input class="form-control"
                                                                 type="number"
                                                                 v-model="act.fe_q4"
                                                                 @input="setUnsaved(true)"
-                                                                @change="updateRevisionPlans('activity_projects', 'fe_q4', act.activity_id, act.fe_q4)"
+                                                                @change="editData.type === 'd' ? updateImplementationAmount('activity_projects', 'fe_q4', act.activity_id, act.fe_q4, act) : updateRevisionPlans('activity_projects', 'fe_q4', act.activity_id, act.fe_q4)"
                                                             />
                                                         </p>
                                                         {{ format_number_conv((parseFloat(act.fe_q1)+parseFloat(act.fe_q2)+parseFloat(act.fe_q3)+parseFloat(act.fe_q4)),2,true) }}
@@ -1192,28 +1188,28 @@
                                                                     type="number"
                                                                     v-model="act.co_q1"
                                                                     @input="setUnsaved(true)"
-                                                                    @change="updateRevisionPlans('activity_projects', 'co_q1', act.activity_id, act.co_q1)"
+                                                                    @change="editData.type === 'd' ? updateImplementationAmount('activity_projects', 'co_q1', act.activity_id, act.co_q1, act) : updateRevisionPlans('activity_projects', 'co_q1', act.activity_id, act.co_q1)"
                                                                 />
                                                             </p>
                                                             <p>Q2:<input class="form-control"
                                                                     type="number"
                                                                     v-model="act.co_q2"
                                                                     @input="setUnsaved(true)"
-                                                                    @change="updateRevisionPlans('activity_projects', 'co_q2', act.activity_id, act.co_q2)"
+                                                                    @change="editData.type === 'd' ? updateImplementationAmount('activity_projects', 'co_q2', act.activity_id, act.co_q2, act) : updateRevisionPlans('activity_projects', 'co_q2', act.activity_id, act.co_q2)"
                                                                 />
                                                             </p>
                                                             <p>Q3:<input class="form-control"
                                                                     type="number"
                                                                     v-model="act.co_q3"
                                                                     @input="setUnsaved(true)"
-                                                                    @change="updateRevisionPlans('activity_projects', 'co_q3', act.activity_id, act.co_q3)"
+                                                                    @change="editData.type === 'd' ? updateImplementationAmount('activity_projects', 'co_q3', act.activity_id, act.co_q3, act) : updateRevisionPlans('activity_projects', 'co_q3', act.activity_id, act.co_q3)"
                                                                 />
                                                             </p>
                                                             <p>Q4:<input class="form-control"
                                                                     type="number"
                                                                     v-model="act.co_q4"
                                                                     @input="setUnsaved(true)"
-                                                                    @change="updateRevisionPlans('activity_projects', 'co_q4', act.activity_id, act.co_q4)"
+                                                                    @change="editData.type === 'd' ? updateImplementationAmount('activity_projects', 'co_q4', act.activity_id, act.co_q4, act) : updateRevisionPlans('activity_projects', 'co_q4', act.activity_id, act.co_q4)"
                                                                 />
                                                             </p>
                                                             {{ format_number_conv((parseFloat(act.co_q1)+parseFloat(act.co_q2)+parseFloat(act.co_q3)+parseFloat(act.co_q4)),2,true) }}
@@ -1579,8 +1575,10 @@
                             ? `/budget/${paps.id}`:null">
                                 Estimated Cost/Budgetary Requirements
                             </Link>
+                            <!-- editData.type: {{ editData.type }} -->
                         </h3>
-                        <table class="table table-bordered">
+                        <!-- v-if="editData.type==='p'" -->
+                        <table class="table table-bordered" >
                             <thead>
                                 <tr>
                                     <th colspan="3">Particulars</th>
@@ -1630,7 +1628,9 @@
                                     <!-- DATA ROWS -->
                                      <tr v-for="row in rows" :key="row.id">
                                         <td></td>
-                                        <td></td>
+                                        <td>
+                                            <!-- {{row}} -->
+                                        </td>
                                         <!-- BUDGET PARTICULARS -->
                                         <td
                                             :class="{
@@ -1702,7 +1702,17 @@
                                             }"
                                             :id="row.id + '_budget_requirements_amount'"
                                         >
-                                            <textarea
+                                            <!-- amount -->
+                                             <!-- {{editData.type}} -->
+                                            <textarea v-if="editData.type=='d'"
+                                                class="form-control transparent-bg "
+                                                type="text"
+                                                v-model="row.amount"
+                                                @input="setUnsaved(true)"
+                                                @change="updateRevisionPlansBudgetAmount('budget_requirements', 'amount', row.id, row.amount, row)">
+                                                    {{ row.amount }}
+                                            </textarea>
+                                            <textarea v-if="editData.type=='p'"
                                                 class="form-control transparent-bg "
                                                 type="text"
                                                 v-model="row.amount"
@@ -1831,6 +1841,111 @@
                                 </tr>
                             </tfoot>
                         </table>
+
+                        <table class="table table-hover table-bordered border-dark" v-if="editData.type==='design'">
+                            <thead>
+                                <tr>
+                                    <th colspan="3">Particulars</th>
+                                    <th>Account Code</th>
+                                    <th v-if="editData.type == 'sip'">SIP Number</th>
+                                    <th>Amount</th>
+                                    <th>Source</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <template
+                                    v-for="project in (budgetaryRequirementsProjectDesign.projects || [])"
+                                    :key="project.id"
+                                >
+                                    <template
+                                        v-for="category in (project.categories || [])"
+                                        :key="project.id + '-' + category.category"
+                                    >
+                                        <!-- Category heading -->
+                                        <tr class="table-secondary">
+                                            <td
+                                                :colspan="editData.type == 'sip' ? 8 : 7"
+                                                class="fw-bold"
+                                            >
+                                                {{ category.category_label }}
+                                            </td>
+                                        </tr>
+
+                                        <!-- Rows under the category -->
+                                        <tr
+                                            v-for="(row, rowIndex) in (category.rows || [])"
+                                            :key="project.id + '-' + category.category + '-' + rowIndex"
+                                        >
+                                            <td colspan="3">
+                                                {{ row.object_of_expenditure }}
+                                            </td>
+
+                                            <td>{{ row.account_code }}</td>
+
+                                            <td v-if="editData.type == 'sip'">
+                                                -
+                                            </td>
+
+                                            <td class="text-end">
+                                                {{ Number(row.budget_year || 0).toLocaleString('en-PH', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                }) }}
+                                            </td>
+
+                                            <td>General Fund</td>
+
+                                            <td>-</td>
+                                        </tr>
+
+                                        <!-- Category subtotal -->
+                                        <tr class="fw-bold">
+                                            <td
+                                                :colspan="editData.type == 'sip' ? 5 : 4"
+                                                class="text-end"
+                                            >
+                                                {{ category.category_label }} Subtotal
+                                            </td>
+
+                                            <td class="text-end">
+                                                {{ Number(
+                                                    category.rows?.reduce((total, row) => {
+                                                        return total + (parseFloat(row.budget_year) || 0);
+                                                    }, 0) || 0
+                                                ).toLocaleString('en-PH', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                }) }}
+                                            </td>
+
+                                            <td :colspan="editData.type == 'sip' ? 2 : 1"></td>
+                                        </tr>
+                                    </template>
+                                </template>
+
+                                <!-- Overall Budget Preparation Total -->
+                                <tr class="table-primary fw-bold">
+                                    <td
+                                        :colspan="editData.type == 'sip' ? 5 : 4"
+                                        class="text-end"
+                                    >
+                                        Budget Prep Total
+                                    </td>
+
+                                    <td class="text-end">
+                                        {{ Number(budget_prep_total || 0).toLocaleString('en-PH', {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                        }) }}
+                                    </td>
+
+                                    <td :colspan="editData.type == 'sip' ? 2 : 1"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- {{ budgetaryRequirementsProjectDesign}} -->
                     </div>
                     <!--VI. IMPLEMENTING TEAM************************************************** -->
                     <h3 id='implementing_team'>
@@ -1883,7 +1998,8 @@
                                                 'text-danger': has_comment('Team Members','Name',team_member.name,'name','team_plans', team_member, team_member.comments)
                                             }"
                                         :id="team_member.id + '_team_plans_name'"
-                                    >{{ team_member.name }}
+                                    >
+                                        {{ team_member.name }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Team Plan','Name',team_member.name,'name','team_plans', team_member, team_member.comments)">*
                                         </button>
@@ -1892,9 +2008,9 @@
                                         </button>
                                     </td>
                                     <!-- Gender -->
-                                     <td>
+                                    <td>
                                         {{ team_member.gender }}
-                                     </td>
+                                    </td>
                                     <!-- Position -->
                                     <td :id="team_member.id + '_team_plans_position'"
                                         :class="{
@@ -1923,7 +2039,6 @@
                                         </button>
                                     </td>
                                     <!-- Competency -->
-
                                     <td :class="{
                                                 'text-danger': has_comment('Team Plan','with_gad_training',team_member.with_gad_training,'with_gad_training','team_plans', team_member, team_member.comments)
                                             }" :id="team_member.id + '_team_plans_with_gad_training'" >
@@ -2012,12 +2127,12 @@
                             <tbody>
                                 <tr v-for="monitor in monitoring_and_avaluation">
                                     <!-- M&E Evaluation Mechanism Tool -->
-                                    <td :id="monitor.id + '_monitoring_and_evaluations_evaluation_mechanism_tool'">
+                                    <td style="padding: 0;" :id="monitor.id + '_monitoring_and_evaluations_evaluation_mechanism_tool'">
                                         <textarea
                                             :class="{
                                                 'text-danger': has_comment('Monitoring and Evaluation','Evaluation Mechanism Tool',monitor.evaluation_mechanism_tool,'evaluation_mechanism_tool','monitoring_and_evaluations', monitor, monitor.comments)
                                             }"
-
+                                            style="padding: 0;"
                                             class="form-control transparent-bg "
                                             type="text"
                                             v-model="monitor.evaluation_mechanism_tool"
@@ -2033,7 +2148,7 @@
                                         </button>
                                     </td>
                                     <!-- M&E OPR and their roles -->
-                                    <td
+                                    <td style="padding: 0;"
                                     :id="monitor.id + '_monitoring_and_evaluations_opr'"
                                     >
                                         <textarea
@@ -2055,7 +2170,7 @@
                                         </button>
                                     </td>
                                     <!-- M&E Target Beneficiaries -->
-                                    <td :class="{
+                                    <td style="padding: 0;" :class="{
                                                 'text-danger': has_comment('Monitoring and Evaluation','Target Beneficiaries',monitor.target_beneficiaries,'target_beneficiaries','monitoring_and_evaluations', monitor, monitor.comments)
                                     }"
                                     :id="monitor.id + '_monitoring_and_evaluations_target_beneficiaries'"
@@ -2140,7 +2255,7 @@
                             <tbody>
                                 <tr v-for="risk in risk_manangement">
                                     <!-- Risk Management -Possible Risks -->
-                                    <td :class="{
+                                    <td style="padding: 0;" :class="{
                                         'text-danger': has_comment('Risk Management','Possible Risks',risk.possible_risk,'possible_risk','risk_manangements', risk, risk.comments)
                                     }"
                                     :id="risk.id + '_risk_manangements_possible_risk'"
@@ -2157,7 +2272,7 @@
                                         </button>
                                     </td>
                                     <!-- Risk Management -Person Affected -->
-                                    <td :class="{
+                                    <td style="padding: 0;" :class="{
                                         'text-danger': has_comment('Risk Management','Person Affected',risk.person_affected,'person_affected','risk_manangements', risk, risk.comments)
                                     }"
                                     :id="risk.id + '_risk_manangements_person_affected'"
@@ -2174,10 +2289,10 @@
                                         </button>
                                     </td>
                                     <!-- Risk Management -Management -->
-                                    <td :class="{
-                                        'text-danger': has_comment('Risk Management','Management',risk.management,'management','risk_manangements', risk, risk.comments)
-                                    }"
-                                    :id="risk.id + '_risk_manangements_management'"
+                                    <td style="padding: 0;" :class="{
+                                            'text-danger': has_comment('Risk Management','Management',risk.management,'management','risk_manangements', risk, risk.comments)
+                                        }"
+                                        :id="risk.id + '_risk_manangements_management'"
                                     >
                                         <QuillEditor theme="snow" v-model:content="risk.management" contentType="html"
                                         @update:content="val => updateRevisionPlans('risk_manangements', 'management', risk.id, risk.management)"
@@ -2191,7 +2306,7 @@
                                         </button>
                                     </td>
                                     <!-- Remove-->
-                                     <td>
+                                    <td>
                                         <button class="btn btn-danger btn-sm text-white"
                                             @click="deleteData(risk.id, 'risk_manangements', risk.possible_risk)">
                                             🗑 Delete
@@ -3796,6 +3911,9 @@ export default {
 
         // STRATEGY REQUESTS
         strategy_requests: Object,
+
+        // PROJECT DESIGN
+        budgetaryRequirementsProjectDesign: Object,
     },
     components: {
 
@@ -3980,6 +4098,9 @@ export default {
                 fe_q3: 0,
                 fe_q4: 0,
             },
+
+            // BUDGET PREP VARIABLES
+            budget_prep_total: 0,
 
         };
     },
@@ -4631,6 +4752,115 @@ export default {
                 console.error(`Error updating ${table_name} (${column_name})`, error);
             }
         }, 1000), // 🔥 Delay here (1s or 300ms)
+        updateRevisionPlansBudgetAmount(table_name, column_name, id, new_data, row) {
+            const amount = parseFloat(new_data);
+            const ceiling = parseFloat(row.reference_budget_ceiling);
+            // alert("Amount: " + amount + ", Ceiling: " + ceiling); // Debugging alert
+            if (isNaN(amount) || amount < 0) {
+                alert("Amount must be a valid number greater than or equal to 0.");
+                row.amount = 0;
+                this.setUnsaved(false);
+                return;
+            }
+
+            if (!isNaN(ceiling) && amount > ceiling) {
+                alert(
+                    "Amount cannot exceed the approved budget ceiling of " +
+                    ceiling.toLocaleString('en-PH', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }) + "."
+                );
+
+                // Restore the amount to the budget ceiling
+                row.amount = ceiling;
+                this.setUnsaved(false);
+                return;
+            }
+
+            // Valid amount: call the existing debounced method
+            this.updateRevisionPlans(
+                table_name,
+                column_name,
+                id,
+                new_data
+            );
+        },
+        updateImplementationAmount(table_name, column_name, id, new_data, row) {
+            // Match quarterly columns: ps_q1, mooe_q2, co_q3, fe_q4, etc.
+            const match = column_name.match(/^(ps|mooe|co|fe)_q([1-4])$/);
+            // alert("has_reference_activity_project: " + row.has_reference_activity_project);
+            // Only validate quarterly disaggregated amounts
+            if (!match) {
+                this.updateRevisionPlans(table_name, column_name, id, new_data);
+                return;
+            }
+            if(!row.has_reference_activity_project){
+                this.updateRevisionPlans(table_name, column_name, id, new_data);
+                return;
+            }
+            const category = match[1];
+            const quarter = match[2];
+
+            // Get the category total, e.g. ps_total
+            const categoryTotal = parseFloat(row[`${category}_total`]) || 0;
+
+            // Sum the four quarterly amounts for this category.
+            // Use new_data for the edited quarter to ensure the latest input is checked.
+            const quarterlyTotal = [1, 2, 3, 4].reduce((sum, q) => {
+                const column = `${category}_q${q}`;
+
+                const value = q === Number(quarter)
+                    ? parseFloat(new_data)
+                    : parseFloat(row[column]);
+
+                return sum + (isNaN(value) ? 0 : value);
+            }, 0);
+
+            // If the quarterly sum exceeds the category total, revert the edited value
+            if (quarterlyTotal > categoryTotal) {
+                alert(
+                    `The total of ${category.toUpperCase()} quarterly amounts ` +
+                    `(${quarterlyTotal.toLocaleString('en-PH', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    })}) cannot exceed the category total of ` +
+                    `${categoryTotal.toLocaleString('en-PH', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    })}.`
+                );
+
+                // Restore the previous allowed value for the edited quarter
+                const ceilingColumn = `${category}_q${quarter}_ceiling`;
+                const ceiling = parseFloat(row[ceilingColumn]);
+
+                if (!isNaN(ceiling)) {
+                    row[column_name] = ceiling;
+                }
+
+                this.setUnsaved(false);
+                return;
+            }
+
+            // Validation passed; use the existing shared update method
+            this.updateRevisionPlans(table_name, column_name, id, new_data);
+        },
+        // updateRevisionPlansBudgetAmount(table_name, column_name, id, new_data, row) {
+        //     const amount = parseFloat(new_data);
+        //     const ceiling = parseFloat(row.budget_ceiling);
+
+        //     if (!isNaN(amount) && !isNaN(ceiling) && amount > ceiling) {
+        //         alert("Amount cannot exceed the approved budget ceiling of " + ceiling + ".");
+
+        //         // row.amount = ceiling;
+        //         // this.setUnsaved(false);
+        //         // return;
+        //     }
+
+        //     // If valid, call the existing update method
+        //     this.updateRevisionPlans(table_name, column_name, id, new_data);
+        // },
         // async updateRevisionPlans(table_name, column_name, id, new_data){
         //     const payload = {
         //         table_name: table_name,
@@ -5042,9 +5272,28 @@ export default {
 
             this.activity_request_array = flatActivities;
         },
+        // STRATEGY/ACTIVITY REQUEST -ACTIVITY REQUESTSTS ONLY!!!!
+        showStrategyRequestModalForActivityOnly(parent_strategy_object){
+            this.strategy_request_array = [];
+            this.activity_request_array = [];
+            this.strategy_request_files = [];
+            this.addStrategyRequestRow();
+            this.NewActivityStrategyRequestModalVisible = true;
+        },
+        passedStrategyRow(parent_strategy_object){
+            return {
+                id: null,
+                strategy_activity_request_id: null,
+                description: '',
+                activities: [],
+            };
+        },
+        // STRATEGY/ACTIVITY REQUEST FILES *********************
         formatFileSize(size) {
             return `${(size / 1024).toFixed(1)} KB`;
         },
+
+
         handleStrategyRequestFiles(event) {
             const selectedFiles = Array.from(event.target.files || []);
             const files = [...this.strategy_request_files.map(file => file.file), ...selectedFiles];
@@ -5849,6 +6098,18 @@ export default {
             }
         },
 
+        // PROJECT DESIGN -BUDGET PREP ******************************************
+        getOverallTotal() {
+            const projects = this.budgetaryRequirementsProjectDesign?.projects || [];
+
+            this.budget_prep_total = projects.reduce((total, project) => {
+                return total + (project.categories || []).reduce((categoryTotal, category) => {
+                    return categoryTotal + (category.rows || []).reduce((rowTotal, row) => {
+                        return rowTotal + (parseFloat(row.budget_year) || 0);
+                    }, 0);
+                }, 0);
+            }, 0);
+        },
 
     },
 };
@@ -6035,4 +6296,3 @@ table {
 
 
 </style>
-

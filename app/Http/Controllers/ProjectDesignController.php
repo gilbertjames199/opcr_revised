@@ -10,6 +10,7 @@ use App\Models\CashDisbursementForecastAccount;
 use App\Models\CurrentAipYear;
 use App\Services\ProjectDesignService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class ProjectDesignController extends Controller
 {
@@ -37,6 +38,37 @@ class ProjectDesignController extends Controller
                 'error',
                 'A project design has already been generated for this project.'
             );
+        }
+
+        // Check if budget prep is ready
+        $response = Http::get(
+            'https://dev.davaodeoro.gov.ph/api/reports/lb2/approved',
+            [
+                'revision_plan_id' => $id,
+            ]
+        );
+        // dd($response->json());
+        if ($response->successful()) {
+            $data = $response->json();
+
+            $projects = $data['projects'] ?? [];
+
+            $categories = collect($projects)
+                ->flatMap(function ($project) {
+                    return $project['categories'] ?? [];
+                });
+
+            if ($categories->isEmpty()) {
+                $msg= 'Budget Prep not ready';
+                return redirect()->back()->with('error', $msg);
+            }
+
+            // Budget Prep is ready
+            // Continue processing $data here.
+
+        } else {
+            $msg = 'Failed to retrieve Budget Prep data';
+            return redirect()->back()->with('error', $msg);
         }
 
         // 2️⃣ Proceed with cloning
@@ -103,6 +135,7 @@ class ProjectDesignController extends Controller
             foreach ($rev_plan->budget as $item) {
                 $clone = $item->replicate(['id', 'created_at', 'updated_at']);
                 $clone->revision_plan_id = $new_plan->id;
+                $clone->reference_budget_id = $item->id; // Set the reference_budget_id to the original budget requirement's ID
                 $clone->created_at = now();
                 $clone->updated_at = now();
                 $clone->save();
@@ -133,6 +166,7 @@ class ProjectDesignController extends Controller
 
                 $clone = $item->replicate(['id', 'created_at', 'updated_at']);
                 $clone->project_id = $new_plan->id;
+                $clone->reference_activity_project_id = $item->id; // Set the reference_activity_project_id to the original activity project's ID
                 $clone->created_at = now();
                 $clone->updated_at = now();
                 $clone->save();

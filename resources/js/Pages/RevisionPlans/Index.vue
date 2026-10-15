@@ -459,10 +459,10 @@
                                 <th class="border-0 fw-semibold text-primary">
                                     <i class="fas fa-file-alt me-2"></i>Project Title
                                 </th>
-                                <th class="border-0 fw-semibold text-primary">
+                                <th class="border-0 fw-semibold text-primary" v-if="source !== 'direct'">
                                     <i class="fas fa-calendar me-2"></i>Date Submitted
                                 </th>
-                                <th class="border-0 fw-semibold text-primary">
+                                <th class="border-0 fw-semibold text-primary" >
                                     <i class="fas fa-building me-2"></i>Office
                                 </th>
                                 <th class="border-0 fw-semibold text-primary">
@@ -497,6 +497,8 @@
                                 <td class="fw-medium">
                                     <div class="d-flex flex-column">
                                         <span class="text-dark">{{ dat.project_title }}</span>
+                                        <!-- budget_ceiling: {{ dat.budget_ceiling }} <br>
+                                        openWarningsRow: {{ openWarningsRow }} -->
                                         <span
                                             v-if="hasAnyWarning(dat)"
                                             class="mt-1"
@@ -509,12 +511,21 @@
                                             ></i>
                                             View Errors
                                         </span>
+                                        <!-- budgetCeilingStatus: {{ budgetCeilingStatus(parseFloat(dat.budget_sum), parseFloat(dat.imp_amount), parseFloat(dat.budget_ceiling)) }} ***
+                                        id: {{ dat.id }} <br>
+                                        budget_sum{{ parseFloat(dat.budget_sum) }} <br>
+                                        imp_amount{{ parseFloat(dat.imp_amount) }} <br>
+                                        budget_ceiling{{ parseFloat(dat.budget_ceiling) }} <br> -->
+
                                         <div v-if="parseFloat(dat.status)<1">
                                             <div v-if="openWarningsRow === dat.id" class="mt-2">
                                                 <ul class="text-danger" style="padding-left: 1.2em;">
                                                     <li v-if="amountStatus(dat.budget_sum, dat.imp_amount)">
                                                         <!-- <i class="fas fa-exclamation-triangle me-1"></i> -->
                                                         {{ amountStatus(dat.budget_sum, dat.imp_amount) }}
+                                                    </li>
+                                                    <li v-if="budgetCeilingStatus(dat.budget_sum, dat.imp_amount, dat.budget_ceiling) && dat.type=='d'">
+                                                        <div v-html="budgetCeilingStatus(dat.budget_sum, dat.imp_amount, dat.budget_ceiling)"></div>
                                                     </li>
                                                     <li v-if="categoryAmountStatus(dat.budget_ps_total, dat.imp_ps_total, 'ps')">
                                                         <!-- <i class="fas fa-exclamation-triangle me-1"></i> -->
@@ -541,7 +552,7 @@
                                 </td>
 
                                 <!-- DATE SUBMITTED -->
-                                <td class="text-muted">
+                                <td v-if="source !== 'direct'" class="text-muted">
                                     <span v-if="source=='direct'"></span>
                                     <span v-else>{{ dat.created_at ? new Date(dat.created_at).toLocaleDateString() : ' ' }}</span>
                                 </td>
@@ -693,6 +704,11 @@
                                             <span class="ms-1">Submit</span>
                                         </button>
 
+                                        <!-- PROJECT DESIGN -->
+                                        <!-- <button v-if="dat.type==='d'" @click="generateBudgetPrep(dat.id)">
+                                            Sync Budget Prep
+                                        </button> -->
+                                        <!-- budget_prep_count: {{ dat.budget_prep_count }} -->
                                         <!-- Recall button when status = 0 *****************-->
                                         <button v-if="dat.status == '0'"
                                                 @click="submitItem(dat, -1)"
@@ -703,7 +719,7 @@
                                         </button>
 
                                         <!-- Generate Project Design button -->
-                                        <button v-if="dat.status == 1 && parseInt(dat.number_of_clones_design)<1 && dat.type==='p' && parseInt(dat.year) <= 2026"
+                                        <button v-if="dat.status == 1 && parseInt(dat.number_of_clones_design)<1 && dat.type==='p' && parseInt(dat.year) <= 2027"
                                                 @click="generateProjectDesign(dat.id, 'd')"
                                                 class="btn btn-info btn-sm btn-icon text-white"
                                                 title="Generate Project Design">
@@ -1368,6 +1384,32 @@ export default {
                 status_now=showAmount+"Total amount of implementation schedule/workplan is greater than the total  amount of budgetary requirement."
             }
             return status_now;
+        },
+        budgetCeilingStatus(budget, imp_amount, budget_ceiling){
+            var status_now_b="";
+            var status_now_i="";
+            var showAmount ="";
+            var bdg = parseFloat(parseFloat(budget).toFixed(2));
+            var imp = parseFloat(parseFloat(imp_amount).toFixed(2));
+            var ceiling = parseFloat(parseFloat(budget_ceiling).toFixed(2));
+            //showAmount ="Budget is "+budget+" \n imp amount is "+imp_amount + " "
+            if(bdg>ceiling){
+                //alert('budget is greater than impamount');
+                status_now_b=showAmount+"Total amount of budgetary requirement is greater than the approved budget ceiling amount."
+            }
+            if(imp>ceiling){
+                status_now_i=showAmount+"Total amount of implementation schedule/workplan is greater than the total  amount of budgetary requirement."
+            }
+            // return status_now_b + status_now_i;
+            if (status_now_b !== "" && status_now_i !== "") {
+                return status_now_b + "\n" + status_now_i;
+            } else if (status_now_b !== "") {
+                return status_now_b;
+            } else if (status_now_i !== "") {
+                return status_now_i;
+            } else {
+                return "";
+            }
         },
         categoryAmountStatus(budget, imp_amount, category) {
 
@@ -2168,6 +2210,28 @@ export default {
                 console.error('Download failed:', error);
                 // Show user feedback (e.g., toast notification)
             }
+        },
+
+        // BUDGET PREP
+        generateBudgetPrep(revisionPlanId){
+            if (!revisionPlanId) {
+                return;
+            }
+
+            if (!confirm('Generate Budget Prep for this project?')) {
+                return;
+            }
+
+            this.$inertia.post('/budget_prep/sync/' + revisionPlanId, {
+                revision_plan_id: revisionPlanId
+            }, {
+                onSuccess: (page) => {
+                    // Optional: handle success
+                },
+                onError: (errors) => {
+                    console.error(errors);
+                }
+            });
         }
     }
 };

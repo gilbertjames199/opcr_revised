@@ -64,38 +64,61 @@
                 <div v-if="data && data.total" class="accordion accordion-flush" id="strategyRequestsAccordion">
                     <div v-for="(request, index) in data.data" :key="request.id ?? index" class="accordion-item border rounded mb-2">
                         <h2 class="accordion-header d-flex align-items-center">
+                            <!--  -->
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 :data-bs-target="`#strategy-request-${request.id ?? index}`" aria-expanded="false">
-                                <span class="fw-bold">{{ request.revision_plan?.project_title ? ` - ${request.revision_plan.project_title}` : '' }}</span>
-
+                                <span class="fw-bold">
+                                    {{ request.revision_plan?.project_title ? ` - ${request.revision_plan.project_title}` : '' }}
+                                </span>
                             </button>
                             <!-- status: {{ request.status}} -->
-                            <!-- <button
-                                type="button" class="btn btn-success btn-sm text-white mx-2 text-nowrap"
-                                @click="updateStrategyActivityRequestField(request.id, 'strategy_activity_requests', 'status', '0')">
-                                Submit Request</button>
+                            <!--
+                                <button
+                                    type="button" class="btn btn-success btn-sm text-white mx-2 text-nowrap"
+                                    @click="updateStrategyActivityRequestField(request.id, 'strategy_activity_requests', 'status', '0')">
+                                    Submit Request
+                                </button>
                             <br> -->
                             <!-- <button type="button" class="btn btn-success btn-sm text-white mx-2 text-nowrap" @click="openStrategyOnlyModal(request.id)">Add Strategy</button> -->
                             <!-- @click="submitStrategyActivityRequest(request)" -->
-                                <!-- @click="updateStrategyActivityRequestField(request.id, 'strategy_activity_requests', 'status', '0')" -->
+                            <!-- @click="updateStrategyActivityRequestField(request.id, 'strategy_activity_requests', 'status', '0')" -->
+                            <!-- class="btn btn-primary btn-sm text-white me-2 text-nowrap" -->
+                            <!-- APPROVE -->
                             <button v-if="String(request.status) === '0'"
                                 type="button"
-                                class="btn btn-primary btn-sm text-white me-2 text-nowrap"
+                                class="btn p-0 me-2 text-success"
+                                title="Approve"
                                 @click="submitStrategyActivityRequest(request,'1')"
 
                             >
-                                Approve
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hand-thumbs-up-fill" viewBox="0 0 16 16">
+                                <path d="M6.956 1.745C7.021.81 7.908.087 8.864.325l.261.066c.463.116.874.456 1.012.965.22.816.533 2.511.062 4.51a10 10 0 0 1 .443-.051c.713-.065 1.669-.072 2.516.21.518.173.994.681 1.2 1.273.184.532.16 1.162-.234 1.733q.086.18.138.363c.077.27.113.567.113.856s-.036.586-.113.856c-.039.135-.09.273-.16.404.169.387.107.819-.003 1.148a3.2 3.2 0 0 1-.488.901c.054.152.076.312.076.465 0 .305-.089.625-.253.912C13.1 15.522 12.437 16 11.5 16H8c-.605 0-1.07-.081-1.466-.218a4.8 4.8 0 0 1-.97-.484l-.048-.03c-.504-.307-.999-.609-2.068-.722C2.682 14.464 2 13.846 2 13V9c0-.85.685-1.432 1.357-1.615.849-.232 1.574-.787 2.132-1.41.56-.627.914-1.28 1.039-1.639.199-.575.356-1.539.428-2.59z"/>
+                                </svg>
+                                <!-- Approve -->
                             </button>
+                            <!-- DISAPPROVE -->
                             <button v-if="String(request.status) === '0'"
                                 type="button"
-                                class="btn btn-danger btn-sm text-white me-2 text-nowrap"
+                                class="btn p-0 me-2 text-danger"
+                                title="Return"
                                 @click="submitStrategyActivityRequest(request,'-2')"
 
                             >
-                                Return
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hand-thumbs-down-fill" viewBox="0 0 16 16">
+                                <path d="M6.956 14.534c.065.936.952 1.659 1.908 1.42l.261-.065a1.38 1.38 0 0 0 1.012-.965c.22-.816.533-2.512.062-4.51q.205.03.443.051c.713.065 1.669.071 2.516-.211.518-.173.994-.68 1.2-1.272a1.9 1.9 0 0 0-.234-1.734c.058-.118.103-.242.138-.362.077-.27.113-.568.113-.856 0-.29-.036-.586-.113-.857a2 2 0 0 0-.16-.403c.169-.387.107-.82-.003-1.149a3.2 3.2 0 0 0-.488-.9c.054-.153.076-.313.076-.465a1.86 1.86 0 0 0-.253-.912C13.1.757 12.437.28 11.5.28H8c-.605 0-1.07.08-1.466.217a4.8 4.8 0 0 0-.97.485l-.048.029c-.504.308-.999.61-2.068.723C2.682 1.815 2 2.434 2 3.279v4c0 .851.685 1.433 1.357 1.616.849.232 1.574.787 2.132 1.41.56.626.914 1.28 1.039 1.638.199.575.356 1.54.428 2.591"/>
+                                </svg>
+                                <!-- Return -->
                             </button>
-                            <button type="button" class="btn btn-outline-primary btn-sm me-2 text-nowrap" @click.stop="showStrategyRequestFiles(request)">
-                                View File
+                            <!-- PREVIEW -->
+                            <button type="button"
+                                class="btn p-0 me-2 text-primary"
+                                title="View File"
+                                @click.stop="showStrategyRequestFiles(request)">
+                                <!-- View File -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                                <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                                </svg>
                             </button>
                         </h2>
                         <div :id="`strategy-request-${request.id ?? index}`" class="accordion-collapse collapse">
@@ -145,7 +168,7 @@
                                                                             <th>FE (Q1-Q4)</th>
                                                                             <th>Responsible</th>
                                                                             <th>CCET</th>
-                                                                            <th>Action</th>
+                                                                            <!-- <th>Action</th> -->
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
@@ -172,7 +195,7 @@
                                                                                 </td>
                                                                                 <td v-else class="text-muted">—</td>
                                                                                 <template v-for="category in ['ps', 'mooe', 'co', 'fe']" :key="`${activity.id}-${category}`">
-                                                                                    activityProject: {{ activity.activityProject }}
+                                                                                    <!-- activityProject: {{ activity.activityProject }} -->
                                                                                     <td v-if="activity.activityProject && activity.activityProject.length">
 
                                                                                         <div v-for="quarter in ['q1', 'q2', 'q3', 'q4']" :key="`${activity.id}-${category}-${quarter}`" class="mb-1">
@@ -237,8 +260,8 @@
                         <th>File path</th>
                         <th>File type</th>
                         <th>File size</th>
-                        <th>Uploaded by</th>
-                        <th>Created at</th>
+                        <!-- <th>Uploaded by</th>
+                        <th>Created at</th> -->
                         <th>Updated at</th>
                         <th>Actions</th>
                     </tr>
@@ -253,15 +276,45 @@
                             <td>{{ file.file_type }}</td>
                             <td>{{ formatFileSize(file.file_size) }}</td>
                             <td>{{ file.uploaded_by }}</td>
-                            <td>{{ file.created_at }}</td>
-                            <td>{{ file.updated_at }}</td>
+                            <!-- <td>{{ file.created_at }}</td>
+                            <td>{{ file.updated_at }}</td> -->
                             <td>
-                                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="collapse"
-                                    :data-bs-target="`#strategy-request-file-${file.id ?? fileIndex}`" aria-expanded="false"
-                                    :aria-controls="`strategy-request-file-${file.id ?? fileIndex}`">
-                                    Preview
+                                <button
+                                    type="button"
+                                    class="btn p-0 text-primary"
+                                    data-bs-toggle="collapse"
+                                    :data-bs-target="`#strategy-request-file-${file.id ?? fileIndex}`"
+                                    :aria-expanded="isFilePreviewOpen(file)"
+                                    :aria-controls="`strategy-request-file-${file.id ?? fileIndex}`"
+                                    :title="isFilePreviewOpen(file) ? 'Hide' : 'Preview'"
+                                    @click="toggleFilePreview(file)"
+                                >
+                                    <!-- Eye = hidden, clicking will show -->
+                                    <svg v-if="!isFilePreviewOpen(file)"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="19"
+                                        height="19"
+                                        fill="currentColor"
+                                        class="bi bi-eye-fill"
+                                        viewBox="0 0 16 16">
+                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                                        <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                                    </svg>
+                                    <!-- Eye slash = visible, clicking will hide -->
+                                    <svg
+                                        v-else
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="21"
+                                        height="21"
+                                        fill="currentColor"
+                                        class="bi bi-eye-slash-fill"
+                                        viewBox="0 0 16 16"
+                                    >
+                                        <path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7 7 0 0 0 2.79-.588M5.21 3.088A7 7 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474z"/>
+                                        <path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12z"/>
+                                    </svg>
                                 </button>
-                                <button type="button" class="btn btn-danger btn-sm text-white ms-1" @click="deleteStrategyRequestFile(file.id)">Delete</button>
+                                <!-- <button type="button" class="btn btn-danger btn-sm text-white ms-1" @click="deleteStrategyRequestFile(file.id)">Delete</button> -->
                             </td>
                         </tr>
                         <tr>
@@ -303,6 +356,7 @@ export default {
             strategyRequestFiles: null,
             strategyRequestFileToUpload: null,
             strategyRequestFilesModalVisible: null,
+            openFilePreviews: []
             // strategyRequestFileToUpload: null,
         }
     },
@@ -354,6 +408,7 @@ export default {
             return String(file?.file_type || '').toLowerCase() === 'application/pdf';
         },
         submitStrategyActivityRequest(request, status) {
+            let stat = '';
             if(status==='1'){
                 stat = 'approve';
             }else if(status==='-2'){
@@ -377,30 +432,61 @@ export default {
                 // }
             });
         },
+        // updateStrategyActivityRequestField(id, tableName, columnName, newValue) {
+        //     if (!id || !tableName || !columnName) {
+        //         return Promise.resolve();
+        //     }
+
+        //     return axios.patch('/strategy-and-activity-request/update/status', {
+        //         id: id,
+        //         table_name: tableName,
+        //         column_name: columnName,
+        //         new_value: newValue ?? ''
+        //     }, {
+        //         preserveScroll: true,
+        //         preserveState: true
+        //     })
+        //     .then((response) => {
+        //         // this.unsaved = false;
+        //         // return response;
+        //     })
+        //     .catch((error) => {
+        //         // console.error('Failed to update strategy/activity row:', error);
+        //         // alert('Failed to update the selected row.');
+        //         // return false;
+        //     });
+        // },
         updateStrategyActivityRequestField(id, tableName, columnName, newValue) {
             if (!id || !tableName || !columnName) {
-                return Promise.resolve();
+                return;
             }
 
-            return axios.patch('/strategy-and-activity-request/update/status', {
-                id: id,
-                table_name: tableName,
-                column_name: columnName,
-                new_value: newValue ?? ''
-            }, {
-                preserveScroll: true,
-                preserveState: true
-            })
-            .then((response) => {
-                // this.unsaved = false;
-                // return response;
-            })
-            .catch((error) => {
-                // console.error('Failed to update strategy/activity row:', error);
-                // alert('Failed to update the selected row.');
-                // return false;
+            this.$inertia.patch('/strategy-and-activity-request/update/status', {
+                params: {
+                    id: id,
+                    table_name: tableName,
+                    column_name: columnName,
+                    new_value: newValue ?? ''
+                }
             });
         },
+        isFilePreviewOpen(file) {
+            const fileKey = file.id ?? this.files.indexOf(file);
+
+            return this.openFilePreviews.includes(fileKey);
+        },
+
+        toggleFilePreview(file) {
+            const fileKey = file.id ?? this.files.indexOf(file);
+
+            if (this.openFilePreviews.includes(fileKey)) {
+                this.openFilePreviews = this.openFilePreviews.filter(
+                    id => id !== fileKey
+                );
+            } else {
+                this.openFilePreviews.push(fileKey);
+            }
+        }
         // showCreate() {
         //     this.$inertia.get(
         //         "/targets/create",

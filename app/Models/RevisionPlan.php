@@ -17,11 +17,23 @@ class RevisionPlan extends Model
     {
         return $this->hasMany(RevisionPlan::class, 'reference_profile_id', 'id');
     }
+
+    public function originalVersion()
+    {
+        return $this->belongsTo(RevisionPlan::class, 'reference_profile_id', 'id');
+    }
     public function checklist()
     {
         return $this->hasOne(HGDG_Checklist::class, 'id', 'checklist_id');
     }
-
+    public function budgetPrepDetails()
+    {
+        return $this->hasMany(
+            BudgetPrepDetail::class,
+            'revision_plan_id',
+            'id'
+        );
+    }
     public function hgdgScores()
     {
         return $this->hasMany(HGDGScore::class, 'idrevplan', 'id');

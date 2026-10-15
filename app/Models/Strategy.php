@@ -42,4 +42,5 @@ class Strategy extends Model
     {
         return $this->hasMany(ExpectedRevisedOutcome::class, 'strategy_id', 'id');
     }
+
 }

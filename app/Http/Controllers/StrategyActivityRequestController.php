@@ -318,11 +318,11 @@ class StrategyActivityRequestController extends Controller
     }
     public function updateFieldApproveReturn(Request $request)
     {
-        $id = $request->input('id');
-        $tableName = $request->input('table_name');
-        $columnName = $request->input('column_name');
-        $newValue = $request->input('new_value');
-        // dd($request);
+        $id = $request->input('params.id');
+        $tableName = $request->input('params.table_name');
+        $columnName = $request->input('params.column_name');
+        $newValue = $request->input('params.new_value');
+        // dd($request, $id, $tableName, $columnName, $newValue);
         if (!$id || !$tableName || !$columnName) {
             return response()->json(['success' => false, 'message' => 'Missing required update parameters.'], 422);
         }
