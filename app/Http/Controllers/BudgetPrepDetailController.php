@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\RevisionPlan;
-use App\Models\BudgetPreparationDetail;
+use App\Models\BudgetPrepDetail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
@@ -16,13 +16,20 @@ class BudgetPrepDetailController extends Controller
         // dd($revisionPlan->reference_profile_id); // Debugging line to inspect the RevisionPlan object
         // Fetch approved LB2 budget preparation data from the API.
         $url = 'https://dev.davaodeoro.gov.ph/api/reports/lb2/approved';
+        $ref_plan_id = $revisionPlan->reference_profile_id;
+        // $response = Http::timeout(60)
+        //     ->acceptJson()
+        //     ->get($url, [
+        //         'revision_plan_id' => $revisionPlanId->reference_profile_id,
+        //     ]);
 
-        $response = Http::timeout(60)
-            ->acceptJson()
-            ->get($url, [
-                'revision_plan_id' => $revisionPlanId->reference_profile_id,
-            ]);
-
+        $response = Http::get(
+            $url,
+            [
+                'revision_plan_id' => $ref_plan_id,
+            ]
+        );
+        // dd($response->json()); // Debugging line to inspect the API response structure
         if (!$response->successful()) {
             return response()->json([
                 'success' => false,
@@ -32,7 +39,7 @@ class BudgetPrepDetailController extends Controller
         }
 
         $data = $response->json();
-        dd($data); // Debugging line to inspect the API response structure
+        // dd($data); // Debugging line to inspect the API response structure
         // Handle either a single object or an array of objects.
         if (isset($data['categories'])) {
             $preparations = [$data];
@@ -63,22 +70,21 @@ class BudgetPrepDetailController extends Controller
             )->delete();
             // return redirect()->back()->with('message','Already generated'); // Do not proceed with the foreach
         }
-        foreach ($preparations as $preparation) {
-            if (!is_array($preparation)) {
-                continue;
-            }
 
+        // return $preparations; // Debugging line to inspect the preparations array
+
+        $preparations = $preparations['projects'] ?? [];
+
+        foreach ($preparations as $preparation) {
             $preparationId = $preparation['id'] ?? null;
 
             foreach ($preparation['categories'] ?? [] as $category) {
                 foreach ($category['rows'] ?? [] as $row) {
                     $rows[] = [
                         'budget_preparation_id' =>
-                            $row['budget_preparation_id']
-                            ?? $preparationId,
+                            $row['budget_preparation_id'] ?? $preparationId,
 
                         'revision_plan_id' => $revisionPlanId,
-
                         'reference_profile_id' => $referenceProfileId,
 
                         'object_of_expenditure' =>
@@ -118,6 +124,14 @@ class BudgetPrepDetailController extends Controller
             }
         }
 
+        if (empty($rows)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No budget rows found. Existing synced data was preserved.',
+            ], 422);
+        }
+
+        // dd($rows); // Debugging line to inspect the final rows array before insertion
         // Avoid replacing valid data with an empty result if the
         // API response structure was unexpected.
         if (empty($rows)) {
@@ -128,22 +142,22 @@ class BudgetPrepDetailController extends Controller
         }
 
         DB::transaction(function () use ($revisionPlanId, $rows) {
-            BudgetPreparationDetail::where(
+            BudgetPrepDetail::where(
                 'revision_plan_id',
                 $revisionPlanId
             )->delete();
 
             foreach (array_chunk($rows, 500) as $chunk) {
-                BudgetPreparationDetail::insert($chunk);
+                BudgetPrepDetail::insert($chunk);
             }
         });
-
-        return response()->json([
-            'success' => true,
-            'revision_plan_id' => (int) $revisionPlanId,
-            'reference_profile_id' => $referenceProfileId,
-            'synced_rows' => count($rows),
-            'message' => 'Approved LB2 budget preparation data synced successfully.',
-        ]);
+        return redirect()->back()->with('message', 'Approved LB2 budget preparation data synced successfully.');
+        // return response()->json([
+        //     'success' => true,
+        //     'revision_plan_id' => (int) $revisionPlanId,
+        //     'reference_profile_id' => $referenceProfileId,
+        //     'synced_rows' => count($rows),
+        //     'message' => 'Approved LB2 budget preparation data synced successfully.',
+        // ]);
     }
 }

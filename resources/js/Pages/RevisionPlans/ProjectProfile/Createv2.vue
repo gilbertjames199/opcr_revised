@@ -1577,8 +1577,8 @@
                             </Link>
                             <!-- editData.type: {{ editData.type }} -->
                         </h3>
-                        <!-- v-if="editData.type==='p'" -->
-                        <table class="table table-bordered" >
+                        <!--  -->
+                        <table class="table table-bordered" v-if="editData.type==='p'">
                             <thead>
                                 <tr>
                                     <th colspan="3">Particulars</th>
@@ -1841,8 +1841,8 @@
                                 </tr>
                             </tfoot>
                         </table>
-
-                        <table class="table table-hover table-bordered border-dark" v-if="editData.type==='design'">
+                        <!-- type: {{editData.type}} -->
+                        <table class="table table-hover table-bordered border-dark" v-if="editData.type==='d'">
                             <thead>
                                 <tr>
                                     <th colspan="3">Particulars</th>
@@ -1921,6 +1921,7 @@
                                             </td>
 
                                             <td :colspan="editData.type == 'sip' ? 2 : 1"></td>
+                                            <!-- <td></td> -->
                                         </tr>
                                     </template>
                                 </template>
@@ -1941,7 +1942,8 @@
                                         }) }}
                                     </td>
 
-                                    <td :colspan="editData.type == 'sip' ? 2 : 1"></td>
+                                    <td :colspan="editData.type == 'sip' ? 3 : 2"></td>
+                                    <!-- <td></td> -->
                                 </tr>
                             </tbody>
                         </table>

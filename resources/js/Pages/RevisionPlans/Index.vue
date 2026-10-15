@@ -705,9 +705,11 @@
                                         </button>
 
                                         <!-- PROJECT DESIGN -->
-                                        <!-- <button v-if="dat.type==='d'" @click="generateBudgetPrep(dat.id)">
+                                        <button v-if="dat.type==='d'"
+                                            @click="generateBudgetPrep(dat.id)"
+                                            class="btn btn-info btn-sm btn-icon text-white">
                                             Sync Budget Prep
-                                        </button> -->
+                                        </button>
                                         <!-- budget_prep_count: {{ dat.budget_prep_count }} -->
                                         <!-- Recall button when status = 0 *****************-->
                                         <button v-if="dat.status == '0'"

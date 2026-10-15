@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BudgetPrepDetail;
 use App\Models\RevisionPlan;
 use Illuminate\Http\Request;
 use App\Models\CashDisbursementForecast;
@@ -41,35 +42,36 @@ class ProjectDesignController extends Controller
         }
 
         // Check if budget prep is ready
-        // $response = Http::get(
-        //     'https://dev.davaodeoro.gov.ph/api/reports/lb2/approved',
-        //     [
-        //         'revision_plan_id' => $id,
-        //     ]
-        // );
+
+        $response = Http::get(
+            'https://dev.davaodeoro.gov.ph/api/reports/lb2/approved',
+            [
+                'revision_plan_id' => $id,
+            ]
+        );
         // dd($response->json());
-        // if ($response->successful()) {
-        //     $data = $response->json();
+        if ($response->successful()) {
+            $data = $response->json();
 
-        //     $projects = $data['projects'] ?? [];
+            $projects = $data['projects'] ?? [];
 
-        //     $categories = collect($projects)
-        //         ->flatMap(function ($project) {
-        //             return $project['categories'] ?? [];
-        //         });
+            $categories = collect($projects)
+                ->flatMap(function ($project) {
+                    return $project['categories'] ?? [];
+                });
 
-        //     if ($categories->isEmpty()) {
-        //         $msg= 'Budget Prep not ready';
-        //         return redirect()->back()->with('error', $msg);
-        //     }
+            if ($categories->isEmpty()) {
+                $msg= 'Budget Prep not ready';
+                return redirect()->back()->with('error', $msg);
+            }
 
-        //     // Budget Prep is ready
-        //     // Continue processing $data here.
+            // Budget Prep is ready
+            // Continue processing $data here.
 
-        // } else {
-        //     $msg = 'Failed to retrieve Budget Prep data';
-        //     return redirect()->back()->with('error', $msg);
-        // }
+        } else {
+            $msg = 'Failed to retrieve Budget Prep data';
+            return redirect()->back()->with('error', $msg);
+        }
 
         // 2️⃣ Proceed with cloning
         $result = $this->cloneRevisionPlan($id, $request->input('type'));
@@ -78,6 +80,10 @@ class ProjectDesignController extends Controller
             return redirect()->back()->with('error', $result['error']);
         }
 
+        // Sync Automatically After Project Design Generation
+        // $newPlanId = $result['new_plan_id'];
+
+        // $this->syncWithBudgetPrep($newPlanId, $id);
         return redirect()->back()->with('message', $result['message']);
     }
 
@@ -272,7 +278,8 @@ class ProjectDesignController extends Controller
 
             return [
                 'message' => 'Revision Plan successfully cloned.',
-                'new_plan_id' => $new_plan->id
+                'new_plan_id' => $new_plan->id,
+                'new_plan' => $new_plan
             ];
         } catch (\Exception $e) {
             DB::rollBack();
@@ -367,5 +374,149 @@ class ProjectDesignController extends Controller
         }
         // Return the newly created row
         // return [$new];
+    }
+
+    protected function syncWithBudgetPrep($revisionPlanId, $referencePlanId){
+        $url = 'https://dev.davaodeoro.gov.ph/api/reports/lb2/approved';
+        $ref_plan_id = $referencePlanId;
+        // $response = Http::timeout(60)
+        //     ->acceptJson()
+        //     ->get($url, [
+        //         'revision_plan_id' => $revisionPlanId->reference_profile_id,
+        //     ]);
+
+        $response = Http::get(
+            $url,
+            [
+                'revision_plan_id' => $ref_plan_id,
+            ]
+        );
+        // dd($response->json()); // Debugging line to inspect the API response structure
+        if (!$response->successful()) {
+            return [];
+            // return response()->json([
+            //     'success' => false,
+            //     'message' => 'Failed to retrieve approved budget preparation data.',
+            //     'http_status' => $response->status(),
+            // ], 502);
+        }
+
+        $data = $response->json();
+        // dd($data); // Debugging line to inspect the API response structure
+        // Handle either a single object or an array of objects.
+        if (isset($data['categories'])) {
+            $preparations = [$data];
+        } elseif (isset($data['data']['categories'])) {
+            $preparations = [$data['data']];
+        } elseif (isset($data['data']) && is_array($data['data'])) {
+            $preparations = $data['data'];
+        } else {
+            $preparations = $data;
+        }
+
+        if (!is_array($preparations)) {
+            return [];
+            // return response()->json([
+            //     'success' => false,
+            //     'message' => 'Invalid budget preparation API response.',
+            // ], 502);
+        }
+
+        $referenceProfileId = $referencePlanId;
+
+        $rows = [];
+        $budgetPrepdata = BudgetPrepDetail::where('revision_plan_id', $revisionPlanId)->count();
+
+        if ($budgetPrepdata > 0) {
+            BudgetPrepDetail::where(
+                'revision_plan_id',
+                $revisionPlanId
+            )->delete();
+            // return redirect()->back()->with('message','Already generated'); // Do not proceed with the foreach
+        }
+
+        // return $preparations; // Debugging line to inspect the preparations array
+
+        $preparations = $preparations['projects'] ?? [];
+
+        foreach ($preparations as $preparation) {
+            $preparationId = $preparation['id'] ?? null;
+
+            foreach ($preparation['categories'] ?? [] as $category) {
+                foreach ($category['rows'] ?? [] as $row) {
+                    $rows[] = [
+                        'budget_preparation_id' =>
+                            $row['budget_preparation_id'] ?? $preparationId,
+
+                        'revision_plan_id' => $revisionPlanId,
+                        'reference_profile_id' => $referenceProfileId,
+
+                        'object_of_expenditure' =>
+                            $row['object_of_expenditure'] ?? null,
+
+                        'account_code' =>
+                            $row['account_code'] ?? null,
+
+                        'sub_particular' =>
+                            $row['sub_particular'] ?? null,
+
+                        'past_year' =>
+                            $row['past_year'] ?? null,
+
+                        'first_semester_actual' =>
+                            $row['first_semester_actual'] ?? null,
+
+                        'second_semester_estimate' =>
+                            $row['second_semester_estimate'] ?? null,
+
+                        'current_year_total' =>
+                            $row['current_year_total'] ?? null,
+
+                        'budget_year' =>
+                            $row['budget_year'] ?? null,
+
+                        'category' =>
+                            $category['category'] ?? null,
+
+                        'category_label' =>
+                            $category['category_label'] ?? null,
+
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }
+            }
+        }
+
+        if (empty($rows)) {
+            // return response()->json([
+            //     'success' => false,
+            //     'message' => 'No budget rows found. Existing synced data was preserved.',
+            // ], 422);
+            return [];
+        }
+
+        // dd($rows); // Debugging line to inspect the final rows array before insertion
+        // Avoid replacing valid data with an empty result if the
+        // API response structure was unexpected.
+        if (empty($rows)) {
+            // return response()->json([
+            //     'success' => false,
+            //     'message' => 'No budget rows found. Existing synced data was preserved.',
+            // ], 422);
+            return [];
+        }
+
+        DB::transaction(function () use ($revisionPlanId, $rows) {
+            BudgetPrepDetail::where(
+                'revision_plan_id',
+                $revisionPlanId
+            )->delete();
+
+            foreach (array_chunk($rows, 500) as $chunk) {
+                BudgetPrepDetail::insert($chunk);
+            }
+        });
+        // return redirect()->back()->with('message', 'Approved LB2 budget preparation data synced successfully.');
     }
 }
