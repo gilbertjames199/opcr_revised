@@ -713,6 +713,8 @@ class RevisionPlanController extends Controller
                 // BUDGERTARY REQUIREMENTs
                 if ($item->type === 'd') {
                     // $budgetary_requirement = $item->budgetPrepDetails->sum('amount');
+                    $budgetary_requirement = BudgetRequirement::where('revision_plan_id', $item->id)
+                                ->sum('amount');
                     $budget_prep_count = $item->budgetPrepDetails->count();
                 } else{
                     $budgetary_requirement = BudgetRequirement::where('revision_plan_id', $item->id)
