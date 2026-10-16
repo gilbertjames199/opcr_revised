@@ -100,7 +100,6 @@ class ProjectProfileStreamlinedController extends Controller
                     })
                         ->orWhere('department_code', $dept_code);
                 })
-
                 ->get();
             // dd("wala si paps");
             // $all_paps = Progr

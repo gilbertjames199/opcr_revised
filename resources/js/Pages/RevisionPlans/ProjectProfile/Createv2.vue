@@ -1578,7 +1578,113 @@
                             <!-- editData.type: {{ editData.type }} -->
                         </h3>
                         <!--  -->
-                        <table class="table table-bordered" v-if="editData.type==='p'">
+                        <table class="table table-hover table-bordered border-dark" v-if="editData.type==='d' && (budgetaryRequirementsProjectDesign.projects || []).length > 0">
+                            <thead>
+                                <tr>
+                                    <th colspan="3">Particulars</th>
+                                    <th>Account Code</th>
+                                    <th v-if="editData.type == 'sip'">SIP Number</th>
+                                    <th>Amount</th>
+                                    <th>Source</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <template
+                                    v-for="project in (budgetaryRequirementsProjectDesign.projects || [])"
+                                    :key="project.id"
+                                >
+                                    <template
+                                        v-for="category in (project.categories || [])"
+                                        :key="project.id + '-' + category.category"
+                                    >
+                                        <!-- Category heading -->
+                                        <tr class="table-secondary">
+                                            <td
+                                                :colspan="editData.type == 'sip' ? 8 : 7"
+                                                class="fw-bold"
+                                            >
+                                                {{ category.category_label }}
+                                            </td>
+                                        </tr>
+
+                                        <!-- Rows under the category -->
+                                        <tr
+                                            v-for="(row, rowIndex) in (category.rows || [])"
+                                            :key="project.id + '-' + category.category + '-' + rowIndex"
+                                        >
+                                            <td colspan="3">
+                                                {{ row.object_of_expenditure }}
+                                            </td>
+
+                                            <td>{{ row.account_code }}</td>
+
+                                            <td v-if="editData.type == 'sip'">
+                                                -
+                                            </td>
+
+                                            <td class="text-end">
+                                                {{ Number(row.budget_year || 0).toLocaleString('en-PH', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                }) }}
+                                            </td>
+
+                                            <td>General Fund</td>
+
+                                            <td>-</td>
+                                        </tr>
+
+                                        <!-- Category subtotal -->
+                                        <tr class="fw-bold">
+                                            <td
+                                                :colspan="editData.type == 'sip' ? 5 : 4"
+                                                class="text-end"
+                                            >
+                                                {{ category.category_label }} Subtotal
+                                            </td>
+
+                                            <td class="text-end">
+                                                {{ Number(
+                                                    category.rows?.reduce((total, row) => {
+                                                        return total + (parseFloat(row.budget_year) || 0);
+                                                    }, 0) || 0
+                                                ).toLocaleString('en-PH', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                }) }}
+                                            </td>
+
+                                            <td :colspan="editData.type == 'sip' ? 2 : 1"></td>
+                                            <!-- <td></td> -->
+                                        </tr>
+                                    </template>
+                                </template>
+
+                                <!-- Overall Budget Preparation Total -->
+                                <tr class="table-primary fw-bold">
+                                    <td
+                                        :colspan="editData.type == 'sip' ? 5 : 4"
+                                        class="text-end"
+                                    >
+                                        Budget Prep Total
+                                    </td>
+
+                                    <td class="text-end">
+                                        <!-- budget_prep_total: {{budget_prep_total}} -->
+                                        {{ Number(budget_prep_total || 0).toLocaleString('en-PH', {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                        }) }}
+                                    </td>
+
+                                    <td :colspan="editData.type == 'sip' ? 3 : 2"></td>
+                                    <!-- <td></td> -->
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-bordered" v-if="editData.type==='p' || (budgetaryRequirementsProjectDesign.projects || []).length < 1">
                             <thead>
                                 <tr>
                                     <th colspan="3">Particulars</th>
@@ -1842,112 +1948,7 @@
                             </tfoot>
                         </table>
                         <!-- type: {{editData.type}} -->
-                        <table class="table table-hover table-bordered border-dark" v-if="editData.type==='d'">
-                            <thead>
-                                <tr>
-                                    <th colspan="3">Particulars</th>
-                                    <th>Account Code</th>
-                                    <th v-if="editData.type == 'sip'">SIP Number</th>
-                                    <th>Amount</th>
-                                    <th>Source</th>
-                                    <th>Delete</th>
-                                </tr>
-                            </thead>
 
-                            <tbody>
-                                <template
-                                    v-for="project in (budgetaryRequirementsProjectDesign.projects || [])"
-                                    :key="project.id"
-                                >
-                                    <template
-                                        v-for="category in (project.categories || [])"
-                                        :key="project.id + '-' + category.category"
-                                    >
-                                        <!-- Category heading -->
-                                        <tr class="table-secondary">
-                                            <td
-                                                :colspan="editData.type == 'sip' ? 8 : 7"
-                                                class="fw-bold"
-                                            >
-                                                {{ category.category_label }}
-                                            </td>
-                                        </tr>
-
-                                        <!-- Rows under the category -->
-                                        <tr
-                                            v-for="(row, rowIndex) in (category.rows || [])"
-                                            :key="project.id + '-' + category.category + '-' + rowIndex"
-                                        >
-                                            <td colspan="3">
-                                                {{ row.object_of_expenditure }}
-                                            </td>
-
-                                            <td>{{ row.account_code }}</td>
-
-                                            <td v-if="editData.type == 'sip'">
-                                                -
-                                            </td>
-
-                                            <td class="text-end">
-                                                {{ Number(row.budget_year || 0).toLocaleString('en-PH', {
-                                                    minimumFractionDigits: 2,
-                                                    maximumFractionDigits: 2
-                                                }) }}
-                                            </td>
-
-                                            <td>General Fund</td>
-
-                                            <td>-</td>
-                                        </tr>
-
-                                        <!-- Category subtotal -->
-                                        <tr class="fw-bold">
-                                            <td
-                                                :colspan="editData.type == 'sip' ? 5 : 4"
-                                                class="text-end"
-                                            >
-                                                {{ category.category_label }} Subtotal
-                                            </td>
-
-                                            <td class="text-end">
-                                                {{ Number(
-                                                    category.rows?.reduce((total, row) => {
-                                                        return total + (parseFloat(row.budget_year) || 0);
-                                                    }, 0) || 0
-                                                ).toLocaleString('en-PH', {
-                                                    minimumFractionDigits: 2,
-                                                    maximumFractionDigits: 2
-                                                }) }}
-                                            </td>
-
-                                            <td :colspan="editData.type == 'sip' ? 2 : 1"></td>
-                                            <!-- <td></td> -->
-                                        </tr>
-                                    </template>
-                                </template>
-
-                                <!-- Overall Budget Preparation Total -->
-                                <tr class="table-primary fw-bold">
-                                    <td
-                                        :colspan="editData.type == 'sip' ? 5 : 4"
-                                        class="text-end"
-                                    >
-                                        Budget Prep Total
-                                    </td>
-
-                                    <td class="text-end">
-                                        <!-- budget_prep_total: {{budget_prep_total}} -->
-                                        {{ Number(budget_prep_total || 0).toLocaleString('en-PH', {
-                                            minimumFractionDigits: 2,
-                                            maximumFractionDigits: 2
-                                        }) }}
-                                    </td>
-
-                                    <td :colspan="editData.type == 'sip' ? 3 : 2"></td>
-                                    <!-- <td></td> -->
-                                </tr>
-                            </tbody>
-                        </table>
                         <!-- {{ budgetaryRequirementsProjectDesign}} -->
                     </div>
                     <!--VI. IMPLEMENTING TEAM************************************************** -->

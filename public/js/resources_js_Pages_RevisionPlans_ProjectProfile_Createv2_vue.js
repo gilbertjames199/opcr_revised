@@ -3165,97 +3165,97 @@ var _hoisted_245 = {
 };
 var _hoisted_246 = {
   key: 0,
-  "class": "table table-bordered"
+  "class": "table table-hover table-bordered border-dark"
 };
 var _hoisted_247 = {
   key: 0
 };
 var _hoisted_248 = {
+  "class": "table-secondary"
+};
+var _hoisted_249 = ["colspan"];
+var _hoisted_250 = {
+  colspan: "3"
+};
+var _hoisted_251 = {
+  key: 0
+};
+var _hoisted_252 = {
+  "class": "text-end"
+};
+var _hoisted_253 = {
+  "class": "fw-bold"
+};
+var _hoisted_254 = ["colspan"];
+var _hoisted_255 = {
+  "class": "text-end"
+};
+var _hoisted_256 = ["colspan"];
+var _hoisted_257 = {
+  "class": "table-primary fw-bold"
+};
+var _hoisted_258 = ["colspan"];
+var _hoisted_259 = {
+  "class": "text-end"
+};
+var _hoisted_260 = ["colspan"];
+var _hoisted_261 = {
+  key: 1,
+  "class": "table table-bordered"
+};
+var _hoisted_262 = {
+  key: 0
+};
+var _hoisted_263 = {
   "class": "table-primary"
 };
-var _hoisted_249 = {
+var _hoisted_264 = {
   colspan: "8",
   "class": "fw-bold text-uppercase"
 };
-var _hoisted_250 = {
+var _hoisted_265 = {
   "class": "d-flex justify-content-between align-items-center w-100"
 };
-var _hoisted_251 = ["onClick"];
-var _hoisted_252 = ["id"];
-var _hoisted_253 = ["onUpdate:modelValue", "onChange"];
-var _hoisted_254 = ["onClick"];
-var _hoisted_255 = ["onClick"];
-var _hoisted_256 = ["id"];
-var _hoisted_257 = ["onClick"];
-var _hoisted_258 = ["onClick"];
-var _hoisted_259 = {
-  key: 0
-};
-var _hoisted_260 = ["id"];
-var _hoisted_261 = ["onUpdate:modelValue", "onChange"];
-var _hoisted_262 = ["onUpdate:modelValue", "onChange"];
-var _hoisted_263 = ["onClick"];
-var _hoisted_264 = ["onClick"];
-var _hoisted_265 = ["id"];
-var _hoisted_266 = ["onUpdate:modelValue", "onChange"];
-var _hoisted_267 = ["onClick"];
-var _hoisted_268 = ["onClick"];
+var _hoisted_266 = ["onClick"];
+var _hoisted_267 = ["id"];
+var _hoisted_268 = ["onUpdate:modelValue", "onChange"];
 var _hoisted_269 = ["onClick"];
-var _hoisted_270 = {
-  key: 0
-};
-var _hoisted_271 = {
-  colspan: "8",
-  "class": "text-center text-muted"
-};
-var _hoisted_272 = {
-  "class": "fw-bold bg-light"
-};
-var _hoisted_273 = {
-  colspan: "2"
-};
+var _hoisted_270 = ["onClick"];
+var _hoisted_271 = ["id"];
+var _hoisted_272 = ["onClick"];
+var _hoisted_273 = ["onClick"];
 var _hoisted_274 = {
   key: 0
 };
-var _hoisted_275 = {
-  key: 0
-};
-var _hoisted_276 = {
-  key: 1,
-  "class": "table table-hover table-bordered border-dark"
-};
-var _hoisted_277 = {
-  key: 0
-};
-var _hoisted_278 = {
-  "class": "table-secondary"
-};
-var _hoisted_279 = ["colspan"];
-var _hoisted_280 = {
-  colspan: "3"
-};
-var _hoisted_281 = {
-  key: 0
-};
-var _hoisted_282 = {
-  "class": "text-end"
-};
-var _hoisted_283 = {
-  "class": "fw-bold"
-};
-var _hoisted_284 = ["colspan"];
+var _hoisted_275 = ["id"];
+var _hoisted_276 = ["onUpdate:modelValue", "onChange"];
+var _hoisted_277 = ["onUpdate:modelValue", "onChange"];
+var _hoisted_278 = ["onClick"];
+var _hoisted_279 = ["onClick"];
+var _hoisted_280 = ["id"];
+var _hoisted_281 = ["onUpdate:modelValue", "onChange"];
+var _hoisted_282 = ["onClick"];
+var _hoisted_283 = ["onClick"];
+var _hoisted_284 = ["onClick"];
 var _hoisted_285 = {
-  "class": "text-end"
+  key: 0
 };
-var _hoisted_286 = ["colspan"];
+var _hoisted_286 = {
+  colspan: "8",
+  "class": "text-center text-muted"
+};
 var _hoisted_287 = {
-  "class": "table-primary fw-bold"
+  "class": "fw-bold bg-light"
 };
-var _hoisted_288 = ["colspan"];
+var _hoisted_288 = {
+  colspan: "2"
+};
 var _hoisted_289 = {
-  "class": "text-end"
+  key: 0
 };
-var _hoisted_290 = ["colspan"];
+var _hoisted_290 = {
+  key: 0
+};
 var _hoisted_291 = {
   id: "implementing_team"
 };
@@ -5739,20 +5739,59 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return _toConsumableArray(_cache[364] || (_cache[364] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Estimated Cost/Budgetary Requirements ", -1 /* CACHED */)]));
     }),
     _: 1 /* STABLE */
-  }, 8 /* PROPS */, ["href"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" editData.type: {{ editData.type }} ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("  "), $props.editData.type === 'p' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("table", _hoisted_246, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_cache[366] || (_cache[366] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  }, 8 /* PROPS */, ["href"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" editData.type: {{ editData.type }} ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("  "), $props.editData.type === 'd' && ($props.budgetaryRequirementsProjectDesign.projects || []).length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("table", _hoisted_246, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_cache[366] || (_cache[366] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
     colspan: "3"
-  }, "Particulars", -1 /* CACHED */)), _cache[367] || (_cache[367] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Account Code", -1 /* CACHED */)), $props.editData.type == 'sip' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("th", _hoisted_247, "SIP Number")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _cache[368] || (_cache[368] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Amount", -1 /* CACHED */)), _cache[369] || (_cache[369] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Source", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <th>Edit</th> "), _cache[370] || (_cache[370] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Delete", -1 /* CACHED */))])]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.groupedBudget, function (rows, category) {
+  }, "Particulars", -1 /* CACHED */)), _cache[367] || (_cache[367] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Account Code", -1 /* CACHED */)), $props.editData.type == 'sip' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("th", _hoisted_247, "SIP Number")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _cache[368] || (_cache[368] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Amount", -1 /* CACHED */)), _cache[369] || (_cache[369] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Source", -1 /* CACHED */)), _cache[370] || (_cache[370] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Delete", -1 /* CACHED */))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.budgetaryRequirementsProjectDesign.projects || [], function (project) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+      key: project.id
+    }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(project.categories || [], function (category) {
+      var _category$rows;
+      return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+        key: project.id + '-' + category.category
+      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Category heading "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", _hoisted_248, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+        colspan: $props.editData.type == 'sip' ? 8 : 7,
+        "class": "fw-bold"
+      }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(category.category_label), 9 /* TEXT, PROPS */, _hoisted_249)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Rows under the category "), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(category.rows || [], function (row, rowIndex) {
+        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
+          key: project.id + '-' + category.category + '-' + rowIndex
+        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_250, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(row.object_of_expenditure), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(row.account_code), 1 /* TEXT */), $props.editData.type == 'sip' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_251, " - ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_252, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(Number(row.budget_year || 0).toLocaleString('en-PH', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        })), 1 /* TEXT */), _cache[371] || (_cache[371] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "General Fund", -1 /* CACHED */)), _cache[372] || (_cache[372] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "-", -1 /* CACHED */))]);
+      }), 128 /* KEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Category subtotal "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", _hoisted_253, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+        colspan: $props.editData.type == 'sip' ? 5 : 4,
+        "class": "text-end"
+      }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(category.category_label) + " Subtotal ", 9 /* TEXT, PROPS */, _hoisted_254), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_255, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(Number(((_category$rows = category.rows) === null || _category$rows === void 0 ? void 0 : _category$rows.reduce(function (total, row) {
+        return total + (parseFloat(row.budget_year) || 0);
+      }, 0)) || 0).toLocaleString('en-PH', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      })), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+        colspan: $props.editData.type == 'sip' ? 2 : 1
+      }, null, 8 /* PROPS */, _hoisted_256), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td></td> ")])], 64 /* STABLE_FRAGMENT */);
+    }), 128 /* KEYED_FRAGMENT */))], 64 /* STABLE_FRAGMENT */);
+  }), 128 /* KEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Overall Budget Preparation Total "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", _hoisted_257, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+    colspan: $props.editData.type == 'sip' ? 5 : 4,
+    "class": "text-end"
+  }, " Budget Prep Total ", 8 /* PROPS */, _hoisted_258), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_259, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" budget_prep_total: {{budget_prep_total}} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(Number($data.budget_prep_total || 0).toLocaleString('en-PH', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  })), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+    colspan: $props.editData.type == 'sip' ? 3 : 2
+  }, null, 8 /* PROPS */, _hoisted_260), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td></td> ")])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.editData.type === 'p' || ($props.budgetaryRequirementsProjectDesign.projects || []).length < 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("table", _hoisted_261, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_cache[373] || (_cache[373] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+    colspan: "3"
+  }, "Particulars", -1 /* CACHED */)), _cache[374] || (_cache[374] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Account Code", -1 /* CACHED */)), $props.editData.type == 'sip' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("th", _hoisted_262, "SIP Number")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _cache[375] || (_cache[375] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Amount", -1 /* CACHED */)), _cache[376] || (_cache[376] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Source", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <th>Edit</th> "), _cache[377] || (_cache[377] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Delete", -1 /* CACHED */))])]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.groupedBudget, function (rows, category) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tbody", {
       key: category
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" CATEGORY HEADER "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", _hoisted_248, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_249, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_250, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.formatCategory(category)) + " ", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" CATEGORY HEADER "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", _hoisted_263, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_264, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_265, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.formatCategory(category)) + " ", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       "class": "btn btn-success btn-sm text-white",
       onClick: function onClick($event) {
         return $options.showBudgetModal($data.paps.id, 'N/A', $options.formatCategory(category));
       }
-    }, " ADD NEW ", 8 /* PROPS */, _hoisted_251)])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" GAD + NON-GAD GROUPS "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <template v-for=\"rows in gadGroups\" :key=\"gadType\"> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" SUB HEADER (GAD / NON-GAD) "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <tr class=\"table-secondary\">\n                                        <td></td>\n                                        <td colspan=\"7\" class=\"fw-bold\">\n                                            <div class=\"d-flex justify-content-between align-items-center w-100\">\n                                                {{ gadType }}\n                                                <button class=\"btn btn-success btn-sm text-white\"\n                                                    @click=\"showBudgetModal(paps.id,'',formatCategory(category))\">\n                                                    ADD NEW\n                                                </button>\n                                            </div>\n\n                                        </td>\n                                    </tr> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" DATA ROWS "), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(rows, function (row) {
+    }, " ADD NEW ", 8 /* PROPS */, _hoisted_266)])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" GAD + NON-GAD GROUPS "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <template v-for=\"rows in gadGroups\" :key=\"gadType\"> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" SUB HEADER (GAD / NON-GAD) "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <tr class=\"table-secondary\">\n                                        <td></td>\n                                        <td colspan=\"7\" class=\"fw-bold\">\n                                            <div class=\"d-flex justify-content-between align-items-center w-100\">\n                                                {{ gadType }}\n                                                <button class=\"btn btn-success btn-sm text-white\"\n                                                    @click=\"showBudgetModal(paps.id,'',formatCategory(category))\">\n                                                    ADD NEW\n                                                </button>\n                                            </div>\n\n                                        </td>\n                                    </tr> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" DATA ROWS "), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(rows, function (row) {
       return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
         key: row.id
-      }, [_cache[371] || (_cache[371] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */)), _cache[372] || (_cache[372] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{row}} ")], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" BUDGET PARTICULARS "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+      }, [_cache[378] || (_cache[378] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */)), _cache[379] || (_cache[379] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{row}} ")], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" BUDGET PARTICULARS "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
         "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
           'text-danger': $options.has_comment('Budgetary Requirements', 'Particulars', row.particulars, 'particulars', 'budget_requirements', row, row.comments)
         }),
@@ -5769,19 +5808,19 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         onChange: function onChange($event) {
           return $options.updateRevisionPlans('budget_requirements', 'particulars', row.id, row.particulars);
         }
-      }, "                                                    " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(row.particulars) + "\n                                            ", 41 /* TEXT, PROPS, NEED_HYDRATION */, _hoisted_253), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, row.particulars]]), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+      }, "                                                    " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(row.particulars) + "\n                                            ", 41 /* TEXT, PROPS, NEED_HYDRATION */, _hoisted_268), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, row.particulars]]), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
         key: 0,
         "class": "superscript-btn",
         onClick: function onClick($event) {
           return $options.handleClick('Budgetary Requirements', 'Particulars', row.particulars, 'particulars', 'budget_requirements', row, row.comments);
         }
-      }, "* ", 8 /* PROPS */, _hoisted_254)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Budgetary Requirements', 'Particulars', row.particulars, 'particulars', 'budget_requirements', row, row.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+      }, "* ", 8 /* PROPS */, _hoisted_269)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Budgetary Requirements', 'Particulars', row.particulars, 'particulars', 'budget_requirements', row, row.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
         key: 1,
         "class": "superscript-btn",
         onClick: function onClick($event) {
           return $options.handleClick('Budgetary Requirements', 'Particulars', row.particulars, 'particulars', 'budget_requirements', row, row.comments);
         }
-      }, "* ", 8 /* PROPS */, _hoisted_255)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_252), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ACCOUNT CODE "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+      }, "* ", 8 /* PROPS */, _hoisted_270)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_267), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ACCOUNT CODE "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
         "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
           'text-danger': $options.has_comment('Budgetary Requirements', 'Account Code', row.account_code, 'account_code', 'budget_requirements', row, row.comments)
         }),
@@ -5792,13 +5831,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         onClick: function onClick($event) {
           return $options.handleClick('Budgetary Requirements', 'Account Code', row.account_code, 'account_code', 'budget_requirements', row, row.comments);
         }
-      }, "* ", 8 /* PROPS */, _hoisted_257)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Budgetary Requirements', 'Account Code', row.account_code, 'account_code', 'budget_requirements', row, row.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+      }, "* ", 8 /* PROPS */, _hoisted_272)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Budgetary Requirements', 'Account Code', row.account_code, 'account_code', 'budget_requirements', row, row.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
         key: 1,
         "class": "superscript-btn",
         onClick: function onClick($event) {
           return $options.handleClick('Budgetary Requirements', 'Account Code', row.account_code, 'account_code', 'budget_requirements', row, row.comments);
         }
-      }, "* ", 8 /* PROPS */, _hoisted_258)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_256), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" SIP Number "), $props.editData.type === 'sip' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_259, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(row.sip_number), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" AMOUNT "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+      }, "* ", 8 /* PROPS */, _hoisted_273)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_271), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" SIP Number "), $props.editData.type === 'sip' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_274, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(row.sip_number), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" AMOUNT "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
         "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
           'text-danger': $options.has_comment('Budgetary Requirements', 'Amount', row.amount, 'amount', 'budget_requirements', row, row.comments)
         }),
@@ -5816,7 +5855,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         onChange: function onChange($event) {
           return $options.updateRevisionPlansBudgetAmount('budget_requirements', 'amount', row.id, row.amount, row);
         }
-      }, "                                                    " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(row.amount) + "\n                                            ", 41 /* TEXT, PROPS, NEED_HYDRATION */, _hoisted_261)), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, row.amount]]) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.editData.type == 'p' ? (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)(((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("textarea", {
+      }, "                                                    " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(row.amount) + "\n                                            ", 41 /* TEXT, PROPS, NEED_HYDRATION */, _hoisted_276)), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, row.amount]]) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.editData.type == 'p' ? (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)(((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("textarea", {
         key: 1,
         "class": "form-control transparent-bg",
         type: "text",
@@ -5829,19 +5868,19 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         onChange: function onChange($event) {
           return $options.updateRevisionPlans('budget_requirements', 'amount', row.id, row.amount);
         }
-      }, "                                                    " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(row.amount) + "\n                                            ", 41 /* TEXT, PROPS, NEED_HYDRATION */, _hoisted_262)), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, row.amount]]) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+      }, "                                                    " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(row.amount) + "\n                                            ", 41 /* TEXT, PROPS, NEED_HYDRATION */, _hoisted_277)), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, row.amount]]) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
         key: 2,
         "class": "superscript-btn",
         onClick: function onClick($event) {
           return $options.handleClick('Budgetary Requirements', 'Source', row.source, 'source', 'budget_requirements', row, row.comments);
         }
-      }, "* ", 8 /* PROPS */, _hoisted_263)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Budgetary Requirements', 'Source', row.source, 'source', 'budget_requirements', row, row.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+      }, "* ", 8 /* PROPS */, _hoisted_278)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Budgetary Requirements', 'Source', row.source, 'source', 'budget_requirements', row, row.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
         key: 3,
         "class": "superscript-btn",
         onClick: function onClick($event) {
           return $options.handleClick('Budgetary Requirements', 'Source', row.source, 'source', 'budget_requirements', row, row.comments);
         }
-      }, "* ", 8 /* PROPS */, _hoisted_264)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_260), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" SOURCE OF FUND "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+      }, "* ", 8 /* PROPS */, _hoisted_279)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_275), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" SOURCE OF FUND "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
         "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
           'text-danger': $options.has_comment('Budgetary Requirements', 'Source', row.source, 'source', 'budget_requirements', row, row.comments)
         }),
@@ -5858,71 +5897,32 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         onChange: function onChange($event) {
           return $options.updateRevisionPlans('budget_requirements', 'source', row.id, row.source);
         }
-      }, "                                                    " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(row.source) + "\n                                            ", 41 /* TEXT, PROPS, NEED_HYDRATION */, _hoisted_266), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, row.source]]), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+      }, "                                                    " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(row.source) + "\n                                            ", 41 /* TEXT, PROPS, NEED_HYDRATION */, _hoisted_281), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, row.source]]), $options.can_view_comment() ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
         key: 0,
         "class": "superscript-btn",
         onClick: function onClick($event) {
           return $options.handleClick('Budgetary Requirements', 'Source', row.source, 'source', 'budget_requirements', row, row.comments);
         }
-      }, "* ", 8 /* PROPS */, _hoisted_267)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Budgetary Requirements', 'Source', row.source, 'source', 'budget_requirements', row, row.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+      }, "* ", 8 /* PROPS */, _hoisted_282)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.has_comment('Budgetary Requirements', 'Source', row.source, 'source', 'budget_requirements', row, row.comments) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
         key: 1,
         "class": "superscript-btn",
         onClick: function onClick($event) {
           return $options.handleClick('Budgetary Requirements', 'Source', row.source, 'source', 'budget_requirements', row, row.comments);
         }
-      }, "* ", 8 /* PROPS */, _hoisted_268)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_265), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" EDIT "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td>\n                                            <button class=\"btn btn-primary btn-sm text-white\"\n                                                @click=\"showBudgetModal(form.id,gadType,category)\">\n                                                ✏ Edit\n                                            </button>\n                                        </td> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" DELETE "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+      }, "* ", 8 /* PROPS */, _hoisted_283)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 10 /* CLASS, PROPS */, _hoisted_280), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" EDIT "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td>\n                                            <button class=\"btn btn-primary btn-sm text-white\"\n                                                @click=\"showBudgetModal(form.id,gadType,category)\">\n                                                ✏ Edit\n                                            </button>\n                                        </td> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" DELETE "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
         "class": "btn btn-danger btn-sm text-white",
         onClick: function onClick($event) {
           return $options.deleteData(row.id, 'budget_requirements', row.particulars);
         }
-      }, " 🗑 Delete ", 8 /* PROPS */, _hoisted_269)])]);
-    }), 128 /* KEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" NO DATA ROW "), rows.length === 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", _hoisted_270, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_271, " No entries under " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.formatCategory(category)), 1 /* TEXT */)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" TOTAL ROW "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", _hoisted_272, [_cache[373] || (_cache[373] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_273, "TOTAL " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.gadType), 1 /* TEXT */), _cache[374] || (_cache[374] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */)), $props.source === 'sip' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_274)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, " ₱ " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.budgetSum(category, _ctx.gadType).toLocaleString()), 1 /* TEXT */), _cache[375] || (_cache[375] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+      }, " 🗑 Delete ", 8 /* PROPS */, _hoisted_284)])]);
+    }), 128 /* KEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" NO DATA ROW "), rows.length === 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", _hoisted_285, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_286, " No entries under " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.formatCategory(category)), 1 /* TEXT */)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" TOTAL ROW "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", _hoisted_287, [_cache[380] || (_cache[380] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_288, "TOTAL " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.gadType), 1 /* TEXT */), _cache[381] || (_cache[381] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* CACHED */)), $props.source === 'sip' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_289)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, " ₱ " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.budgetSum(category, _ctx.gadType).toLocaleString()), 1 /* TEXT */), _cache[382] || (_cache[382] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
       colspan: "3"
     }, null, -1 /* CACHED */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" </template> ")]);
-  }), 128 /* KEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <tr >\n                                <td colspan=\"4\"><h5>GAD TOTAL</h5></td>\n                                <td v-if=\"source==='sip'\"></td>\n                                <td :class=\"{\n                                            'text-danger': has_comment('Budgetary Requirements',\n                                            'GAD Grand Total',\n                                            format_number_conv(tot_gad,2,true),\n                                            'gad_total', 'revision_plans',\n                                            paps, paps.comments)\n                                        }\"\n                                        :id=\"paps.id + '_revision_plans_gad_total'\">\n                                        ₱ {{ gadBudgetTotal.toLocaleString() }}\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\n                                            @click=\"handleClick('Budgetary Requirements',\n                                            'GAD Grand Total',\n                                            format_number_conv(tot_gad,2,true),\n                                            'gad_total', 'revision_plans',\n                                            paps, paps.comments)\">*\n                                        </button>\n                                        <button v-if=\"has_comment('Budgetary Requirements',\n                                            'GAD Grand Total',\n                                            format_number_conv(tot_gad,2,true),\n                                            'gad_total', 'revision_plans',\n                                            paps, paps.comments)\" class=\"superscript-btn\"\n                                            @click=\"handleClick('Budgetary Requirements',\n                                            'GAD Grand Total',\n                                            format_number_conv(tot_gad,2,true),\n                                            'gad_total', 'revision_plans',\n                                            paps, paps.comments)\">*\n                                        </button>\n                                </td>\n                                <td colspan=\"3\"></td>\n                            </tr> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tfoot", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_cache[376] || (_cache[376] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  }), 128 /* KEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <tr >\n                                <td colspan=\"4\"><h5>GAD TOTAL</h5></td>\n                                <td v-if=\"source==='sip'\"></td>\n                                <td :class=\"{\n                                            'text-danger': has_comment('Budgetary Requirements',\n                                            'GAD Grand Total',\n                                            format_number_conv(tot_gad,2,true),\n                                            'gad_total', 'revision_plans',\n                                            paps, paps.comments)\n                                        }\"\n                                        :id=\"paps.id + '_revision_plans_gad_total'\">\n                                        ₱ {{ gadBudgetTotal.toLocaleString() }}\n                                        <button v-if=\"can_view_comment()\" class=\"superscript-btn\"\n                                            @click=\"handleClick('Budgetary Requirements',\n                                            'GAD Grand Total',\n                                            format_number_conv(tot_gad,2,true),\n                                            'gad_total', 'revision_plans',\n                                            paps, paps.comments)\">*\n                                        </button>\n                                        <button v-if=\"has_comment('Budgetary Requirements',\n                                            'GAD Grand Total',\n                                            format_number_conv(tot_gad,2,true),\n                                            'gad_total', 'revision_plans',\n                                            paps, paps.comments)\" class=\"superscript-btn\"\n                                            @click=\"handleClick('Budgetary Requirements',\n                                            'GAD Grand Total',\n                                            format_number_conv(tot_gad,2,true),\n                                            'gad_total', 'revision_plans',\n                                            paps, paps.comments)\">*\n                                        </button>\n                                </td>\n                                <td colspan=\"3\"></td>\n                            </tr> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tfoot", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_cache[383] || (_cache[383] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     colspan: "4"
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", null, "TOTAL")], -1 /* CACHED */)), $props.source === 'sip' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_275)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "₱ " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.overallBudget.toLocaleString()), 1 /* TEXT */), _cache[377] || (_cache[377] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", null, "TOTAL")], -1 /* CACHED */)), $props.source === 'sip' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_290)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "₱ " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.overallBudget.toLocaleString()), 1 /* TEXT */), _cache[384] || (_cache[384] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     colspan: "3"
-  }, null, -1 /* CACHED */))])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" type: {{editData.type}} "), $props.editData.type === 'd' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("table", _hoisted_276, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_cache[378] || (_cache[378] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
-    colspan: "3"
-  }, "Particulars", -1 /* CACHED */)), _cache[379] || (_cache[379] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Account Code", -1 /* CACHED */)), $props.editData.type == 'sip' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("th", _hoisted_277, "SIP Number")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _cache[380] || (_cache[380] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Amount", -1 /* CACHED */)), _cache[381] || (_cache[381] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Source", -1 /* CACHED */)), _cache[382] || (_cache[382] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Delete", -1 /* CACHED */))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.budgetaryRequirementsProjectDesign.projects || [], function (project) {
-    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
-      key: project.id
-    }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(project.categories || [], function (category) {
-      var _category$rows;
-      return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
-        key: project.id + '-' + category.category
-      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Category heading "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", _hoisted_278, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
-        colspan: $props.editData.type == 'sip' ? 8 : 7,
-        "class": "fw-bold"
-      }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(category.category_label), 9 /* TEXT, PROPS */, _hoisted_279)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Rows under the category "), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(category.rows || [], function (row, rowIndex) {
-        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
-          key: project.id + '-' + category.category + '-' + rowIndex
-        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_280, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(row.object_of_expenditure), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(row.account_code), 1 /* TEXT */), $props.editData.type == 'sip' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_281, " - ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_282, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(Number(row.budget_year || 0).toLocaleString('en-PH', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2
-        })), 1 /* TEXT */), _cache[383] || (_cache[383] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "General Fund", -1 /* CACHED */)), _cache[384] || (_cache[384] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "-", -1 /* CACHED */))]);
-      }), 128 /* KEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Category subtotal "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", _hoisted_283, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
-        colspan: $props.editData.type == 'sip' ? 5 : 4,
-        "class": "text-end"
-      }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(category.category_label) + " Subtotal ", 9 /* TEXT, PROPS */, _hoisted_284), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_285, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(Number(((_category$rows = category.rows) === null || _category$rows === void 0 ? void 0 : _category$rows.reduce(function (total, row) {
-        return total + (parseFloat(row.budget_year) || 0);
-      }, 0)) || 0).toLocaleString('en-PH', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      })), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
-        colspan: $props.editData.type == 'sip' ? 2 : 1
-      }, null, 8 /* PROPS */, _hoisted_286), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td></td> ")])], 64 /* STABLE_FRAGMENT */);
-    }), 128 /* KEYED_FRAGMENT */))], 64 /* STABLE_FRAGMENT */);
-  }), 128 /* KEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Overall Budget Preparation Total "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", _hoisted_287, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
-    colspan: $props.editData.type == 'sip' ? 5 : 4,
-    "class": "text-end"
-  }, " Budget Prep Total ", 8 /* PROPS */, _hoisted_288), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_289, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" budget_prep_total: {{budget_prep_total}} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(Number($data.budget_prep_total || 0).toLocaleString('en-PH', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  })), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
-    colspan: $props.editData.type == 'sip' ? 3 : 2
-  }, null, 8 /* PROPS */, _hoisted_290), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td></td> ")])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ budgetaryRequirementsProjectDesign}} ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("VI. IMPLEMENTING TEAM************************************************** "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_291, [_cache[386] || (_cache[386] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" VII. ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  }, null, -1 /* CACHED */))])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" type: {{editData.type}} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ budgetaryRequirementsProjectDesign}} ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("VI. IMPLEMENTING TEAM************************************************** "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_291, [_cache[386] || (_cache[386] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" VII. ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     href: _ctx.department_code_user === '04' || _ctx.department_code_user === _ctx.department_code_project ? "/team/".concat($data.paps.id, "/revision/plan/team") : null,
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
       'text-danger': $options.has_comment('Implementing Team', 'implementing team', $data.paps.rationale, 'implementing_team', 'revision_plans', $data.paps, $data.paps.comments)
