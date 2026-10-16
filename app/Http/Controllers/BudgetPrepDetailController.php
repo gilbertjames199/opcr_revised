@@ -31,11 +31,12 @@ class BudgetPrepDetailController extends Controller
         );
         // dd($response->json()); // Debugging line to inspect the API response structure
         if (!$response->successful()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to retrieve approved budget preparation data.',
-                'http_status' => $response->status(),
-            ], 502);
+            return redirect()->back()->with('error', 'Failed to retrieve approved budget preparation data from the API.');
+            // return response()->json([
+            //     'success' => false,
+            //     'message' => 'Failed to retrieve approved budget preparation data.',
+            //     'http_status' => $response->status(),
+            // ], 502);
         }
 
         $data = $response->json();
