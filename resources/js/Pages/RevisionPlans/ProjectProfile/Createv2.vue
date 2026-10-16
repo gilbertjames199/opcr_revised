@@ -1936,6 +1936,7 @@
                                     </td>
 
                                     <td class="text-end">
+                                        <!-- budget_prep_total: {{budget_prep_total}} -->
                                         {{ Number(budget_prep_total || 0).toLocaleString('en-PH', {
                                             minimumFractionDigits: 2,
                                             maximumFractionDigits: 2
@@ -4338,7 +4339,9 @@ export default {
             if(this.form.checklist_id=='0'){
                 this.form.checklist_id =null;
             }
-
+            if(this.editData.type=="d"){
+                this.getOverallTotal()
+            }
         } else {
             this.pageTitle = "Create"
             this.form.is_strategy_based=0
@@ -4375,7 +4378,6 @@ export default {
                 //alert('undefined si idpaps!');
             }
         }
-
 
 
 
