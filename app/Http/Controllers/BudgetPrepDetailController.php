@@ -53,10 +53,11 @@ class BudgetPrepDetailController extends Controller
         }
 
         if (!is_array($preparations)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Invalid budget preparation API response.',
-            ], 502);
+            return redirect()->back()->with('error', 'Invalid budget preparation API response structure.');
+            // return response()->json([
+            //     'success' => false,
+            //     'message' => 'Invalid budget preparation API response.',
+            // ], 502);
         }
 
         $referenceProfileId = $revisionPlan->reference_profile_id;
