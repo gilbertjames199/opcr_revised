@@ -94,15 +94,15 @@
                                     <!--RATINGS***************************************-->
                                     <td>
                                         <input v-model="form.opcrs[index].rating_q" class="centered-input" type="number"
-                                            min="0" max="5" step="1" disabled>
+                                            min="0" max="5" step="1">
                                     </td>
                                     <td>
                                         <input v-model="form.opcrs[index].rating_e" class="centered-input" type="number"
-                                            min="0" max="5" step="1" disabled>
+                                            min="0" max="5" step="1">
                                     </td>
                                     <td>
                                         <input v-model="form.opcrs[index].rating_t" class="centered-input" type="number"
-                                            min="0" max="5" step="1" disabled>
+                                            min="0" max="5" step="1">
                                     </td>
                                     <td>
                                     <input :value="computeAverage(form.opcrs[index])" class="centered-input" type="number"

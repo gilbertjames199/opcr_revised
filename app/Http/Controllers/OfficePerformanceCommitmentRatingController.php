@@ -172,6 +172,9 @@ class OfficePerformanceCommitmentRatingController extends Controller
         $ave = number_format($ave_pre, 2);
         //dd($ave);
     }
+
+
+
     public function index(Request $request, $opcr_id, $FFUNCCOD)
     {
         // dd($request);
@@ -298,6 +301,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 ]);
                 $rating_type = optional(optional($item)->opcrList)->rating_type ?? "0";
                 if ($rating_type == "0") {
+
+                    // dd($item->opcr_rating); 
                     $q1 = $item->opcr_rating ? $item->opcr_rating->q1 : null;
                     $q2 = $item->opcr_rating ? $item->opcr_rating->q2 : null;
                     $q3 = $item->opcr_rating ? $item->opcr_rating->q3 : null;
@@ -396,7 +401,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     "t1" => $t1 ?? 0,
                 ];
             });
-        // dd($opcrs);
+        dd($opcrs);
 
         //********************************************** */
         $count_pgdh = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
@@ -480,7 +485,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
         foreach ($myObject as $opcr) {
             $dept_code = auth()->user()->department_code;
             $opcry = null;
-            // dd($opcry);
+
             $opcry = OfficePerformanceCommitmentRating::findOrFail($opcr->id);
             if ($opcry) {
                 $opcry->update([
@@ -1075,7 +1080,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
         if ($opcr_id) {
             $my_opcr = OfficePerformanceCommitmentRatingList::where('id', $opcr_id)->first();
             // dd($opcr_id);
-            $dept_head1 = $my_opcr->pg_head? $my_opcr->pg_head : $dept_head;
+            $dept_head1 = $my_opcr->pg_head ? $my_opcr->pg_head : $dept_head;
             $dept_head = Str::upper($dept_head1);
             $dateStart = Carbon::createFromFormat('Y-m-d', $my_opcr->date_from);
             $dateEnd = Carbon::createFromFormat('Y-m-d', $my_opcr->date_to);
