@@ -584,7 +584,9 @@
                             </Link>
                         </h3>
                         <p>
+                             <!-- v-if="editData.type === 'p'"/= -->
                             <button class="btn btn-success btn-sm text-white"
+
                                 @click="showStrategyModal()">
                                     Add Strategies
                             </button>
@@ -646,8 +648,6 @@
                                                     <span v-if="dat.date_from && dat.date_to">&nbsp;to&nbsp;</span>
                                                     <span v-if="dat.date_to">{{ formatMonthYear(dat.date_to) }}</span>
                                                 </span>
-
-
                                             </td>
                                             <td>
                                                 <span v-if="paps.is_strategy_based==1">
@@ -706,12 +706,15 @@
                                             </td>
 
                                             <td>
+                                                <!-- v-if="editData.type === 'p'" -->
                                                 <button class="btn btn-primary btn-sm text-white"
+
                                                 @click="showActivityModal(dat.id)">
                                                     Add Activities
                                                 </button>
                                                 <!-- @click="deleteData(dat.id, 'strategies', dat.description)" -->
                                                 <button class="btn btn-danger btn-sm text-white"
+                                                v-if="editData.type === 'p'"
                                                 @click="deleteDataActivityOrStrat(dat.id, 'strategies', dat.description, this.form.id)"
                                                     >
                                                     🗑 Delete Strategy

@@ -40,4 +40,9 @@ class BudgetRequirement extends Model
     public function objectOfExpenditure(){
         return $this->belongsTo(OOE::class, 'idooe', 'recid');
     }
+
+    public function referenceBudgetRequirement()
+    {
+        return $this->belongsTo(BudgetRequirement::class, 'reference_budget_id', 'id');
+    }
 }

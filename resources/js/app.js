@@ -1741,6 +1741,15 @@ createInertiaApp({
                             month: 'long',
                             day: 'numeric'
                         });
+                    },
+                    getTypeFullName(type) {
+                        const offices = {
+                            sp: 'Sanguniang Panlalawigan',
+                            pbo: 'Provincial Budget Office',
+                            ppdo: 'Provincial Planning and Development Office',
+                        };
+
+                        return offices[type] || '';
                     }
                 }
             })

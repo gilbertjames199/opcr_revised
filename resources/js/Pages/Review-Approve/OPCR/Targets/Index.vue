@@ -239,7 +239,8 @@ export default {
             form: useForm({
                 remarks: "",
                 opcr_list_id: "",
-            })
+            }),
+            search: this.$props.filters.search,
         }
     },
     components: {

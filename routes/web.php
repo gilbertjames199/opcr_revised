@@ -72,6 +72,7 @@ use App\Http\Controllers\AIPController;
 use App\Http\Controllers\aip_controller;
 use App\Http\Controllers\DailyAccomplishmentController;
 use App\Http\Controllers\AddAccomplishmentController;
+use App\Http\Controllers\AIPIndividualApproverController;
 use App\Http\Controllers\AnnualInvestmentPlanController;
 use App\Http\Controllers\AnnualInvestmentPlanInstitutionalController;
 use App\Http\Controllers\AppropriationAmountController;
@@ -106,10 +107,13 @@ use App\Http\Controllers\RevisionPlanDocumentsController;
 use App\Http\Controllers\SentenceParserController;
 use App\Http\Controllers\SharedProgramAndProjectController;
 use App\Http\Controllers\AllowedSubmissionController;
+use App\Http\Controllers\SangguniangPanlalawiganApproverController;
+use App\Http\Controllers\StrategyActivityRequestController;
 use App\Http\Controllers\StrategyProjectController;
 use App\Http\Controllers\TimeRangeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserEmployeesController;
+use App\Http\Controllers\BudgetPrepDetailController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageMail;
 use App\Models\AnnualInvestmentPlan;
@@ -349,6 +353,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{id}', [OutcomeController::class, 'destroy']);
     });
 
+
     //Intermediate Outcomes
     ///inter_outcome/${dat.id}
     Route::prefix('/inter_outcome')->group(function () {
@@ -445,6 +450,11 @@ Route::middleware('auth')->group(function () {
     // Project Profile Trackings
     Route::prefix('/project-profile-tracking')->group(function () {
         Route::get('/', [ProjectProfileTrackingController::class, 'tracking']);
+    });
+
+    // Sync Budget Prep
+    Route::prefix('/budget_prep')->group(function(){
+        Route::post('/sync/{id}', [BudgetPrepDetailController::class,'syncBudgetPreparationData']);
     });
     //Revision Plan
     Route::prefix('/revision')->group(function () {
@@ -574,6 +584,17 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/institutional_aip')->group(function () {
         Route::get('/', [AnnualInvestmentPlanInstitutionalController::class, 'index']);
         Route::post('/status/{type}', [AnnualInvestmentPlanInstitutionalController::class, 'updateInstitutionalAIPStatus']);
+        Route::post('/update/{table_name}/value', [AnnualInvestmentPlanInstitutionalController::class, 'updateTableValue']);
+    });
+
+    // SP Members/AIP Approvers
+    Route::prefix('/aip/approvers')->group(function(){
+        Route::get('/', [AIPIndividualApproverController::class, 'index']);
+        Route::get('/create',[AIPIndividualApproverController::class, 'create']);
+        Route::post('/',[AIPIndividualApproverController::class,'store']);
+        Route::get('/{id}/edit',[AIPIndividualApproverController::class, 'edit']);
+        Route::delete('/{id}',[AIPIndividualApproverController::class, 'destroy']);
+        Route::patch('/',[AIPIndividualApproverController::class, 'update']);
     });
     //Strategies and Activities
     Route::prefix('/strategies-and-activities')->group(function () {
@@ -584,8 +605,20 @@ Route::middleware('auth')->group(function () {
         Route::get('/{id}/edit', [StrategyProjectController::class, 'edit']);
         Route::patch('/{id}', [StrategyProjectController::class, 'update']);
         Route::delete('/{id}', [StrategyProjectController::class, 'destroy']);
-
         Route::get('/refresh/data/now/{idrevplan}', [StrategyProjectController::class, 'refresh']);
+    });
+    // Strategy and Activities Request
+    Route::prefix('/strategy-and-activity-request')->group(function () {
+        Route::post('/create', [StrategyActivityRequestController::class, 'store']);
+        Route::post('/strategy/store', [StrategyActivityRequestController::class, 'storeStrategy']);
+        Route::post('/activity/store', [StrategyActivityRequestController::class, 'storeActivity']);
+        Route::post('/files/store', [StrategyActivityRequestController::class, 'storeRequestFile']);
+        Route::delete('/files/delete/{id}', [StrategyActivityRequestController::class, 'deleteRequestFile']);
+        Route::patch('/update', [StrategyActivityRequestController::class, 'updateField']);
+        Route::patch('/update/status', [StrategyActivityRequestController::class, 'updateFieldApproveReturn']);
+        Route::delete('/delete/{id}/{table_name}', [StrategyActivityRequestController::class, 'deleteRecord']);
+        // Index
+        Route::get('/', [StrategyActivityRequestController::class, 'index']);
     });
     //Strategies and Projects
     Route::prefix('/strategies-project/r')->group(function () {
@@ -930,6 +963,10 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{id}', [OfficePerformanceCommitmentRatingController::class, 'destroy']);
         Route::get('/print/o/p/c/r', [OfficePerformanceCommitmentRatingController::class, 'print']);
     });
+    // OPCR Accomplishments
+    Route::prefix('/monthly-paps-accomplishments')->group(function () {
+        Route::get('/', [OpcrAccomplishmentController::class, 'accomplishment_opcr']);
+    });
     // MOV API
     Route::prefix('/movs')->group(function () {
         Route::get('', [MeansOfVerificationController::class, 'index']);
@@ -1004,8 +1041,11 @@ Route::middleware('auth')->group(function () {
             Route::post('/approve/{opcr_list_id}/opcr', [TargetAccomplishmentReviewApproveController::class, 'approveOPCRRating']);
             Route::post('/return/remarks/{opcr_list_id}/opcr', [TargetAccomplishmentReviewApproveController::class, 'returnOpcrRating']);
             Route::post('/submit/opcr/{column}/{opcr_rating_id}/{item_score}', [TargetAccomplishmentReviewApproveController::class, 'update_rating_score']);
+            Route::patch('/save-remarks/{opcr_list_id}', [TargetAccomplishmentReviewApproveController::class, 'saveRemarks']);
+            Route::delete('/remark/{remark_id}', [TargetAccomplishmentReviewApproveController::class, 'deleteRemark']);
             Route::get('/{opcr_list_id}/view/opcr/rating/submission', [TargetAccomplishmentReviewApproveController::class, 'viewRating']);
             Route::patch('/set/rating/type/{rating_type}/{id}', [TargetAccomplishmentReviewApproveController::class, 'updateRatingType']);
+
         });
         Route::prefix('/ipp')->group(function () {
             Route::get('/', [ProjectProfileTrackingController::class, 'index_ipp']);
@@ -1020,6 +1060,15 @@ Route::middleware('auth')->group(function () {
         // approveOPCRAccomplishment
         // reviewOPCRRating
         // approveOPCRRating
+    });
+    Route::prefix('review-approve-ratings-ppdo')->group(function(){
+        Route::get('/', [TargetAccomplishmentReviewApproveController::class, 'index_rating']);
+    });
+    Route::prefix('review-approve-ratings')->group(function(){
+        Route::get('/', [TargetAccomplishmentReviewApproveController::class, 'index_rating']);
+        Route::get('/{opcr_list_id}/view/opcr/rating/submission',
+        [TargetAccomplishmentReviewApproveController::class, 'download_rating'])
+        ->name('rating.download.excel');
     });
     //IPCR List
     Route::prefix('IPCR')->group(function () {
@@ -1327,6 +1376,9 @@ Route::prefix('print_all_single_API')->group(function () {
     // Appropriations
     Route::get('/paps/appropriations', [AppropriationController::class, 'appropriations3']);
 });
+
+
+// OPCR RATING NEW VERSION
 Route::prefix('opcr-accomplishments/print')->group(function () {
     Route::get('/', [OfficePerformanceCommitmentRatingController::class, 'print_accomplishment']);
 });

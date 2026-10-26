@@ -683,6 +683,9 @@ class AnnualInvestmentPlanController extends Controller
 
     public function set_ipp_aip_codes(Request $request)
     {
+        if (!in_array(auth()->user()->recid, [681, 682, 683, 684, 1007, 1008, 586])) {
+            return redirect()->back()->with('message', 'Unable to save changes');
+        }
         $current_year = date('Y');
         if($request->year){
             $current_year = $request->year;

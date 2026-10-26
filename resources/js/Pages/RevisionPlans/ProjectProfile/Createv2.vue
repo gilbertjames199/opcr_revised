@@ -31,16 +31,14 @@
         </div>
         <!-- {{ form }}
         {{ selPaps }} -->
-
+        <!-- {{editData}} -->
         <div class="col-md-12">
-
                 <input type="hidden" required>
                 <div class="d-none">
                     <label for="">ID</label>
                     <input type="text" v-model="form.id" class="form-control" autocomplete="chrome-off">
                     <div class="fs-6 c-red-500" v-if="form.errors.id">{{ form.errors.idooe }}</div>
                 </div>
-
                 <div class="d-flex justify-content-center">
                     <img :src="getImagePath('logo.png')" alt="" class="img-fluid" style="width:100px; height:100px">
 
@@ -61,7 +59,6 @@
                         <div v-else>PROJECT DESIGN</div>
                     </h4>
                 </div>
-
                 <div class="bgc-white p-20 bd">
                     <section id="revision_plans">
                         <h3>I.&nbsp;&nbsp;&nbsp;
@@ -518,17 +515,176 @@
                                 Implementation Schedule/Workplan
                             </Link>
                         </h3>
-                        <p>
-                            <button class="btn btn-success btn-sm text-white"
-                                @click="showStrategyModal()">
-                                    Add Strategies
-                            </button>
+                        <div v-if="editData.type === 'd'">
+                            <div v-if="strategy_requests && strategy_requests.length" class="accordion accordion-flush" id="strategyRequestsAccordion">
+                                <div v-for="(request, index) in strategy_requests" :key="request.id ?? index" class="accordion-item border rounded mb-2">
+                                    <h2 class="accordion-header d-flex align-items-center">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            :data-bs-target="`#strategy-request-${request.id ?? index}`" aria-expanded="false">
+                                            <span class="fw-bold">Strategy Request {{ index + 1 }}</span>
+                                        </button>
+                                        <!-- status: {{ request.status}} -->
+                                        <!-- <button
+                                            type="button" class="btn btn-success btn-sm text-white mx-2 text-nowrap"
+                                            @click="updateStrategyActivityRequestField(request.id, 'strategy_activity_requests', 'status', '0')">
+                                            Submit Request</button>
+                                        <br> -->
+                                        <button type="button" class="btn btn-success btn-sm text-white mx-2 text-nowrap" @click="openStrategyOnlyModal(request.id)">Add Strategy</button>
+                                        <!-- @click="submitStrategyActivityRequest(request)" -->
+                                         <!-- @click="updateStrategyActivityRequestField(request.id, 'strategy_activity_requests', 'status', '0')" -->
+                                        <!-- parseFloat(request.status):  {{parseFloat(request.status)}} -->
+                                        <button v-if="parseFloat(request.status) < 0"
+                                            type="button"
+                                            class="btn btn-primary btn-sm text-white me-2 text-nowrap"
+                                            @click="submitStrategyActivityRequest(request)"
+
+                                        >
+                                            Submit Request
+                                        </button>
+                                        <button type="button" class="btn btn-outline-primary btn-sm me-2 text-nowrap" @click.stop="showStrategyRequestFiles(request)">
+                                            View File
+                                        </button>
+                                    </h2>
+                                    <div :id="`strategy-request-${request.id ?? index}`" class="accordion-collapse collapse">
+                                        <div class="accordion-body p-0">
+                                            <table class="table table-bordered mb-0">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th style="width: 50%;">Strategy</th>
+                                                        <th style="width: 25%;">Status</th>
+                                                        <th style="width: 25%;">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td colspan="3" class="p-0">
+                                                            <div v-if="!request.strategy || !request.strategy.length" class="p-3 text-muted">No strategy linked to this request.</div>
+                                                            <div v-else v-for="(strategy, strategyIndex) in request.strategy" :key="strategy.id ?? strategyIndex" class="accordion accordion-flush" :id="`strategyDetailAccordion-${request.id ?? index}`">
+                                                                <div class="accordion-item border-0">
+                                                                    <h3 class="accordion-header">
+                                                                        <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse"
+                                                                            :data-bs-target="`#strategy-detail-${request.id ?? index}-${strategy.id ?? strategyIndex}`" aria-expanded="false">
+                                                                            {{ strategy.name || strategy.description || 'Strategy' }}
+                                                                        </button>
+                                                                    </h3>
+                                                                    <div :id="`strategy-detail-${request.id ?? index}-${strategy.id ?? strategyIndex}`" class="accordion-collapse collapse">
+                                                                        <div class="accordion-body p-0">
+                                                                            <div class="p-2 border-bottom d-flex justify-content-between align-items-center">
+                                                                                <label class="fw-bold mb-0">Strategy Description</label>
+                                                                                <button class="btn btn-danger btn-sm text-white" @click="deleteStrategyActivityRequest(strategy.id, 'strategies')">Delete Strategy</button>
+                                                                            </div>
+                                                                            <div class="p-2 border-bottom d-flex align-items-start gap-2">
+                                                                                <textarea class="form-control" rows="2" v-model="strategy.description"
+                                                                                    @change="updateStrategyActivityRequestField(strategy.id, 'strategies', 'description', strategy.description)"></textarea>
+                                                                                <button type="button" class="btn btn-primary btn-sm text-white text-nowrap" @click="openActivityOnlyModal(strategy.id, strategy.description)">Add Activity</button>
+                                                                            </div>
+
+                                                                            <div class="table-responsive">
+                                                                            <table class="table table-sm table-bordered mb-0" style="min-width: 1500px;">
+                                                                                <thead class="table-light">
+                                                                                    <tr>
+                                                                                        <th>Activity</th>
+                                                                                        <th>Timeline</th>
+                                                                                        <th>GAD Issue</th>
+                                                                                        <th>PS (Q1-Q4)</th>
+                                                                                        <th>MOOE (Q1-Q4)</th>
+                                                                                        <th>CO (Q1-Q4)</th>
+                                                                                        <th>FE (Q1-Q4)</th>
+                                                                                        <th>Responsible</th>
+                                                                                        <th>CCET</th>
+                                                                                        <th>Action</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <tr v-if="!(strategy.activity || []).length">
+                                                                                        <td colspan="10" class="text-muted text-center py-3">No activities available.</td>
+                                                                                    </tr>
+                                                                                    <template v-else>
+                                                                                        <tr v-for="(activity, activityIndex) in (strategy.activity || [])" :key="activity.id ?? activity.activity_id ?? `${request.id ?? index}-${strategyIndex}-${activityIndex}`">
+                                                                                            <td>
+                                                                                                <!-- {{activity}} -->
+                                                                                                <textarea class="form-control" rows="2" v-model="activity.description"
+                                                                                                    @change="updateStrategyActivityRequestField(activity.id, 'activities', 'description', activity.description)"></textarea>
+                                                                                            </td>
+                                                                                            <td v-if="activity.activity_project && activity.activity_project.length">
+                                                                                                <input type="date" class="form-control mb-1" v-model="activity.activity_project[0].date_from"
+                                                                                                    @change="updateStrategyActivityRequestField(activity.activity_project[0].id, 'activity_projects', 'date_from', activity.activity_project[0].date_from)">
+                                                                                                <input type="date" class="form-control" v-model="activity.activity_project[0].date_to"
+                                                                                                    @change="updateStrategyActivityRequestField(activity.activity_project[0].id, 'activity_projects', 'date_to', activity.activity_project[0].date_to)">
+                                                                                            </td>
+                                                                                            <td v-else class="text-muted">Project details unavailable</td>
+                                                                                            <td v-if="activity.activity_project && activity.activity_project.length">
+                                                                                                <textarea class="form-control" rows="2" v-model="activity.activity_project[0].gad_issue"
+                                                                                                    @change="updateStrategyActivityRequestField(activity.activity_project[0].id, 'activity_projects', 'gad_issue', activity.activity_project[0].gad_issue)"></textarea>
+                                                                                            </td>
+                                                                                            <td v-else class="text-muted">—</td>
+                                                                                            <template v-for="category in ['ps', 'mooe', 'co', 'fe']" :key="`${activity.id}-${category}`">
+                                                                                                <td v-if="activity.activity_project && activity.activity_project.length">
+                                                                                                    <div v-for="quarter in ['q1', 'q2', 'q3', 'q4']" :key="`${activity.id}-${category}-${quarter}`" class="mb-1">
+                                                                                                        <input type="number" min="0" step="0.01" class="form-control form-control-sm"
+                                                                                                            :aria-label="`${category.toUpperCase()} ${quarter.toUpperCase()}`"
+                                                                                                            :placeholder="quarter.toUpperCase()"
+                                                                                                            v-model.number="activity.activity_project[0][`${category}_${quarter}`]"
+                                                                                                            @change="updateStrategyActivityRequestField(activity.activity_project[0].id, 'activity_projects', `${category}_${quarter}`, activity.activity_project[0][`${category}_${quarter}`])">
+                                                                                                    </div>
+                                                                                                </td>
+                                                                                                <td v-else class="text-muted">—</td>
+                                                                                            </template>
+                                                                                            <td v-if="activity.activity_project && activity.activity_project.length">
+                                                                                                <input type="text" class="form-control" v-model="activity.activity_project[0].responsible"
+                                                                                                    @change="updateStrategyActivityRequestField(activity.activity_project[0].id, 'activity_projects', 'responsible', activity.activity_project[0].responsible)">
+                                                                                            </td>
+                                                                                            <td v-else class="text-muted">—</td>
+                                                                                            <td v-if="activity.activity_project && activity.activity_project.length">
+                                                                                                <input type="text" class="form-control" v-model="activity.activity_project[0].ccet_code"
+                                                                                                    @change="updateStrategyActivityRequestField(activity.activity_project[0].id, 'activity_projects', 'ccet_code', activity.activity_project[0].ccet_code)">
+                                                                                            </td>
+                                                                                            <td v-else class="text-muted">—</td>
+                                                                                            <td>
+                                                                                                <button class="btn btn-danger btn-sm text-white" @click="deleteStrategyActivityRequest(activity.id, 'activities')">Delete</button>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </template>
+                                                                                </tbody>
+                                                                            </table>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-else class="alert alert-light border mt-2 mb-0">No strategy requests available.</div>
+                        </div>
+                        <!-- v-if="editData.type === 'p'" -->
+                        <p >
+                            <span v-if="editData.type === 'p'">
+                                <button class="btn btn-success btn-sm text-white"
+
+                                    @click="showStrategyModal()">
+                                        Add Strategies
+                                </button>
+                            </span>
+                            <span v-else>
+                                <span v-if="strategy_requests && strategy_requests.length"></span>
+                                <span v-else>
+                                    <button class="btn btn-success btn-sm text-white"
+                                        @click="showStrategyRequestModal()">
+                                            Add Strategies
+                                    </button>
+                                </span>
+                            </span>
+
                         </p>
                         <!-- class="table-responsive" style="max-height: 500px; overflow-y: auto;" -->
                         <div style="overflow-x: auto; width: 100%;">
                             <p><em>Use the <strong>numeric SEQ#</strong> to order strategies and activities from lowest to highest. After making changes, click outside the field and refresh the page (<strong>Ctrl+R</strong>) to apply them.</em></p>
-
-
                             <table class="table table-hover table-bordered border-dark">
                                 <thead >
                                     <tr class="bg-secondary text-white" >
@@ -612,6 +768,7 @@
                                             <td><span v-if="paps.is_strategy_based==1">{{ dat.ccet_code }}</span></td>
                                             <td><span v-if="paps.is_strategy_based==1">{{ dat.responsible }}</span> </td>
                                         </tr>
+                                        <!-- STRATEGIES (WORKPLAN NOT BASED ON STRATEGIES) -->
                                         <tr :id="dat.strategy_id + '_strategy_projects_strategy'" style="background-color:lightgrey; font-weight: bold;" v-if="paps.is_strategy_based==0">
                                             <!-- SEQUENCE NUMBER -->
                                             <td>
@@ -644,7 +801,9 @@
                                             </td>
 
                                             <td>
+                                                <!-- v-if="editData.type === 'p'" -->
                                                 <button class="btn btn-primary btn-sm text-white"
+
                                                 @click="showActivityModal(dat.id)">
                                                     Add Activities
                                                 </button>
@@ -900,28 +1059,28 @@
                                                                 type="number"
                                                                 v-model="act.ps_q1"
                                                                 @input="setUnsaved(true)"
-                                                                @change="updateRevisionPlans('activity_projects', 'ps_q1', act.activity_id, act.ps_q1)"
+                                                                @change="editData.type === 'd' ? updateImplementationAmount('activity_projects', 'ps_q1', act.activity_id, act.ps_q1, act) : updateRevisionPlans('activity_projects', 'ps_q1', act.activity_id, act.ps_q1)"
                                                             />
                                                         </p>
                                                         <p>Q2:<input class="form-control"
                                                                 type="number"
                                                                 v-model="act.ps_q2"
                                                                 @input="setUnsaved(true)"
-                                                                @change="updateRevisionPlans('activity_projects', 'ps_q2', act.activity_id, act.ps_q2)"
+                                                                @change="editData.type === 'd' ? updateImplementationAmount('activity_projects', 'ps_q2', act.activity_id, act.ps_q2, act) : updateRevisionPlans('activity_projects', 'ps_q2', act.activity_id, act.ps_q2)"
                                                             />
                                                         </p>
                                                         <p>Q3:<input class="form-control"
                                                                 type="number"
                                                                 v-model="act.ps_q3"
                                                                 @input="setUnsaved(true)"
-                                                                @change="updateRevisionPlans('activity_projects', 'ps_q3', act.activity_id, act.ps_q3)"
+                                                                @change="editData.type === 'd' ? updateImplementationAmount('activity_projects', 'ps_q3', act.activity_id, act.ps_q3, act) : updateRevisionPlans('activity_projects', 'ps_q3', act.activity_id, act.ps_q3)"
                                                             />
                                                         </p>
                                                         <p>Q4:<input class="form-control"
                                                                 type="number"
                                                                 v-model="act.ps_q4"
                                                                 @input="setUnsaved(true)"
-                                                                @change="updateRevisionPlans('activity_projects', 'ps_q4', act.activity_id, act.ps_q4)"
+                                                                @change="editData.type === 'd' ? updateImplementationAmount('activity_projects', 'ps_q4', act.activity_id, act.ps_q4, act) : updateRevisionPlans('activity_projects', 'ps_q4', act.activity_id, act.ps_q4)"
                                                             />
                                                         </p>
                                                         {{ format_number_conv((parseFloat(act.ps_q1)+parseFloat(act.ps_q2)+parseFloat(act.ps_q3)+parseFloat(act.ps_q4)),2,true) }}
@@ -943,28 +1102,28 @@
                                                                 type="number"
                                                                 v-model="act.mooe_q1"
                                                                 @input="setUnsaved(true)"
-                                                                @change="updateRevisionPlans('activity_projects', 'mooe_q1', act.activity_id, act.mooe_q1)"
+                                                                @change="editData.type === 'd' ? updateImplementationAmount('activity_projects', 'mooe_q1', act.activity_id, act.mooe_q1, act) : updateRevisionPlans('activity_projects', 'mooe_q1', act.activity_id, act.mooe_q1)"
                                                             />
                                                         </p>
                                                         <p>Q2:<input class="form-control"
                                                                 type="number"
                                                                 v-model="act.mooe_q2"
                                                                 @input="setUnsaved(true)"
-                                                                @change="updateRevisionPlans('activity_projects', 'mooe_q2', act.activity_id, act.mooe_q2)"
+                                                                @change="editData.type === 'd' ? updateImplementationAmount('activity_projects', 'mooe_q2', act.activity_id, act.mooe_q2, act) : updateRevisionPlans('activity_projects', 'mooe_q2', act.activity_id, act.mooe_q2)"
                                                             />
                                                         </p>
                                                         <p>Q3:<input class="form-control"
                                                                 type="number"
                                                                 v-model="act.mooe_q3"
                                                                 @input="setUnsaved(true)"
-                                                                @change="updateRevisionPlans('activity_projects', 'mooe_q3', act.activity_id, act.mooe_q3)"
+                                                                @change="editData.type === 'd' ? updateImplementationAmount('activity_projects', 'mooe_q3', act.activity_id, act.mooe_q3, act) : updateRevisionPlans('activity_projects', 'mooe_q3', act.activity_id, act.mooe_q3)"
                                                             />
                                                         </p>
                                                         <p>Q4:<input class="form-control"
                                                                 type="number"
                                                                 v-model="act.mooe_q4"
                                                                 @input="setUnsaved(true)"
-                                                                @change="updateRevisionPlans('activity_projects', 'mooe_q4', act.activity_id, act.mooe_q4)"
+                                                                @change="editData.type === 'd' ? updateImplementationAmount('activity_projects', 'mooe_q4', act.activity_id, act.mooe_q4, act) : updateRevisionPlans('activity_projects', 'mooe_q4', act.activity_id, act.mooe_q4)"
                                                             />
                                                         </p>
                                                         {{ format_number_conv((parseFloat(act.mooe_q1)+parseFloat(act.mooe_q2)+parseFloat(act.mooe_q3)+parseFloat(act.mooe_q4)),2,true) }}
@@ -987,28 +1146,28 @@
                                                                 type="number"
                                                                 v-model="act.fe_q1"
                                                                 @input="setUnsaved(true)"
-                                                                @change="updateRevisionPlans('activity_projects', 'fe_q1', act.activity_id, act.fe_q1)"
+                                                                @change="editData.type === 'd' ? updateImplementationAmount('activity_projects', 'fe_q1', act.activity_id, act.fe_q1, act) : updateRevisionPlans('activity_projects', 'fe_q1', act.activity_id, act.fe_q1)"
                                                             />
                                                         </p>
                                                         <p>Q2:<input class="form-control"
                                                                 type="number"
                                                                 v-model="act.fe_q2"
                                                                 @input="setUnsaved(true)"
-                                                                @change="updateRevisionPlans('activity_projects', 'fe_q2', act.activity_id, act.fe_q2)"
+                                                                @change="editData.type === 'd' ? updateImplementationAmount('activity_projects', 'fe_q2', act.activity_id, act.fe_q2, act) : updateRevisionPlans('activity_projects', 'fe_q2', act.activity_id, act.fe_q2)"
                                                             />
                                                         </p>
                                                         <p>Q3:<input class="form-control"
                                                                 type="number"
                                                                 v-model="act.fe_q3"
                                                                 @input="setUnsaved(true)"
-                                                                @change="updateRevisionPlans('activity_projects', 'fe_q3', act.activity_id, act.fe_q3)"
+                                                                @change="editData.type === 'd' ? updateImplementationAmount('activity_projects', 'fe_q3', act.activity_id, act.fe_q3, act) : updateRevisionPlans('activity_projects', 'fe_q3', act.activity_id, act.fe_q3)"
                                                             />
                                                         </p>
                                                         <p>Q4:<input class="form-control"
                                                                 type="number"
                                                                 v-model="act.fe_q4"
                                                                 @input="setUnsaved(true)"
-                                                                @change="updateRevisionPlans('activity_projects', 'fe_q4', act.activity_id, act.fe_q4)"
+                                                                @change="editData.type === 'd' ? updateImplementationAmount('activity_projects', 'fe_q4', act.activity_id, act.fe_q4, act) : updateRevisionPlans('activity_projects', 'fe_q4', act.activity_id, act.fe_q4)"
                                                             />
                                                         </p>
                                                         {{ format_number_conv((parseFloat(act.fe_q1)+parseFloat(act.fe_q2)+parseFloat(act.fe_q3)+parseFloat(act.fe_q4)),2,true) }}
@@ -1029,28 +1188,28 @@
                                                                     type="number"
                                                                     v-model="act.co_q1"
                                                                     @input="setUnsaved(true)"
-                                                                    @change="updateRevisionPlans('activity_projects', 'co_q1', act.activity_id, act.co_q1)"
+                                                                    @change="editData.type === 'd' ? updateImplementationAmount('activity_projects', 'co_q1', act.activity_id, act.co_q1, act) : updateRevisionPlans('activity_projects', 'co_q1', act.activity_id, act.co_q1)"
                                                                 />
                                                             </p>
                                                             <p>Q2:<input class="form-control"
                                                                     type="number"
                                                                     v-model="act.co_q2"
                                                                     @input="setUnsaved(true)"
-                                                                    @change="updateRevisionPlans('activity_projects', 'co_q2', act.activity_id, act.co_q2)"
+                                                                    @change="editData.type === 'd' ? updateImplementationAmount('activity_projects', 'co_q2', act.activity_id, act.co_q2, act) : updateRevisionPlans('activity_projects', 'co_q2', act.activity_id, act.co_q2)"
                                                                 />
                                                             </p>
                                                             <p>Q3:<input class="form-control"
                                                                     type="number"
                                                                     v-model="act.co_q3"
                                                                     @input="setUnsaved(true)"
-                                                                    @change="updateRevisionPlans('activity_projects', 'co_q3', act.activity_id, act.co_q3)"
+                                                                    @change="editData.type === 'd' ? updateImplementationAmount('activity_projects', 'co_q3', act.activity_id, act.co_q3, act) : updateRevisionPlans('activity_projects', 'co_q3', act.activity_id, act.co_q3)"
                                                                 />
                                                             </p>
                                                             <p>Q4:<input class="form-control"
                                                                     type="number"
                                                                     v-model="act.co_q4"
                                                                     @input="setUnsaved(true)"
-                                                                    @change="updateRevisionPlans('activity_projects', 'co_q4', act.activity_id, act.co_q4)"
+                                                                    @change="editData.type === 'd' ? updateImplementationAmount('activity_projects', 'co_q4', act.activity_id, act.co_q4, act) : updateRevisionPlans('activity_projects', 'co_q4', act.activity_id, act.co_q4)"
                                                                 />
                                                             </p>
                                                             {{ format_number_conv((parseFloat(act.co_q1)+parseFloat(act.co_q2)+parseFloat(act.co_q3)+parseFloat(act.co_q4)),2,true) }}
@@ -1416,8 +1575,116 @@
                             ? `/budget/${paps.id}`:null">
                                 Estimated Cost/Budgetary Requirements
                             </Link>
+                            <!-- editData.type: {{ editData.type }} -->
                         </h3>
-                        <table class="table table-bordered">
+                        <!--  -->
+                        <table class="table table-hover table-bordered border-dark" v-if="editData.type==='d' && (budgetaryRequirementsProjectDesign.projects || []).length > 0">
+                            <thead>
+                                <tr>
+                                    <th colspan="3">Particulars</th>
+                                    <th>Account Code</th>
+                                    <th v-if="editData.type == 'sip'">SIP Number</th>
+                                    <th>Amount</th>
+                                    <th>Source</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <template
+                                    v-for="project in (budgetaryRequirementsProjectDesign.projects || [])"
+                                    :key="project.id"
+                                >
+                                    <template
+                                        v-for="category in (project.categories || [])"
+                                        :key="project.id + '-' + category.category"
+                                    >
+                                        <!-- Category heading -->
+                                        <tr class="table-secondary">
+                                            <td
+                                                :colspan="editData.type == 'sip' ? 8 : 7"
+                                                class="fw-bold"
+                                            >
+                                                {{ category.category_label }}
+                                            </td>
+                                        </tr>
+
+                                        <!-- Rows under the category -->
+                                        <tr
+                                            v-for="(row, rowIndex) in (category.rows || [])"
+                                            :key="project.id + '-' + category.category + '-' + rowIndex"
+                                        >
+                                            <td colspan="3">
+                                                {{ row.object_of_expenditure }}
+                                            </td>
+
+                                            <td>{{ row.account_code }}</td>
+
+                                            <td v-if="editData.type == 'sip'">
+                                                -
+                                            </td>
+
+                                            <td class="text-end">
+                                                {{ Number(row.budget_year || 0).toLocaleString('en-PH', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                }) }}
+                                            </td>
+
+                                            <td>General Fund</td>
+
+                                            <td>-</td>
+                                        </tr>
+
+                                        <!-- Category subtotal -->
+                                        <tr class="fw-bold">
+                                            <td
+                                                :colspan="editData.type == 'sip' ? 5 : 4"
+                                                class="text-end"
+                                            >
+                                                {{ category.category_label }} Subtotal
+                                            </td>
+
+                                            <td class="text-end">
+                                                {{ Number(
+                                                    category.rows?.reduce((total, row) => {
+                                                        return total + (parseFloat(row.budget_year) || 0);
+                                                    }, 0) || 0
+                                                ).toLocaleString('en-PH', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                }) }}
+                                            </td>
+
+                                            <td :colspan="editData.type == 'sip' ? 2 : 1"></td>
+                                            <!-- <td></td> -->
+                                        </tr>
+                                    </template>
+                                </template>
+
+                                <!-- Overall Budget Preparation Total -->
+                                <tr class="table-primary fw-bold">
+                                    <td
+                                        :colspan="editData.type == 'sip' ? 5 : 4"
+                                        class="text-end"
+                                    >
+                                        Budget Prep Total
+                                    </td>
+
+                                    <td class="text-end">
+                                        <!-- budget_prep_total: {{budget_prep_total}} -->
+                                        {{ Number(budget_prep_total || 0).toLocaleString('en-PH', {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                        }) }}
+                                    </td>
+
+                                    <td :colspan="editData.type == 'sip' ? 3 : 2"></td>
+                                    <!-- <td></td> -->
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-bordered" v-if="editData.type==='p' || (budgetaryRequirementsProjectDesign.projects || []).length < 1">
                             <thead>
                                 <tr>
                                     <th colspan="3">Particulars</th>
@@ -1467,7 +1734,9 @@
                                     <!-- DATA ROWS -->
                                      <tr v-for="row in rows" :key="row.id">
                                         <td></td>
-                                        <td></td>
+                                        <td>
+                                            <!-- {{row}} -->
+                                        </td>
                                         <!-- BUDGET PARTICULARS -->
                                         <td
                                             :class="{
@@ -1539,7 +1808,17 @@
                                             }"
                                             :id="row.id + '_budget_requirements_amount'"
                                         >
-                                            <textarea
+                                            <!-- amount -->
+                                             <!-- {{editData.type}} -->
+                                            <textarea v-if="editData.type=='d'"
+                                                class="form-control transparent-bg "
+                                                type="text"
+                                                v-model="row.amount"
+                                                @input="setUnsaved(true)"
+                                                @change="updateRevisionPlansBudgetAmount('budget_requirements', 'amount', row.id, row.amount, row)">
+                                                    {{ row.amount }}
+                                            </textarea>
+                                            <textarea v-if="editData.type=='p'"
                                                 class="form-control transparent-bg "
                                                 type="text"
                                                 v-model="row.amount"
@@ -1668,6 +1947,9 @@
                                 </tr>
                             </tfoot>
                         </table>
+                        <!-- type: {{editData.type}} -->
+
+                        <!-- {{ budgetaryRequirementsProjectDesign}} -->
                     </div>
                     <!--VI. IMPLEMENTING TEAM************************************************** -->
                     <h3 id='implementing_team'>
@@ -1720,7 +2002,8 @@
                                                 'text-danger': has_comment('Team Members','Name',team_member.name,'name','team_plans', team_member, team_member.comments)
                                             }"
                                         :id="team_member.id + '_team_plans_name'"
-                                    >{{ team_member.name }}
+                                    >
+                                        {{ team_member.name }}
                                         <button v-if="can_view_comment()" class="superscript-btn"
                                             @click="handleClick('Team Plan','Name',team_member.name,'name','team_plans', team_member, team_member.comments)">*
                                         </button>
@@ -1729,9 +2012,9 @@
                                         </button>
                                     </td>
                                     <!-- Gender -->
-                                     <td>
+                                    <td>
                                         {{ team_member.gender }}
-                                     </td>
+                                    </td>
                                     <!-- Position -->
                                     <td :id="team_member.id + '_team_plans_position'"
                                         :class="{
@@ -1760,7 +2043,6 @@
                                         </button>
                                     </td>
                                     <!-- Competency -->
-
                                     <td :class="{
                                                 'text-danger': has_comment('Team Plan','with_gad_training',team_member.with_gad_training,'with_gad_training','team_plans', team_member, team_member.comments)
                                             }" :id="team_member.id + '_team_plans_with_gad_training'" >
@@ -1849,12 +2131,12 @@
                             <tbody>
                                 <tr v-for="monitor in monitoring_and_avaluation">
                                     <!-- M&E Evaluation Mechanism Tool -->
-                                    <td :id="monitor.id + '_monitoring_and_evaluations_evaluation_mechanism_tool'">
+                                    <td style="padding: 0;" :id="monitor.id + '_monitoring_and_evaluations_evaluation_mechanism_tool'">
                                         <textarea
                                             :class="{
                                                 'text-danger': has_comment('Monitoring and Evaluation','Evaluation Mechanism Tool',monitor.evaluation_mechanism_tool,'evaluation_mechanism_tool','monitoring_and_evaluations', monitor, monitor.comments)
                                             }"
-
+                                            style="padding: 0;"
                                             class="form-control transparent-bg "
                                             type="text"
                                             v-model="monitor.evaluation_mechanism_tool"
@@ -1870,7 +2152,7 @@
                                         </button>
                                     </td>
                                     <!-- M&E OPR and their roles -->
-                                    <td
+                                    <td style="padding: 0;"
                                     :id="monitor.id + '_monitoring_and_evaluations_opr'"
                                     >
                                         <textarea
@@ -1892,7 +2174,7 @@
                                         </button>
                                     </td>
                                     <!-- M&E Target Beneficiaries -->
-                                    <td :class="{
+                                    <td style="padding: 0;" :class="{
                                                 'text-danger': has_comment('Monitoring and Evaluation','Target Beneficiaries',monitor.target_beneficiaries,'target_beneficiaries','monitoring_and_evaluations', monitor, monitor.comments)
                                     }"
                                     :id="monitor.id + '_monitoring_and_evaluations_target_beneficiaries'"
@@ -1977,7 +2259,7 @@
                             <tbody>
                                 <tr v-for="risk in risk_manangement">
                                     <!-- Risk Management -Possible Risks -->
-                                    <td :class="{
+                                    <td style="padding: 0;" :class="{
                                         'text-danger': has_comment('Risk Management','Possible Risks',risk.possible_risk,'possible_risk','risk_manangements', risk, risk.comments)
                                     }"
                                     :id="risk.id + '_risk_manangements_possible_risk'"
@@ -1994,7 +2276,7 @@
                                         </button>
                                     </td>
                                     <!-- Risk Management -Person Affected -->
-                                    <td :class="{
+                                    <td style="padding: 0;" :class="{
                                         'text-danger': has_comment('Risk Management','Person Affected',risk.person_affected,'person_affected','risk_manangements', risk, risk.comments)
                                     }"
                                     :id="risk.id + '_risk_manangements_person_affected'"
@@ -2011,10 +2293,10 @@
                                         </button>
                                     </td>
                                     <!-- Risk Management -Management -->
-                                    <td :class="{
-                                        'text-danger': has_comment('Risk Management','Management',risk.management,'management','risk_manangements', risk, risk.comments)
-                                    }"
-                                    :id="risk.id + '_risk_manangements_management'"
+                                    <td style="padding: 0;" :class="{
+                                            'text-danger': has_comment('Risk Management','Management',risk.management,'management','risk_manangements', risk, risk.comments)
+                                        }"
+                                        :id="risk.id + '_risk_manangements_management'"
                                     >
                                         <QuillEditor theme="snow" v-model:content="risk.management" contentType="html"
                                         @update:content="val => updateRevisionPlans('risk_manangements', 'management', risk.id, risk.management)"
@@ -2028,7 +2310,7 @@
                                         </button>
                                     </td>
                                     <!-- Remove-->
-                                     <td>
+                                    <td>
                                         <button class="btn btn-danger btn-sm text-white"
                                             @click="deleteData(risk.id, 'risk_manangements', risk.possible_risk)">
                                             🗑 Delete
@@ -2505,9 +2787,10 @@
             </tr>
         </table>
 
-
+        <!-- v-if="editData.type === 'p'" -->
         <button @click="addStrategy" class="btn btn-primary mt-2">Add Strategy</button>
-        <button @click="saveStrategies" class="btn btn-success mt-2">Save</button>
+        <button @click="saveStrategies" class="btn btn-success mt-2" v-if="editData.type === 'p'">Save</button>
+        <button @click="saveStrategiesProjectDesign" class="btn btn-success mt-2" v-if="editData.type === 'd'">Save</button>
         <!-- {{strategies}} -->
     </StrategyModal>
     <ActivityModal v-if="ActivityModalVisible" @close-modal-event="closeActivityModal" title="ACTIVITIES MODAL">
@@ -3285,6 +3568,286 @@
         </table>
         <!-- {{activity_active}} -->
     </ActivityModalEdit>
+    <NewActivityStrategyRequestModal v-if="NewActivityStrategyRequestModalVisible" @close-modal-event="closeNewActivityStrategyRequestModal" title="NEW ACTIVITY/STRATEGY REQUEST">
+        <div class="mb-3">
+            <label class="form-label" for="strategy-request-files">Supporting files</label>
+            <input id="strategy-request-files" ref="strategyRequestFiles" type="file" class="form-control" accept=".pdf,.doc,.docx,image/*" multiple @change="handleStrategyRequestFiles">
+            <small class="text-muted">PDF, DOC, DOCX, or image files. Maximum 2 files and 1 MB total.</small>
+            <div v-if="strategy_request_files.length" class="table-responsive mt-2">
+                <table class="table table-sm table-bordered mb-0">
+                    <thead>
+                        <tr class="bg-light">
+                            <th>File name</th>
+                            <th>Type</th>
+                            <th>Size</th>
+                            <th style="width: 60px;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(file, index) in strategy_request_files" :key="file.file_name + index">
+                            <td>{{ file.file_name }}</td>
+                            <td>{{ file.file_type }}</td>
+                            <td>{{ formatFileSize(file.file_size) }}</td>
+                            <td><button type="button" class="btn btn-danger btn-sm" @click="removeStrategyRequestFile(index)">X</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <!-- {{ strategy_request_array}} -->
+            <table class="table table-sm table-bordered table-hover" style="min-width: 1200px;">
+                <thead>
+                    <tr class="bg-secondary text-white">
+                        <th style="width: 80px;">ID</th>
+                        <th style="width: 220px;">Description</th>
+                        <th>Activities </th>
+                        <th style="width: 60px;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template v-for="(strategyRow, strategyIndex) in strategy_request_array" :key="strategyIndex">
+                        <tr>
+                            <td>
+                                <!-- id: {{ strategyRow.id ?? 'null' }}
+                                strategy_activity_request_id:{{ strategyRow.strategy_activity_request_id ?? 'null' }} -->
+                            </td>
+                            <!-- <td></td> -->
+                            <td>
+                                <textarea v-model="strategyRow.description" class="form-control" rows="2" placeholder="Enter strategy description"></textarea>
+                            </td>
+                            <td>
+                                <button class="btn btn-primary btn-sm text-white" @click="addActivityRequest(strategyIndex)">Add Activity</button>
+                            </td>
+                            <td>
+                                <button class="btn btn-danger btn-sm" @click="removeStrategyRequest(strategyIndex)">X</button>
+                            </td>
+                        </tr>
+                        <tr v-if="strategyRow.activities && strategyRow.activities.length">
+                            <td colspan="5" class="p-0 bg-light">
+                                <div class="p-2">
+                                    <table class="table table-sm table-bordered mb-0">
+                                        <thead>
+                                            <tr class="bg-light">
+                                                <th style="width: 90px;">Ids:</th>
+                                                <th>Description</th>
+                                                <th>GAD Issue</th>
+                                                <th>Timeline</th>
+                                                <th>PS</th>
+                                                <th>MOOE</th>
+                                                <th>CO</th>
+                                                <th>FE</th>
+                                                <th>CCET</th>
+                                                <th>Responsible</th>
+                                                <th style="width: 60px;">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(activityRow, activityIndex) in strategyRow.activities" :key="activityIndex">
+                                                <td>
+                                                    <!-- activity_id: {{ activityRow.activity_id ?? 'null' }}
+                                                    strategy_id: {{ activityRow.strategy_id ?? 'null' }}
+                                                    strategy_activity_request_id: {{ activityRow.strategy_activity_request_id ?? 'null' }}-->
+                                                </td>
+                                                <!-- <td></td>
+                                                <td></td> -->
+                                                <td>
+                                                    <textarea v-model="activityRow.description" class="form-control" rows="2"></textarea>
+                                                </td>
+                                                <td>
+                                                    <textarea v-model="activityRow.gad_issue" class="form-control" rows="2"></textarea>
+                                                </td>
+                                                <td>
+                                                    <input v-model="activityRow.date_from" type="date" class="form-control mb-1" />
+                                                    <input v-model="activityRow.date_to" type="date" class="form-control" />
+                                                </td>
+                                                <td>
+                                                    <input v-model.number="activityRow.ps_q1" type="number" class="form-control mb-1" />
+                                                    <input v-model.number="activityRow.ps_q2" type="number" class="form-control mb-1" />
+                                                    <input v-model.number="activityRow.ps_q3" type="number" class="form-control mb-1" />
+                                                    <input v-model.number="activityRow.ps_q4" type="number" class="form-control" />
+                                                </td>
+                                                <td>
+                                                    <input v-model.number="activityRow.mooe_q1" type="number" class="form-control mb-1" />
+                                                    <input v-model.number="activityRow.mooe_q2" type="number" class="form-control mb-1" />
+                                                    <input v-model.number="activityRow.mooe_q3" type="number" class="form-control mb-1" />
+                                                    <input v-model.number="activityRow.mooe_q4" type="number" class="form-control" />
+                                                </td>
+                                                <td>
+                                                    <input v-model.number="activityRow.co_q1" type="number" class="form-control mb-1" />
+                                                    <input v-model.number="activityRow.co_q2" type="number" class="form-control mb-1" />
+                                                    <input v-model.number="activityRow.co_q3" type="number" class="form-control mb-1" />
+                                                    <input v-model.number="activityRow.co_q4" type="number" class="form-control" />
+                                                </td>
+                                                <td>
+                                                    <input v-model.number="activityRow.fe_q1" type="number" class="form-control mb-1" />
+                                                    <input v-model.number="activityRow.fe_q2" type="number" class="form-control mb-1" />
+                                                    <input v-model.number="activityRow.fe_q3" type="number" class="form-control mb-1" />
+                                                    <input v-model.number="activityRow.fe_q4" type="number" class="form-control" />
+                                                </td>
+                                                <td>
+                                                    <input v-model="activityRow.ccet_code" type="text" class="form-control" />
+                                                </td>
+                                                <td>
+                                                    <input v-model="activityRow.responsible" type="text" class="form-control" />
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-danger btn-sm" @click="removeActivityRequest(strategyIndex, activityIndex)">X</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+        <!-- {{ strategy_requests}} -->
+        <div class="d-flex justify-content-between mt-3">
+            <button class="btn btn-primary text-white" @click="addStrategyRequestRow">Add Strategy</button>
+            <button class="btn btn-success text-white" @click="saveStrategyRequestArray">Done</button>
+        </div>
+    </NewActivityStrategyRequestModal>
+
+    <NewActivityStrategyRequestModal v-if="strategyOnlyModalVisible" @close-modal-event="closeStrategyOnlyModal" title="NEW STRATEGY">
+        <div class="mb-3">
+            <label class="form-label">Strategy description</label>
+            <textarea v-model="strategy_only_form.description" class="form-control" rows="4" placeholder="Enter strategy description"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Year period</label>
+            <input v-model.number="strategy_only_form.year_period" type="number" class="form-control" min="2024" />
+        </div>
+
+        <div class="d-flex justify-content-end gap-2 mt-3">
+            <button type="button" class="btn btn-outline-secondary" @click="closeStrategyOnlyModal">Cancel</button>
+            <button type="button" class="btn btn-primary text-white" @click="saveStrategyOnly">Save Strategy</button>
+        </div>
+    </NewActivityStrategyRequestModal>
+
+    <NewActivityStrategyRequestModal v-if="activityOnlyModalVisible" @close-modal-event="closeActivityOnlyModal" title="NEW ACTIVITY">
+        <div class="mb-3">
+            <label class="form-label">Parent strategy</label>
+            <div class="form-control bg-light" aria-readonly="true">{{ activity_only_form.parent_strategy_description }}</div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Activity description</label>
+            <textarea v-model="activity_only_form.description" class="form-control" rows="3" placeholder="Enter activity description"></textarea>
+        </div>
+
+        <div class="row g-2 mb-3">
+            <div class="col-md-6">
+                <label class="form-label">Date from</label>
+                <input v-model="activity_only_form.date_from" type="date" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Date to</label>
+                <input v-model="activity_only_form.date_to" type="date" class="form-control" />
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">GAD issue</label>
+            <textarea v-model="activity_only_form.gad_issue" class="form-control" rows="2"></textarea>
+        </div>
+
+        <div class="row g-2 mb-3">
+            <div class="col-md-6">
+                <label class="form-label">CCET code</label>
+                <input v-model="activity_only_form.ccet_code" type="text" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Responsible</label>
+                <input v-model="activity_only_form.responsible" type="text" class="form-control" />
+            </div>
+        </div>
+
+        <div class="row g-2 mb-3">
+            <div v-for="category in ['ps', 'mooe', 'co', 'fe']" :key="category" class="col-md-6">
+                <fieldset class="border rounded p-2">
+                    <legend class="float-none w-auto px-1 fs-6 text-uppercase">{{ category }}</legend>
+                    <div class="row g-2">
+                        <div v-for="quarter in ['q1', 'q2', 'q3', 'q4']" :key="`${category}_${quarter}`" class="col-3">
+                            <label class="form-label">{{ quarter.toUpperCase() }}</label>
+                            <input v-model.number="activity_only_form[`${category}_${quarter}`]" type="number" min="0" step="0.01" class="form-control" />
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2 mt-3">
+            <button type="button" class="btn btn-outline-secondary" @click="closeActivityOnlyModal">Cancel</button>
+            <button type="button" class="btn btn-primary text-white" @click="saveActivityOnly">Save Activity</button>
+        </div>
+    </NewActivityStrategyRequestModal>
+
+    <NewActivityStrategyRequestModal v-if="strategyRequestFilesModalVisible" @close-modal-event="closeStrategyRequestFilesModal" title="STRATEGY REQUEST FILES">
+        <div class="mb-3 d-flex align-items-end gap-2">
+            <div class="flex-grow-1">
+                <label class="form-label" for="strategy-request-extra-file">Add a file</label>
+                <input id="strategy-request-extra-file" ref="strategyRequestFileInput" type="file" class="form-control" accept=".pdf,.doc,.docx,image/*" @change="handleAdditionalStrategyRequestFile">
+            </div>
+            <button type="button" class="btn btn-primary text-white" :disabled="!strategyRequestFileToUpload" @click="addStrategyRequestFile">Upload</button>
+        </div>
+        <div v-if="strategyRequestFiles.length" class="table-responsive">
+            <table class="table table-sm table-bordered align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Strategy Activity Request ID</th>
+                        <th>File name</th>
+                        <th>File path</th>
+                        <th>File type</th>
+                        <th>File size</th>
+                        <th>Uploaded by</th>
+                        <th>Created at</th>
+                        <th>Updated at</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template v-for="(file, fileIndex) in strategyRequestFiles" :key="file.id ?? fileIndex">
+                        <tr>
+                            <td>{{ file.id }}</td>
+                            <td>{{ file.strategy_activity_request_id }}</td>
+                            <td>{{ file.file_name }}</td>
+                            <td>{{ file.file_path }}</td>
+                            <td>{{ file.file_type }}</td>
+                            <td>{{ formatFileSize(file.file_size) }}</td>
+                            <td>{{ file.uploaded_by }}</td>
+                            <td>{{ file.created_at }}</td>
+                            <td>{{ file.updated_at }}</td>
+                            <td>
+                                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="collapse"
+                                    :data-bs-target="`#strategy-request-file-${file.id ?? fileIndex}`" aria-expanded="false"
+                                    :aria-controls="`strategy-request-file-${file.id ?? fileIndex}`">
+                                    Preview
+                                </button>
+                                <button type="button" class="btn btn-danger btn-sm text-white ms-1" @click="deleteStrategyRequestFile(file.id)">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="10" class="p-0">
+                                <div :id="`strategy-request-file-${file.id ?? fileIndex}`" class="accordion-collapse collapse">
+                                    <div class="p-3 text-center">
+                                        <img v-if="isStrategyRequestImage(file)" :src="getStrategyRequestFileUrl(file)" :alt="file.file_name" class="img-fluid" style="max-height: 70vh;" />
+                                        <iframe v-else-if="isStrategyRequestPdf(file)" :src="getStrategyRequestFileUrl(file)" :title="file.file_name" class="w-100 border" style="height: 70vh;"></iframe>
+                                        <a v-else :href="getStrategyRequestFileUrl(file)" target="_blank" rel="noopener">Open {{ file.file_name }}</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+        <div v-else class="text-muted p-3">No files attached to this request.</div>
+    </NewActivityStrategyRequestModal>
 </template>
 <script>
 import { useForm } from "@inertiajs/inertia-vue3";
@@ -3301,6 +3864,7 @@ import MonitoringModal from "@/Shared/ModalDynamicTitle";
 import SignatoryModal from "@/Shared/ModalDynamicTitle";
 import ExpectedOutputModal from "@/Shared/ModalDynamicTitle";
 import ExpectedOutcomeModal from "@/Shared/ModalDynamicTitle";
+import NewActivityStrategyRequestModal from "@/Shared/ModalDynamicTitleLarge";
 import axios from 'axios';
 import debounce from 'lodash/debounce';
 
@@ -3348,6 +3912,12 @@ export default {
 
         // CCET CODE
         ccet_codes: Object,
+
+        // STRATEGY REQUESTS
+        strategy_requests: Object,
+
+        // PROJECT DESIGN
+        budgetaryRequirementsProjectDesign: Object,
     },
     components: {
 
@@ -3367,7 +3937,8 @@ export default {
         MonitoringModal,
         SignatoryModal,
         ExpectedOutputModal,
-        ExpectedOutcomeModal
+        ExpectedOutcomeModal,
+        NewActivityStrategyRequestModal
 
     },
     data() {
@@ -3484,9 +4055,75 @@ export default {
             expected_outcomes_current: [],
             expected_outcomes_new: [],
 
+            // NewActivityStrategyRequestModal ****************
+            NewActivityStrategyRequestModalVisible: false,
+            strategy_request_array: [],
+            activity_request_array: [],
+            strategy_request_files: [],
+            strategyOnlyModalVisible: false,
+            activityOnlyModalVisible: false,
+            strategyRequestFilesModalVisible: false,
+            strategyRequestFiles: [],
+            strategyRequestId: null,
+            strategyRequestFileToUpload: null,
+            strategy_only_form: {
+                description: '',
+                strategy_activity_request_id: null,
+                project_id: null,
+                idpaps: null,
+                idmfo: null,
+                FFUNCCOD: null,
+                year_period: new Date().getFullYear() + 1,
+            },
+            activity_only_form: {
+                strategy_id: null,
+                parent_strategy_description: '',
+                description: '',
+                project_id: null,
+                date_from: '',
+                date_to: '',
+                gad_issue: '',
+                ccet_code: '',
+                responsible: '',
+                ps_q1: 0,
+                ps_q2: 0,
+                ps_q3: 0,
+                ps_q4: 0,
+                mooe_q1: 0,
+                mooe_q2: 0,
+                mooe_q3: 0,
+                mooe_q4: 0,
+                co_q1: 0,
+                co_q2: 0,
+                co_q3: 0,
+                co_q4: 0,
+                fe_q1: 0,
+                fe_q2: 0,
+                fe_q3: 0,
+                fe_q4: 0,
+            },
+
+            // BUDGET PREP VARIABLES
+            budget_prep_total: 0,
+
         };
     },
     computed: {
+        strategyRequestOptions() {
+            const rows = Array.isArray(this.strategy_requests) ? this.strategy_requests : [];
+            const strategies = [];
+
+            rows.forEach((request) => {
+                const list = Array.isArray(request?.strategy) ? request.strategy : [];
+                list.forEach((strategy) => {
+                    if (strategy?.id) {
+                        strategies.push(strategy);
+                    }
+                });
+            });
+
+            return strategies;
+        },
         wordsRemaining() {
             const wordCount = this.form.rationale.trim().split(/\s+/).length;
             var returner = this.maxWords - wordCount;
@@ -3703,7 +4340,9 @@ export default {
             if(this.form.checklist_id=='0'){
                 this.form.checklist_id =null;
             }
-
+            if(this.editData.type=="d"){
+                this.getOverallTotal()
+            }
         } else {
             this.pageTitle = "Create"
             this.form.is_strategy_based=0
@@ -3740,7 +4379,6 @@ export default {
                 //alert('undefined si idpaps!');
             }
         }
-
 
 
 
@@ -4119,6 +4757,115 @@ export default {
                 console.error(`Error updating ${table_name} (${column_name})`, error);
             }
         }, 1000), // 🔥 Delay here (1s or 300ms)
+        updateRevisionPlansBudgetAmount(table_name, column_name, id, new_data, row) {
+            const amount = parseFloat(new_data);
+            const ceiling = parseFloat(row.reference_budget_ceiling);
+            // alert("Amount: " + amount + ", Ceiling: " + ceiling); // Debugging alert
+            if (isNaN(amount) || amount < 0) {
+                alert("Amount must be a valid number greater than or equal to 0.");
+                row.amount = 0;
+                this.setUnsaved(false);
+                return;
+            }
+
+            if (!isNaN(ceiling) && amount > ceiling) {
+                alert(
+                    "Amount cannot exceed the approved budget ceiling of " +
+                    ceiling.toLocaleString('en-PH', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }) + "."
+                );
+
+                // Restore the amount to the budget ceiling
+                row.amount = ceiling;
+                this.setUnsaved(false);
+                return;
+            }
+
+            // Valid amount: call the existing debounced method
+            this.updateRevisionPlans(
+                table_name,
+                column_name,
+                id,
+                new_data
+            );
+        },
+        updateImplementationAmount(table_name, column_name, id, new_data, row) {
+            // Match quarterly columns: ps_q1, mooe_q2, co_q3, fe_q4, etc.
+            const match = column_name.match(/^(ps|mooe|co|fe)_q([1-4])$/);
+            // alert("has_reference_activity_project: " + row.has_reference_activity_project);
+            // Only validate quarterly disaggregated amounts
+            if (!match) {
+                this.updateRevisionPlans(table_name, column_name, id, new_data);
+                return;
+            }
+            if(!row.has_reference_activity_project){
+                this.updateRevisionPlans(table_name, column_name, id, new_data);
+                return;
+            }
+            const category = match[1];
+            const quarter = match[2];
+
+            // Get the category total, e.g. ps_total
+            const categoryTotal = parseFloat(row[`${category}_total`]) || 0;
+
+            // Sum the four quarterly amounts for this category.
+            // Use new_data for the edited quarter to ensure the latest input is checked.
+            const quarterlyTotal = [1, 2, 3, 4].reduce((sum, q) => {
+                const column = `${category}_q${q}`;
+
+                const value = q === Number(quarter)
+                    ? parseFloat(new_data)
+                    : parseFloat(row[column]);
+
+                return sum + (isNaN(value) ? 0 : value);
+            }, 0);
+
+            // If the quarterly sum exceeds the category total, revert the edited value
+            if (quarterlyTotal > categoryTotal) {
+                alert(
+                    `The total of ${category.toUpperCase()} quarterly amounts ` +
+                    `(${quarterlyTotal.toLocaleString('en-PH', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    })}) cannot exceed the category total of ` +
+                    `${categoryTotal.toLocaleString('en-PH', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    })}.`
+                );
+
+                // Restore the previous allowed value for the edited quarter
+                const ceilingColumn = `${category}_q${quarter}_ceiling`;
+                const ceiling = parseFloat(row[ceilingColumn]);
+
+                if (!isNaN(ceiling)) {
+                    row[column_name] = ceiling;
+                }
+
+                this.setUnsaved(false);
+                return;
+            }
+
+            // Validation passed; use the existing shared update method
+            this.updateRevisionPlans(table_name, column_name, id, new_data);
+        },
+        // updateRevisionPlansBudgetAmount(table_name, column_name, id, new_data, row) {
+        //     const amount = parseFloat(new_data);
+        //     const ceiling = parseFloat(row.budget_ceiling);
+
+        //     if (!isNaN(amount) && !isNaN(ceiling) && amount > ceiling) {
+        //         alert("Amount cannot exceed the approved budget ceiling of " + ceiling + ".");
+
+        //         // row.amount = ceiling;
+        //         // this.setUnsaved(false);
+        //         // return;
+        //     }
+
+        //     // If valid, call the existing update method
+        //     this.updateRevisionPlans(table_name, column_name, id, new_data);
+        // },
         // async updateRevisionPlans(table_name, column_name, id, new_data){
         //     const payload = {
         //         table_name: table_name,
@@ -4429,6 +5176,440 @@ export default {
             this.ActivityModalVisibleEdit=false;
              this.activity_active = [];
         },
+
+        // STRATEGY/ACTIVITY REQUESTS *********************
+        showStrategyRequestModal(){
+            this.strategy_request_array = [];
+            this.activity_request_array = [];
+            this.strategy_request_files = [];
+            this.addStrategyRequestRow();
+            this.NewActivityStrategyRequestModalVisible = true;
+        },
+        closeNewActivityStrategyRequestModal(){
+            this.NewActivityStrategyRequestModalVisible = false;
+        },
+        getDefaultActivityRequestRow() {
+            return {
+                activity_id: null,
+                strategy_id: null,
+                strategy_activity_request_id: null,
+                description: '',
+                gad_issue: '',
+                date_from: '',
+                date_to: '',
+                ps_q1: 0,
+                ps_q2: 0,
+                ps_q3: 0,
+                ps_q4: 0,
+                mooe_q1: 0,
+                mooe_q2: 0,
+                mooe_q3: 0,
+                mooe_q4: 0,
+                co_q1: 0,
+                co_q2: 0,
+                co_q3: 0,
+                co_q4: 0,
+                fe_q1: 0,
+                fe_q2: 0,
+                fe_q3: 0,
+                fe_q4: 0,
+                ccet_code: null,
+                responsible: '',
+            };
+        },
+        getDefaultStrategyRequestRow() {
+            return {
+                id: null,
+                strategy_activity_request_id: null,
+                description: '',
+                activities: [],
+            };
+        },
+        addStrategyRequestRow() {
+            this.strategy_request_array.push(this.getDefaultStrategyRequestRow());
+        },
+        removeStrategyRequest(index) {
+            this.strategy_request_array.splice(index, 1);
+            this.syncActivityRequestArray();
+        },
+        addActivityRequest(strategyIndex) {
+            if (!this.strategy_request_array[strategyIndex]) {
+                return;
+            }
+
+            const newActivity = this.getDefaultActivityRequestRow();
+            newActivity.strategy_id = this.strategy_request_array[strategyIndex].id;
+            newActivity.strategy_activity_request_id = this.strategy_request_array[strategyIndex].strategy_activity_request_id;
+
+            if (!this.strategy_request_array[strategyIndex].activities) {
+                this.strategy_request_array[strategyIndex].activities = [];
+            }
+
+            this.strategy_request_array[strategyIndex].activities.push(newActivity);
+            this.syncActivityRequestArray();
+        },
+        removeActivityRequest(strategyIndex, activityIndex) {
+            if (!this.strategy_request_array[strategyIndex]) {
+                return;
+            }
+
+            if (!Array.isArray(this.strategy_request_array[strategyIndex].activities)) {
+                return;
+            }
+
+            this.strategy_request_array[strategyIndex].activities.splice(activityIndex, 1);
+            this.syncActivityRequestArray();
+        },
+        syncActivityRequestArray() {
+            const flatActivities = [];
+
+            this.strategy_request_array.forEach((strategyRow) => {
+                const activities = Array.isArray(strategyRow.activities) ? strategyRow.activities : [];
+
+                activities.forEach((activityRow) => {
+                    flatActivities.push({
+                        ...activityRow,
+                        strategy_id: strategyRow.id ?? activityRow.strategy_id ?? null,
+                        strategy_activity_request_id: strategyRow.strategy_activity_request_id ?? activityRow.strategy_activity_request_id ?? null,
+                    });
+                });
+            });
+
+            this.activity_request_array = flatActivities;
+        },
+        // STRATEGY/ACTIVITY REQUEST -ACTIVITY REQUESTSTS ONLY!!!!
+        showStrategyRequestModalForActivityOnly(parent_strategy_object){
+            this.strategy_request_array = [];
+            this.activity_request_array = [];
+            this.strategy_request_files = [];
+            this.addStrategyRequestRow();
+            this.NewActivityStrategyRequestModalVisible = true;
+        },
+        passedStrategyRow(parent_strategy_object){
+            return {
+                id: null,
+                strategy_activity_request_id: null,
+                description: '',
+                activities: [],
+            };
+        },
+        // STRATEGY/ACTIVITY REQUEST FILES *********************
+        formatFileSize(size) {
+            return `${(size / 1024).toFixed(1)} KB`;
+        },
+
+
+        handleStrategyRequestFiles(event) {
+            const selectedFiles = Array.from(event.target.files || []);
+            const files = [...this.strategy_request_files.map(file => file.file), ...selectedFiles];
+            const allowedFile = /^(application\/pdf|application\/msword|application\/vnd\.openxmlformats-officedocument\.wordprocessingml\.document|image\/)/i;
+            const totalSize = files.reduce((total, file) => total + file.size, 0);
+
+            if (files.length > 2) {
+                alert('You can upload a maximum of 2 files.');
+            } else if (files.some(file => !allowedFile.test(file.type))) {
+                alert('Only PDF, DOC, DOCX, or image files are allowed.');
+            } else if (totalSize > 1024 * 1024) {
+                alert('The total file size must not exceed 1 MB.');
+            } else {
+                this.strategy_request_files = files.map(file => ({
+                    file,
+                    file_name: file.name,
+                    file_path: '',
+                    file_type: file.type,
+                    file_size: file.size,
+                }));
+            }
+
+            event.target.value = '';
+        },
+        removeStrategyRequestFile(index) {
+            this.strategy_request_files.splice(index, 1);
+        },
+        showStrategyRequestFiles(request) {
+            this.strategyRequestId = request?.id ?? null;
+            this.strategyRequestFiles = Array.isArray(request?.files) ? [...request.files] : [];
+            this.strategyRequestFileToUpload = null;
+            this.strategyRequestFilesModalVisible = true;
+        },
+        closeStrategyRequestFilesModal() {
+            this.strategyRequestFilesModalVisible = false;
+            this.strategyRequestFiles = [];
+            this.strategyRequestId = null;
+            this.strategyRequestFileToUpload = null;
+        },
+        handleAdditionalStrategyRequestFile(event) {
+            const file = event.target.files?.[0] ?? null;
+            const allowedFile = /^(application\/pdf|application\/msword|application\/vnd\.openxmlformats-officedocument\.wordprocessingml\.document|image\/)/i;
+
+            if (file && !allowedFile.test(file.type)) {
+                alert('Only PDF, DOC, DOCX, or image files are allowed.');
+                event.target.value = '';
+                return;
+            }
+
+            if (file && file.size > 1024 * 1024) {
+                alert('The file size must not exceed 1 MB.');
+                event.target.value = '';
+                return;
+            }
+
+            this.strategyRequestFileToUpload = file;
+        },
+        async addStrategyRequestFile() {
+            if (!this.strategyRequestId || !this.strategyRequestFileToUpload) {
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('strategy_activity_request_id', this.strategyRequestId);
+            formData.append('file', this.strategyRequestFileToUpload);
+
+            try {
+                const response = await axios.post('/strategy-and-activity-request/files/store', formData);
+                this.strategyRequestFiles.push(response.data.file);
+                this.strategyRequestFileToUpload = null;
+                if (this.$refs.strategyRequestFileInput) {
+                    this.$refs.strategyRequestFileInput.value = '';
+                }
+            } catch (error) {
+                console.error('Failed to upload strategy request file:', error);
+                alert('Failed to upload the selected file.');
+            }
+        },
+        async deleteStrategyRequestFile(id) {
+            if (!id || !confirm('Are you sure you want to delete this file?')) {
+                return;
+            }
+
+            try {
+                await axios.delete(`/strategy-and-activity-request/files/delete/${id}`);
+                this.strategyRequestFiles = this.strategyRequestFiles.filter(file => file.id !== id);
+            } catch (error) {
+                console.error('Failed to delete strategy request file:', error);
+                alert('Failed to delete the selected file.');
+            }
+        },
+        getStrategyRequestFileUrl(file) {
+            const directory = String(file?.file_path || '')
+                .replace(/\\/g, '/')
+                .replace(/^\/+|\/+$/g, '')
+                .replace(/^public\//, '');
+            const fileName = encodeURIComponent(file?.file_name || '');
+
+            return `/${directory}/${fileName}`;
+        },
+        isStrategyRequestImage(file) {
+            return String(file?.file_type || '').toLowerCase().startsWith('image/');
+        },
+        isStrategyRequestPdf(file) {
+            return String(file?.file_type || '').toLowerCase() === 'application/pdf';
+        },
+        saveStrategyRequestArray() {
+            // this.strategy_request_array.forEach((strategyRow) => {
+            //     if (!Array.isArray(strategyRow.activities)) {
+            //         strategyRow.activities = [];
+            //     }
+
+            //     strategyRow.activities.forEach((activityRow) => {
+            //         activityRow.strategy_id = strategyRow.id ?? activityRow.strategy_id ?? null;
+            //         activityRow.strategy_activity_request_id = strategyRow.strategy_activity_request_id ?? activityRow.strategy_activity_request_id ?? null;
+            //     });
+            // });
+
+            // this.syncActivityRequestArray();
+
+            const formData = new FormData();
+            formData.append('strategy_request_array', JSON.stringify(this.strategy_request_array));
+            formData.append('activity_request_array', JSON.stringify(this.activity_request_array));
+            formData.append('revision_plan_id', this.editData?.id ?? '');
+            formData.append('program_and_project_id', this.paps_specific?.id ?? this.paps?.id ?? '');
+            formData.append('idpaps', this.editData?.idpaps ?? this.paps_specific?.id ?? '');
+            formData.append('created_by', this.auth?.user?.id ?? '');
+            formData.append('strategy_activity_request_files', JSON.stringify(this.strategy_request_files.map(file => ({
+                strategy_activity_request_id: null,
+                file_name: file.file_name,
+                file_path: file.file_path,
+                file_type: file.file_type,
+                file_size: file.file_size,
+            }))));
+            this.strategy_request_files.forEach(file => formData.append('strategy_request_uploads[]', file.file));
+
+            this.$inertia.post('/strategy-and-activity-request/create', formData, {
+                forceFormData: true,
+                preserveScroll: true,
+                preserveState: true,
+                onSuccess: () => {
+                    this.closeNewActivityStrategyRequestModal();
+                    alert('Strategy and activity request saved successfully.');
+                },
+                onError: () => {
+                    alert('Failed to save strategy and activity request.');
+                }
+            });
+        },
+        saveStrategiesProjectDesign(){
+            alert("strategy Project Design")
+        },
+        updateStrategyActivityRequestField(id, tableName, columnName, newValue) {
+            if (!id || !tableName || !columnName) {
+                return Promise.resolve();
+            }
+
+            return axios.patch('/strategy-and-activity-request/update', {
+                id: id,
+                table_name: tableName,
+                column_name: columnName,
+                new_value: newValue ?? ''
+            }, {
+                preserveScroll: true,
+                preserveState: true
+            })
+            .then((response) => {
+                this.unsaved = false;
+                return response;
+            })
+            .catch((error) => {
+                console.error('Failed to update strategy/activity row:', error);
+                alert('Failed to update the selected row.');
+                return false;
+            });
+        },
+        submitStrategyActivityRequest(request) {
+            const confirmed = window.confirm(
+                'Are you sure you want to submit this strategy activity request?'
+            );
+
+            if (!confirmed) {
+                return Promise.resolve(false);
+            }
+            return this.updateStrategyActivityRequestField(
+                request.id,
+                'strategy_activity_request',
+                'status',
+                0
+            ).then((response) => {
+                if (response) {
+                    request.status = 0;
+                }
+            });
+        },
+        deleteStrategyActivityRequest(id, tableName) {
+            if (!id || !tableName) {
+                return;
+            }
+
+            const confirmed = confirm('Are you sure you want to delete this record?');
+            if (!confirmed) {
+                return;
+            }
+
+            axios.delete(`/strategy-and-activity-request/delete/${id}/${tableName}`)
+            .then(() => {
+                this.$inertia.reload({ preserveScroll: true });
+            })
+            .catch((error) => {
+                console.error('Failed to delete strategy/activity row:', error);
+                alert('Failed to delete the selected row.');
+            });
+        },
+
+        openStrategyOnlyModal(strategyActivityRequestId) {
+            this.strategy_only_form = {
+                description: '',
+            strategy_activity_request_id: strategyActivityRequestId ?? null,
+                project_id: this.editData?.id ?? this.paps?.id ?? this.paps_specific?.id ?? null,
+                idpaps: this.paps_specific?.id ?? this.paps?.id ?? null,
+                idmfo: this.paps_specific?.idmfo ?? null,
+                FFUNCCOD: this.paps_specific?.FFUNCCOD ?? null,
+                year_period: new Date().getFullYear() + 1,
+            };
+            this.strategyOnlyModalVisible = true;
+        },
+        closeStrategyOnlyModal() {
+            this.strategyOnlyModalVisible = false;
+        },
+        saveStrategyOnly() {
+            if (!this.strategy_only_form.description || !this.strategy_only_form.description.trim()) {
+                alert('Strategy description is required.');
+                return;
+            }
+
+            axios.post('/strategy-and-activity-request/strategy/store', {
+                ...this.strategy_only_form,
+                idpaps: this.editData?.idpaps,
+                project_id: this.editData?.id,
+            })
+                .then(() => {
+                    this.closeStrategyOnlyModal();
+                    this.$inertia.reload({ preserveScroll: true });
+                    alert('Strategy saved successfully.');
+                })
+                .catch((error) => {
+                    console.error('Failed to save strategy:', error);
+                    alert('Failed to save strategy.');
+                });
+        },
+        openActivityOnlyModal(strategyId, strategyDescription) {
+            this.activity_only_form = {
+            strategy_id: strategyId ?? null,
+            parent_strategy_description: strategyDescription ?? '',
+                description: '',
+                project_id: this.editData?.id ?? this.paps?.id ?? this.paps_specific?.id ?? null,
+                date_from: '',
+                date_to: '',
+                gad_issue: '',
+                ccet_code: '',
+                responsible: '',
+                ps_q1: 0,
+                ps_q2: 0,
+                ps_q3: 0,
+                ps_q4: 0,
+                mooe_q1: 0,
+                mooe_q2: 0,
+                mooe_q3: 0,
+                mooe_q4: 0,
+                co_q1: 0,
+                co_q2: 0,
+                co_q3: 0,
+                co_q4: 0,
+                fe_q1: 0,
+                fe_q2: 0,
+                fe_q3: 0,
+                fe_q4: 0,
+            };
+            this.activityOnlyModalVisible = true;
+        },
+        closeActivityOnlyModal() {
+            this.activityOnlyModalVisible = false;
+        },
+        saveActivityOnly() {
+            if (!this.activity_only_form.strategy_id) {
+                alert('Please select a strategy first.');
+                return;
+            }
+
+            if (!this.activity_only_form.description || !this.activity_only_form.description.trim()) {
+                alert('Activity description is required.');
+                return;
+            }
+
+            axios.post('/strategy-and-activity-request/activity/store', {
+                ...this.activity_only_form,
+                idpaps: this.editData?.idpaps,
+                project_id: this.editData?.id,
+            })
+                .then(() => {
+                    this.closeActivityOnlyModal();
+                    this.$inertia.reload({ preserveScroll: true });
+                    alert('Activity saved successfully.');
+                })
+                .catch((error) => {
+                    console.error('Failed to save activity:', error);
+                    alert('Failed to save activity.');
+                });
+        },
+
         //IMPLEMENTING TEAM *******************************
         showTeamModal(){
             this.action_type_team = 'store'
@@ -4922,6 +6103,18 @@ export default {
             }
         },
 
+        // PROJECT DESIGN -BUDGET PREP ******************************************
+        getOverallTotal() {
+            const projects = this.budgetaryRequirementsProjectDesign?.projects || [];
+
+            this.budget_prep_total = projects.reduce((total, project) => {
+                return total + (project.categories || []).reduce((categoryTotal, category) => {
+                    return categoryTotal + (category.rows || []).reduce((rowTotal, row) => {
+                        return rowTotal + (parseFloat(row.budget_year) || 0);
+                    }, 0);
+                }, 0);
+            }, 0);
+        },
 
     },
 };
@@ -5108,4 +6301,3 @@ table {
 
 
 </style>
-

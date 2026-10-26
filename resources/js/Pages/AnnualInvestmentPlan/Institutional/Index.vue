@@ -35,6 +35,8 @@
                                 <th rowspan="2">Year Period</th>
                                 <th colspan="3" style="text-align: center">SANGUNIANG PANLALAWIGAN</th>
                                 <!-- <th colspan="3" style="text-align: center">LOCAL DEVELOPMENT COUNCIL</th> -->
+                                 <th rowspan="2">SP Resolution Number</th>
+                                 <th rowspan="2">Last Page Number</th>
                                  <th rowspan="2">SIP Period</th>
                                 <th rowspan="2">Action</th>
                             </tr>
@@ -42,55 +44,131 @@
                                 <th>Year Period</th>
                                 <th>Approve</th>
                                 <th>Return</th>
+
                                 <!-- <th>Year Period</th>
                                 <th>Approve</th>
                                 <th>Return</th> -->
                             </tr>
                         </thead>
                         <tbody>
-
-                            <tr v-for="dat in data">
-                                <td>{{ dat.year_period }}</td>
-                                <td>{{ formatAipStatus(dat.sp_approved,"sp") }}</td>
-                                <td>
-                                    <button
-                                        class="btn btn-success btn-sm text-white"
-                                        :class="{ 'btn-light text-secondary': dat.sp_approved !== '0' }"
-                                        :disabled="dat.sp_approved !== '0'"
-                                        @click="updateAIPStatus('SP1', dat.year_period)"
-                                    >
-                                        Approve AIP
-                                    </button>
-                                </td>
-                                <td>
-                                    <button
-                                        class="btn btn-danger btn-sm text-white"
-                                        :class="{ 'btn-light text-secondary': dat.sp_approved !== '0' }"
-                                        :disabled="dat.sp_approved !== '0'"
-                                        @click="updateAIPStatus('SP-2', dat.year_period)"
-                                    >
-                                        Return AIP
-                                    </button>
-                                </td>
-                                <td>{{ dat.sip_period }}</td>
-                                <!-- <td>{{ formatAipStatus(dat.ldc_approved,"ldc") }}</td>
-                                <td>Approve</td>
-                                <td>Return</td> -->
-                                <!-- <td>{{ dat.role }}</td> -->
-                                <td>
-                                    <div class="dropdown dropstart" >
-                                        <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                                            <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
-                                            </svg>
+                            <template v-for="(dat, index) in localData" :key="dat.id || index">
+                                <tr >
+                                    <td class="clickable-row" @click="toggleAccordion(index)">{{ dat.year_period }}</td>
+                                    <td>{{ formatAipStatus(dat.sp_approved,"sp") }}
+                                        <!-- {{ dat.aip_individuals }} -->
+                                        <!-- {{ dat }} -->
+                                    </td>
+                                    <td>
+                                        <button
+                                            class="btn btn-success btn-sm text-white"
+                                            :class="{ 'btn-light text-secondary': dat.sp_approved !== '0' }"
+                                            :disabled="dat.sp_approved !== '0'"
+                                            @click.stop="updateAIPStatus('SP1', dat.year_period)"
+                                        >
+                                            Approve AIP
                                         </button>
-                                        <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
-                                            <!-- <li><Link class="dropdown-item" :href="`/ImplementingTeam/${dat.id}/edit`">Edit</Link></li>
-                                            <li><Link class="text-danger dropdown-item" @click="deleteImplementingTeam(dat.id)">Delete</Link></li> -->
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
+                                    </td>
+                                    <td>
+                                        <button
+                                            class="btn btn-danger btn-sm text-white"
+                                            :class="{ 'btn-light text-secondary': dat.sp_approved !== '0' }"
+                                            :disabled="dat.sp_approved !== '0'"
+                                            @click.stop="updateAIPStatus('SP-2', dat.year_period)"
+                                        >
+                                            Return AIP
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <input type="text"
+                                        v-model="dat.sprn"
+                                        class="form-control
+                                        orm-control-sm"
+                                        @change="updateAnnualInvestmentPlanInstitutional(
+                                            dat.id,
+                                            dat.sprn,
+                                            'sprn',
+                                            'annual_investment_plan_institutionals'
+                                        )">
+                                    </td>
+                                    <td>
+                                        <input
+                                        type="text"
+                                        v-model="dat.last_page_number"
+                                        class="form-control form-control-sm"
+                                        @change="updateAnnualInvestmentPlanInstitutional(
+                                            dat.id,
+                                            dat.last_page_number,
+                                            'last_page_number',
+                                            'annual_investment_plan_institutionals'
+                                        )">
+                                    </td>
+                                    <td>{{ dat.sip_period }}</td>
+                                    <!-- <td>{{ formatAipStatus(dat.ldc_approved,"ldc") }}</td>
+                                    <td>Approve</td>
+                                    <td>Return</td> -->
+                                    <!-- <td>{{ dat.role }}</td> -->
+                                    <td>
+                                        <div class="dropdown dropstart" >
+                                            <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" @click.stop>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                                    <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                                                </svg>
+                                            </button>
+                                            <ul class="dropdown-menu action-dropdown"  aria-labelledby="dropdownMenuButton1">
+                                                <li>
+                                                    <button type="button" class="dropdown-item" @click="printAIP(dat)">Print AIP</button>
+                                                </li>
+                                                <!-- <li><Link class="dropdown-item" :href="`/ImplementingTeam/${dat.id}/edit`">Edit</Link></li>
+                                                <li><Link class="text-danger dropdown-item" @click="deleteImplementingTeam(dat.id)">Delete</Link></li> -->
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr v-if="dat.accordion_visible == 1">
+                                    <td :colspan="6" class="p-0">
+
+                                        <table class="table table-sm table-borderless mb-0">
+                                            <thead>
+                                                <tr>
+                                                <th></th>
+                                                <th>Name</th>
+                                                <th>Type</th>
+                                                <th>Seq No.</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="(person, pidx) in dat.aip_individuals" :key="person.id || pidx">
+                                                    <td style="width:40px">
+                                                        <input
+                                                            type="checkbox"
+                                                            :checked="person.is_present == 1"
+                                                            @change="person.is_present = $event.target.checked ? 1 : 0; updateAnnualInvestmentPlanInstitutional(
+                                                                person.id,
+                                                                person.is_present,
+                                                                'is_present',
+                                                                'aip_individual_approvers'
+                                                            )"
+                                                        >
+                                                    </td>
+                                                    <td>{{ person.name }}</td>
+                                                    <td>{{ person.position }}</td>
+                                                    <td>
+                                                        <input type="text"
+                                                            v-model="person.seq_num"
+                                                            class="form-control-sm"
+                                                            @change="updateAnnualInvestmentPlanInstitutional(
+                                                                person.id,
+                                                                person.seq_num,
+                                                                'seq_num',
+                                                                'aip_individual_approvers'
+                                                            )">
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </template>
                         </tbody>
                     </table>
                 </div>
@@ -110,12 +188,20 @@
 
             </div>
         </div>
-
+        <SpModal v-if="showSPModal" @close-modal-event="showSPModal=false" title="Annual Investment Plans">
+            <div class="d-flex justify-content-center">
+            <!-- {{ aip_printLink }} -->
+                <iframe :src="aip_printLink" style="width:100%; height:500px" />
+            </div>
+        </SpModal>
+        <!-- aip_printLink: {{ aip_printLink }} -->
     </div>
+
 </template>
 <script>
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
+import SpModal from "@/Shared/ModalDynamicTitle";
 export default {
     props: {
         data: Object,
@@ -123,13 +209,33 @@ export default {
     },
     data() {
         return{
-            // search: this.$props.filters.search,
+            search: this.$props.filters ? this.$props.filters.search : '',
+            localData: Array.isArray(this.$props.data) ? JSON.parse(JSON.stringify(this.$props.data)) : (this.$props.data || []),
+            showSPModal: false,
+            aip_printLink: '',
+            ccet: 0,
         }
     },
     components: {
-        Pagination, Filtering,
+        Pagination, Filtering, SpModal
     },
     watch: {
+        data: {
+            handler(val) {
+                // keep a local reactive copy of the prop so we can toggle accordion visibility
+                const newData = Array.isArray(val) ? JSON.parse(JSON.stringify(val)) : (val || []);
+
+                // Preserve accordion visibility state
+                newData.forEach((item, index) => {
+                    if (this.localData[index]) {
+                        item.accordion_visible = this.localData[index].accordion_visible;
+                    }
+                });
+
+                this.localData = newData;
+            },
+            deep: true,
+        },
         search: _.debounce(function (value) {
             this.$inertia.get(
                 "/institutional_aip",
@@ -151,49 +257,62 @@ export default {
     },
     methods:{
 
-        // showCreate(){
-        //     this.$inertia.get(
-        //         "/institutional_aip",
-        //         {
-        //             raao_id: this.raao_id
-        //         },
-        //         {
-        //             preserveScroll: true,
-        //             preserveState: true,
-        //             replace: true,
-        //         }
-        //     );
-        // },
-        // deleteImplementingTeam(id) {
-        //     let text = "WARNING!\nAre you sure you want to delete the Implementing Team?"+id;
-        //       if (confirm(text) == true) {
-        //         this.$inertia.delete("/ImplementingTeam/" + id);
-        //     }
-        // },
-        // getAccomplishment(tar_id){
-        //     this.$inertia.get(
-        //         "/accomplishments",
-        //         {
-        //             idtarget: tar_id
-        //         },
-        //         {
-        //             preserveScroll: true,
-        //             preserveState: true,
-        //             replace: true,
-        //         }
-        //     );
-        // },
-        // getPercent(accomp, targqty){
-        //     var accSum=0;
-        //     accomp.forEach(myFunction);
-        //     function myFunction(item){
-        //         accSum += parseFloat(item.accomplishment_qty)
+        toggleAccordion(index) {
+            // toggle accordion_visible on the local copy
+            const item = this.localData[index];
+            if (!item) return;
+            // Vue 3 doesn't provide this.$set — assign directly to keep reactivity
+            item.accordion_visible = item.accordion_visible == 1 ? 0 : 1;
+        },
 
-        //     }
-        //     var percentt = (accSum/targqty)*100
-        //     percentt=this.format_number(percentt,2,true)
-        //     return percentt;
-        // }
+        updateAnnualInvestmentPlanInstitutional(id, value, field, table) {
+            if (!id || !field) {
+                return;
+            }
+            // alert(id+ " "+value+" "+field+" "+ table)
+            this.$inertia.post(
+                `/institutional_aip/update/${field}/value`,
+                {
+                    id,
+                    value,
+                    table
+                },
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    onSuccess: () => {
+                        this.$nextTick(() => {
+                            const person = this.localData
+                                .flatMap(item => item.aip_individuals || [])
+                                .find(item => item.id == id);
+
+                            if (person) {
+                                person[field] = value;
+                            }
+                        });
+                    },
+                }
+            );
+        },
+
+        printAIP(dat){
+            if(this.year_filtering_d === ''){
+                alert('Please select year first before printing.');
+                return;
+            }
+            var linkt = "https://";
+            var jasper_ip = this.jasper_ip;
+            var jasper_link ='jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2FOPCR_AIP&reportUnit=%2Freports%2FOPCR_AIP%2FAIP_SP&standAlone=true&decorate=no&output=pdf';
+            // var params ='&ccet='+this.ccet+'&year='+this.year_filtering_d+'&ssf_filter='+this.ssf_filter
+            // aip_institutional_id=1&page_number=1&sprn=1011111&year=2027
+            var params ='&aip_institutional_id='+dat.id+'&page_number='+dat.last_page_number+'&sprn='+dat.sprn+'&year='+dat.year_period+'&ccet='
+            // console.log(params);
+            this.aip_printLink = linkt+jasper_ip+jasper_link+params;
+            // this.aip_printLink_excel = this.aip_printLink.replace('&output=pdf', '&output=csv');
+
+            // this.aip_printLink_excel =linkt+jasper_ip+'jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2FOPCR_AIP&reportUnit=%2Freports%2FOPCR_AIP%2FAIP_Print&standAlone=true&decorate=no&output=xlsx&ccet='+this.ccet;
+            this.showSPModal=true;
+        }
     }
 };
 </script>
@@ -210,5 +329,8 @@ export default {
             .pos{
                 position: top;
                 top: 240px;
+            }
+            .clickable-row{
+                cursor: pointer;
             }
 </style>

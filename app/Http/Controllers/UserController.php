@@ -38,6 +38,19 @@ class UserController extends Controller
                 "filters" => $request->only(['search']),
                 "users" => $users,
             ]);
+        } else if (auth()->user()->UserName == '8529') {
+            $users = $this->model->with(['permissions'])
+                ->when($request->search, function ($query, $searchItem) {
+                    $query->where('UserName', 'like', '%' . $searchItem . '%')
+                        ->orWhere('FullName', 'like', '%' . $searchItem . '%');
+                })
+                ->where('department_code', '11')
+                ->orderBy('recid', 'desc')
+                ->paginate(10);
+            return inertia('Users/Index', [
+                "filters" => $request->only(['search']),
+                "users" => $users,
+            ]);
         } else {
             return redirect('/forbidden')
                 ->with('error', 'Access forbidden!');

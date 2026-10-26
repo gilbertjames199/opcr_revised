@@ -531,7 +531,7 @@
 
                 <!--Agenda/Goals-->
 
-                <!--Other Libraries-->
+                <!--LIBRARIES ********************************************************************************************************************-->
                 <li class="nav-item dropdown">
                     <a class="dropdown-toggle" href="javascript:void(0);">
                         <span class="icon-holder">
@@ -551,7 +551,7 @@
                         </span>
                     </a>
                     <ul class="dropdown-menu">
-
+                        <!-- AGENDA ********************************************************** -->
                         <li class="nav-item dropdown" v-if="$page.props.auth.user.department_code == '04'">
                             <a class="dropdown-toggle" href="javascript:void(0);">
 
@@ -596,13 +596,14 @@
                             </ul>
                         </li>
 
-                        <!--****************************-->
+                        <!--HGDG Checklist **************************************************************************************-->
                         <li v-if="$page.props.auth.user.department_code == '04'">
                             <Link class="sidebar-link" href="/HGDGChecklist"
                                 :class="{ 'active': $page.url === '/HGDGChecklist' }">
                             <span class="title">HGDG Checklist</span>
                             </Link>
                         </li>
+                        <!-- GAD RELATED ISSUES ********************************************************************************************************************  -->
                         <li v-if="$page.props.auth.user.department_code == '04'">
                             <Link class="sidebar-link" href="/Issues" :class="{ 'active': $page.url === '/Issues' }">
 
@@ -616,13 +617,14 @@
                                 <span class="title">Implementing Team</span>
                             </Link>
                         </li> -->
+                        <!-- INDICATORS ********************************************************************************************************************  -->
                         <li >
                             <Link class="sidebar-link" href="/indicators"
                                 :class="{ 'active': $page.url === '/indicators' }">
                             <span class="title">Indicators</span>
                             </Link>
                         </li>
-
+                        <!-- OPCR STANDARD ********************************************************************************************************************  -->
                         <li>
                             <Link class="sidebar-link" href="/OPCRpaps/direct"
                                 :class="{ 'active': $page.url === '/OPCRpaps/direct' }">
@@ -637,12 +639,20 @@
                                 <span class="title">IPCR Standard</span>
                             </Link>
                         </li> -->
-
+                        <!-- EMPLOYEES ********************************************************************************************************************  -->
                         <li>
                             <Link class="sidebar-link" href="/user/employees"
                                 :class="{ 'active': $page.url === '/user/employees' }">
 
                             <span class="title">Employees</span>
+                            </Link>
+                        </li>
+                        <!-- AIP APPROVER ********************************************************************************************************************  -->
+                        <li v-if="[681, 682, 683, 684, 685].includes($page.props.auth.user.recid)">
+                            <Link class="sidebar-link" href="/aip/approvers"
+                                :class="{ 'active': $page.url === '/aip/approvers' }">
+
+                            <span class="title">AIP Approvers</span>
                             </Link>
                         </li>
                         <!-- <li>
@@ -654,8 +664,11 @@
                 </li>
 
                 <hr>
+
                 <!-- department_code: {{ $page.props.auth.user.department_code }} -->
-                <li class="nav-item dropdown" v-if="$page.props.auth.user.department_code == '04' || $page.props.auth.user.department_code == '02'">
+                 <!-- REVIEW/APPROVE ********************************************************** -->
+                <li class="nav-item dropdown"
+                    v-if="$page.props.auth.user.department_code == '04' || $page.props.auth.user.department_code == '02'">
                     <a class="dropdown-toggle" href="javascript:void(0);">
                         <span class="icon-holder">
 
@@ -680,8 +693,8 @@
                             </Link>
                         </li>
                         <li>
-                            <Link class="sidebar-link" href="/review-approve/ratings/"
-                                :class="{ 'active': $page.url === '/review-approve/ratings/' }">
+                            <Link class="sidebar-link" href="/review-approve-ratings-ppdo/"
+                                :class="{ 'active': $page.url === '/review-approve-ratings-ppdo/' }">
                             <span class="title">Rating</span>
                             </Link>
                         </li>
@@ -691,6 +704,13 @@
                             <span class="title">Rating (For Approval)</span>
                             </Link>
                         </li>
+                        <li v-if="$page.props.auth.user.department_code == '04'">
+                            <Link class="sidebar-link" href="/strategy-and-activity-request"
+                                :class="{ 'active': $page.url === '/strategy-and-activity-request' }">
+                            <span class="title">Strategy and Activity Request</span>
+                            </Link>
+                        </li>
+
                         <!-- <li v-if="$page.props.auth.user.department_code == '04'">
                             <Link class="sidebar-link" href="/review-approve/ratings?source=approved"
                                 :class="{ 'active': $page.url === '/review-approve/ratings?source=approved' }">
@@ -717,6 +737,35 @@
                         </li>
                     </ul>
                 </li>
+                <!-- REVIEW/APPROVE SP********************************************************* -->
+                <li class="nav-item dropdown"
+                    v-if="$page.props.auth.user.department_code == '19'">
+                    <a class="dropdown-toggle" href="javascript:void(0);">
+                        <span class="icon-holder">
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-aspect-ratio-fill" viewBox="0 0 16 16">
+                                <path d="M0 12.5v-9A1.5 1.5 0 0 1 1.5 2h13A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 12.5M2.5 4a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 1 0V5h2.5a.5.5 0 0 0 0-1zm11 8a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-1 0V11h-2.5a.5.5 0 0 0 0 1z"/>
+                            </svg>
+                        </span>
+                        <span class="title">Review/Approve</span>
+                        <span class="arrow">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
+                            </svg>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <Link class="sidebar-link" href="/institutional_aip"
+                                :class="{ 'active': $page.url === '/institutional_aip' }">
+                                <span class="title">AIP</span>
+                            </Link>
+                        </li>
+                    </ul>
+                </li>
+                <!-- OPCR TRACKING ********************************************************** -->
                 <li class="nav-item dropdown" v-if="$page.props.auth.user.department_code == '04' || $page.props.auth.user.department_code == '02'">
                     <a class="dropdown-toggle" href="javascript:void(0);">
                         <span class="icon-holder">
@@ -749,6 +798,7 @@
                         </li>
                     </ul>
                 </li>
+                <!-- IPP MANUAL ********************************************************** -->
                 <li class="nav-item">
                     <Link class="sidebar-link" href="/manual"
                         :class="{ 'active': $page.url === '/review-approve/' }">
@@ -766,7 +816,7 @@
                     <span class="title">IPP Manual</span>
                     </Link>
                 </li>
-
+                <!-- IPP Tracking **********************************************************-->
                 <li class="nav-item">
                     <Link class="sidebar-link" href="/project-profile-tracking"
                         :class="{ 'active': $page.url === '/project-profile-tracking' }">
@@ -784,6 +834,7 @@
                     <span class="title">IPP Tracking</span>
                     </Link>
                 </li>
+                <!-- MONTHLY ACOMPLISHMENT ********************************************************** -->
                 <li class="nav-item">
                     <!-- :href="`http://192.168.80.88/login/authentication?username=${$page.props.auth.user.UserName}&password=${$page.props.auth.user.UserPassword}`" -->
 

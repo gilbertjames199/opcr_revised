@@ -1,6 +1,10 @@
 <template>
-    <div class="permissions-modal">
-        <div class="modal" tabindex="-1" role="dialog">
+    <div
+        class="permissions-modal"
+        :class="{ 'no-backdrop': !backdrop }"
+        :style="{ zIndex: zIndex }"
+    >
+        <div class="modal" tabindex="-1" role="dialog" :style="{ zIndex: Number(zIndex) + 5 }">
             <div class="modal-dialog custom-modal">
                 <div class="d-flex justify-content-center">
                     <div class="modal-content" style="width: 100% !important; height: 40% !important; ">
@@ -34,6 +38,14 @@
       props: {
           //userId: Object,
           title: String,
+          zIndex: {
+              type: [Number, String],
+              default: 1055,
+          },
+          backdrop: {
+              type: Boolean,
+              default: true,
+          },
       },
       data(){
           return{
@@ -71,8 +83,30 @@
   max-width: 80% !important; /* width of modal */
   width: 80% !important;
 }
+  .permissions-modal {
+    position: fixed;
+    inset: 0;
+    overflow-y: auto;
+    padding: 20px 0;
+    background-color: rgba(0, 0, 0, 0.15);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .permissions-modal.no-backdrop {
+    background-color: transparent;
+    pointer-events: none;
+  }
+
+  .permissions-modal.no-backdrop .modal {
+    pointer-events: auto;
+    margin: 0 auto;
+  }
     /* Override default value of 'none' */
     .modal {
-      display: block;
+      display: block !important;
+      position: relative;
+      width: 100%;
     }
   </style>

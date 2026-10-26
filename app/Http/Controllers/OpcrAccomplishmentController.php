@@ -11,6 +11,7 @@ use App\Models\ProgramAndProject;
 use App\Models\Quality;
 use App\Models\rating;
 use App\Models\Timeliness;
+use App\Models\AccomplishmentDetail;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -31,11 +32,11 @@ class OpcrAccomplishmentController extends Controller
         // 'OPTAC.quantity',)
         //****************************************88 */
         // ->leftjoin(DB::raw('(Select id,
-        //                                             office_performance_commitment_rating_list_id,
-        //                                             idpaps, quantity, actual_accomplishments
-        //                                 FROM opcr_accomplishments WHERE
-        //                                 opcr_accomplishments.office_performance_commitment_rating_list_id='.$opcr_list_id.') AS OPTAC'),
-        //                                 'OPT.idpaps', 'program_and_projects.id')
+        //             office_performance_commitment_rating_list_id,
+        //             idpaps, quantity, actual_accomplishments
+        // FROM opcr_accomplishments WHERE
+        // opcr_accomplishments.office_performance_commitment_rating_list_id='.$opcr_list_id.') AS OPTAC'),
+        // 'OPT.idpaps', 'program_and_projects.id')
         $opcr_list = OfficePerformanceCommitmentRatingList::where('id', $opcr_list_id)->first();
         $data = ProgramAndProject::where('FFUNCCOD', $opcr_list->FFUNCCOD)
             ->select(
@@ -284,5 +285,13 @@ class OpcrAccomplishmentController extends Controller
         }
 
         return $text;
+    }
+
+    public function accomplishment_opcr(Request $request, $month, $idpaps){
+
+        $accomplishments = AccomplishmentDetail::whereMonth('date_accomplished_from', $month)
+            ->where('idpaps', $idpaps)
+            ->get();
+        return response()->json($accomplishments);
     }
 }

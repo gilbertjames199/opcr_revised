@@ -32,8 +32,18 @@ Route::prefix('api_ppa')->group(function () {
     Route::get('/', [RevisionPlanController::class, 'api_ppa']);
     Route::get('/aip', [RevisionPlanController::class, 'aip_api']);
     Route::get('/print/aip', [RevisionPlanController::class, 'print_aip']);
+    Route::get('/print/aip/sp', [RevisionPlanController::class, 'print_aip_sp']);
+    Route::get('/print/aip/excel/version', [RevisionPlanController::class, 'aip_excel']);
 });
 
+Route::prefix('sp-aip')->group(function () {
+    Route::get('/', [RevisionPlanController::class, 'sp_api']);
+    Route::get('/sectors', [RevisionPlanController::class, 'sp_sectors']);
+    Route::get('/aip/details', [RevisionPlanController::class, 'sp_aip_api']);
+});
+Route::prefix('sp-aip-n')->group(function () {
+    Route::get('/', [RevisionPlanController::class, 'sp_api_new']);
+});
 Route::prefix('/project/profile/api')->group(function () {
     Route::get('/', [RevisionPlanController::class, 'ipp']);
     Route::get('/list', [RevisionPlanController::class, 'list']);
@@ -88,4 +98,8 @@ Route::prefix('opcr-accomplishments-admin/print')->group(function () {
 
 Route::prefix('hgdg_printing')->group(function () {
     Route::get('/', [HGDGScoreController::class, 'print_hgdg_score']);
+});
+
+Route::prefix('opcr-mov-api')->group(function () {
+    Route::get('/', [OfficePerformanceCommitmentRatingController::class, 'mov_api']);
 });

@@ -18,4 +18,6 @@ class Office extends Model
     {
         return $this->belongsTo(UserEmployees::class, 'empl_id', 'empl_id');
     }
+
+
 }

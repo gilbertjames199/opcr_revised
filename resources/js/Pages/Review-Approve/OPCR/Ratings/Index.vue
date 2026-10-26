@@ -32,9 +32,10 @@
                         </span>
                     </div>
                     <div class="toolbar-right">
-                        <Link class="tool-btn tool-btn-primary" :href="`/Societal/create`">
+                        <!-- <Link class="tool-btn tool-btn-primary" :href="`/Societal/create`">
                             <i class="fas fa-plus"></i> Add Societal Goals
-                        </Link>
+                        </Link> -->
+                        test displayModal: {{ displayModal }}
                     </div>
                 </div>
 
@@ -58,7 +59,7 @@
         </div>
 
         <div class="masonry-sizer col-md-6"></div>
-        <div class="masonry-item w-100">
+        <div class="masonry-item w-100" v-if="!displayModal">
             <div class="bgc-white p-20 bd">
                 <!-- Table Header with Title and Stats -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -97,15 +98,20 @@
                             <tr v-for="dat in data.data">
                                 <td>
                                     {{ dat.office.FFUNCTION }}
+                                    <!-- {{ dat.id }} -->
                                 </td>
                                 <td>
                                     {{ dat.semester }}
+
+                                    <!-- {{ dat.rating_status }} -->
                                 </td>
                                 <td>
                                     {{ dat.opcr_date }}
                                 </td>
                                 <td>
                                     {{ getStatus(dat.rating_status) }}
+
+
                                 </td>
                                 <td class="text-center">
                                     <div class="dropdown dropstart">
@@ -120,12 +126,18 @@
                                         <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
                                             <li>
                                                 <!-- <Link class="dropdown-item" :href="`/Societal/${dat.id}/edit`">Edit</Link> -->
-                                                <button class="dropdown-item"
-                                                    @click="viewModal(dat.id, dat.rating_status, dat)">View</button>
+                                                <button
+                                                    class="dropdown-item"
+                                                    @click="viewModal(dat.id, dat.rating_status, dat)">
+                                                        View
+                                                </button>
                                             </li>
                                             <li>
-                                                <button class="dropdown-item"
-                                                    @click="viewPrintModal(dat.id, dat.office.FFUNCCOD)">Print</button>
+                                                <button
+                                                    class="dropdown-item"
+                                                    @click="viewPrintModal(dat.id, dat.office.FFUNCCOD)">
+                                                        Print
+                                                </button>
                                                 <!-- <Link class="text-danger dropdown-item" @click="deleteSectoral(dat.id)">
                                                 Delete</Link> -->
                                             </li>
@@ -143,18 +155,41 @@
                 </div>
 
             </div>
-
+            <!-- {{ data }} -->
         </div>
         <!-- </div> -->
-        <Modal v-if="displayModal" @close-modal-event="hideModal" :title="`${mode_1}`">
+        <Modal v-if="displayModal" @close-modal-event="hideModal" :title="`${mode_1}`" :z-index="1055">
+            <!-- <div class="masonry-item w-100" v-if="displayModal">
+            <div class="bgc-white p-20 bd">
+
+            <div class="d-flex justify-content-end">
+                <button
+                    type="button"
+                    class="btn-close"
+                    aria-label="Close"
+                    @click="hideModal">
+                </button>
+            </div> -->
+
             <!-- {{ opcr_current }} -->
-            <div class="sticky-header">
-                <div><b>OFFICE:&nbsp;</b><u>{{ opcr_current.office.FFUNCTION }}</u></div>
+            <!-- LABEL CARD  -->
+            <div class="sticky-header modal-summary-card">
+                <div class="d-flex justify-content-end mb-2">
+                    <button
+                        type="button"
+                        class="btn btn-success text-white shadow-sm"
+                        @click="downloadExcel(opcrListId)">
+                        <i class="fas fa-file-excel me-2"></i>
+                        Export to Excel
+                    </button>
+                </div>
+                <div><b>OFFICE:&nbsp;</b><u>{{ opcr_current?.office?.FFUNCTION ?? '-' }}</u></div>
                 <div><b>SEMESTER:&nbsp;</b><u>{{ opcr_current.semester }}</u></div>
                 <div><b>PERIOD COVERED:&nbsp;</b><u>{{ opcr_current.opcr_date }}</u></div>
                 <div><b>STATUS:&nbsp;</b><u>{{ getStatus(opcr_current.rating_status) }}</u></div>
             </div>
 
+            <!-- <button @click="downloadExcel(opcrListId)">Export Excel</button> -->
 
             <div v-if="mode_1==='Review'">
                 <button @click="toggleAllMovVisibility(false)" v-if="!show_all_not_clicked" class="btn btn-link p-0">
@@ -167,9 +202,10 @@
                     <!-- <iframe :src="my_link" style="width:100%; height:500px" /> -->
                     <!-- {{ opcr_data }} -->
                     <!-- d-flex justify-content-center  -->
-                     <div class="table-responsive w-100" style="max-width:100%; overflow-x:auto;">
-                        <table class="table table-sm table-bordered border-dark table-striped table-hover" style="table-layout: fixed;">
-                            <thead class="sticky-header">
+                    <div class="table-responsive w-100" style="max-width:100%; overflow-x:auto;">
+                        <table class="table table-sm table-bordered border-dark table-striped table-hover modern-rating-table" style="table-layout: fixed;">
+                            <!-- class="sticky-header" -->
+                            <thead >
                                 <tr class="text-white" style="background-color: #026673">
                                     <th rowspan="2" ><h5>MFO</h5></th>
                                     <th rowspan="2" ><h5>PAPS</h5></th>
@@ -191,45 +227,46 @@
                             </thead>
                             <tbody>
                                 <template v-for="(dat, index) in opcr_data" :key="index">
+                                    <!-- MFO, PAPS, ACCOMPLISHMENTS -->
                                     <tr :style="{
                                             backgroundColor: opcr_data[index].mov_is_visible ? '#b8f5fc' : '#fff5d9',
                                             '--bs-table-accent-bg': opcr_data[index].mov_is_visible ? '#b8f5fc' : '#fff5d9',
                                             fontWeight: opcr_data[index].mov_is_visible ? 'bold' : 'normal',
                                         }">
                                         <!-- MFO -->
-                                        <td rowspan="2">
+                                        <td rowspan="3" class="review-col-mfo">
                                             <!-- {{ dat }} -->
                                             {{ dat.mfo_desc }}
                                         </td>
                                         <!-- PAPS -->
-                                        <td rowspan="2">
+                                        <td rowspan="3" class="review-col-paps">
                                             {{ dat.paps_desc }}
                                         </td>
                                         <!-- Actual Accomplishments -->
-                                        <td rowspan="2">
+                                        <td rowspan="3" class="review-col-accomplishment">
                                             {{ dat.accomplishments }}
                                             <hr>
                                             <div><b>DPCR Score:&nbsp;</b>{{ computeAverageScore(dat.monthly_targets) }}</div>
                                         </td>
 
                                         <!-- Q1 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <!-- width: 2.5em;  -->
                                             <div>{{ dat.q1_standard }}</div>
                                         </td>
                                         <!-- Q2 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <!-- {{  dat }} -->
                                             <!-- width: 2.5em;  -->
                                             <div>{{ dat.q2_standard }}</div>
                                         </td>
                                         <!-- Q3 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <!-- width: 2.5em;  -->
                                             <div>{{ dat.q3_standard }}</div>
                                         </td>
                                         <!-- E1 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <!--  width: 2.5em; -->
                                             <div>Standard Response Time</div>
                                             <!-- <select v-model="opcr_data[index].e1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
@@ -248,7 +285,7 @@
                                             </div> -->
                                         </td>
                                         <!-- E2 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <!-- width: 2.5em;  -->
                                             <div>Quantity Based</div>
                                             <!-- <select v-model="opcr_data[index].e2" type="number" class="form-select" style="width: 4.2em; text-align: center;"
@@ -267,7 +304,7 @@
                                             </div> -->
                                         </td>
                                         <!-- E3 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <!-- style="width: 2.5em; text-align: center;"   -->
                                             <div>Optimum use of resources</div>
                                             <!-- <select v-model="opcr_data[index].e3" class="form-select" style="width: 4.2em; text-align: center;" type="number"
@@ -286,7 +323,7 @@
                                             </div> -->
                                         </td>
                                         <!-- T1 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <div>Timeliness (Deadline)</div>
                                             <!-- t1_standard: {{ dat.t1_standard }} -->
                                             <!-- :disabled="dat.t1_standard !== 'Yes'"
@@ -321,16 +358,18 @@
                                         </td>
                                         <!-- <td></td> -->
                                         <!-- REMARKS -->
-                                        <td rowspan="2">
+                                        <td rowspan="2" class="review-col-remarks">
                                             <!-- @input="autoResize($event)" ref="remarksTextarea"-->
+                                            <p><b>Office Remarks</b></p>
                                             <textarea class="form-control"
                                                 v-model="opcr_data[index].remarks"
                                                 @change="saveRating(opcr_data[index].remarks, opcr_data[index].opcr_rating_id,'remarks')"
-
+                                                style="background-color: #ABB3BFFF; color: #212427FF;"
+                                                disabled
                                             />
                                         </td>
                                         <!-- MOVS -->
-                                        <td rowspan="2">
+                                        <td rowspan="2" class="review-col-mov">
                                             <!--opcr_data[index].mov_is_visible: {{ opcr_data[index].mov_is_visible }}
                                             count_movs: {{ opcr_data[index].count_movs }}
                                             :disabled="!dat.movs"
@@ -371,16 +410,17 @@
                                             </button>
                                         </td>
                                     </tr>
+                                    <!-- SELF RATING -->
                                     <tr :style="{
                                             backgroundColor: opcr_data[index].mov_is_visible ? '#b8f5fc' : '#fff5d9',
                                             '--bs-table-accent-bg': opcr_data[index].mov_is_visible ? '#b8f5fc' : '#fff5d9',
                                             fontWeight: opcr_data[index].mov_is_visible ? 'bold' : 'normal',
                                         }">
                                         <!-- Q1 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <!-- width: 2.5em;  -->
                                             <select v-model="opcr_data[index].q1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
-                                                @change="saveRating(opcr_data[index].q1, opcr_data[index].opcr_rating_id, 'q1')">
+                                                @change="saveRating(opcr_data[index].q1, opcr_data[index].opcr_rating_id, 'q1')" disabled>
                                                 <option>1</option>
                                                 <option>2</option>
                                                 <option>3</option>
@@ -392,12 +432,12 @@
                                             </div>
                                         </td>
                                         <!-- Q2 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <!-- {{  dat }} -->
                                             <!-- width: 2.5em;  -->
                                             <select v-model="opcr_data[index].q2" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                                 @change="saveRating(opcr_data[index].q2, opcr_data[index].opcr_rating_id, 'q2')"
-                                            >
+                                            disabled>
                                                 <option>1</option>
                                                 <option>2</option>
                                                 <option>3</option>
@@ -409,10 +449,10 @@
                                             </div>
                                         </td>
                                         <!-- Q3 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <!-- width: 2.5em;  -->
                                             <select v-model="opcr_data[index].q3" type="number" class="form-select" style="width: 4.2em; text-align: center;"
-                                                @change="saveRating(opcr_data[index].q3, opcr_data[index].opcr_rating_id, 'q3')"
+                                                @change="saveRating(opcr_data[index].q3, opcr_data[index].opcr_rating_id, 'q3')" disabled
                                             >
                                                 <option>1</option>
                                                 <option>2</option>
@@ -425,11 +465,11 @@
                                             </div>
                                         </td>
                                         <!-- E1 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <!--  width: 2.5em; -->
                                             <select v-model="opcr_data[index].e1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                                 @change="saveRating(opcr_data[index].e1, opcr_data[index].opcr_rating_id, 'e1')"
-                                                :disabled="dat.e1_standard === 'No'"
+                                                disabled
                                                 :style="dat.e1_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''"
                                             >
                                                 <option>1</option>
@@ -443,12 +483,13 @@
                                             </div>
                                         </td>
                                         <!-- E2 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <!-- width: 2.5em;  -->
                                             <select v-model="opcr_data[index].e2" type="number" class="form-select" style="width: 4.2em; text-align: center;"
                                                 @change="saveRating(opcr_data[index].e2, opcr_data[index].opcr_rating_id, 'e2')"
-                                                :disabled="dat.e2_standard === 'No'"
+                                                disabled
                                                 :style="dat.e2_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''"
+
                                             >
                                                 <option>1</option>
                                                 <option>2</option>
@@ -461,11 +502,11 @@
                                             </div>
                                         </td>
                                         <!-- E3 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <!-- style="width: 2.5em; text-align: center;"   -->
                                             <select v-model="opcr_data[index].e3" class="form-select" style="width: 4.2em; text-align: center;" type="number"
                                                 @change="saveRating(opcr_data[index].e3, opcr_data[index].opcr_rating_id, 'e3')"
-                                                :disabled="dat.e3_standard === 'No'"
+                                                disabled
                                                 :style="dat.e3_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''"
                                             >
                                                 <option>1</option>
@@ -479,19 +520,18 @@
                                             </div>
                                         </td>
                                         <!-- T1 -->
-                                        <td style="width: 9% !important; white-space: normal; word-wrap: break-word;">
+                                        <td class="review-col-rating">
                                             <!-- t1_standard: {{ dat.t1_standard }} -->
                                             <!-- :disabled="dat.t1_standard !== 'Yes'"
                                                 :style="dat.t1_standard !== 'Yes' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''" -->
-                                            <select v-model="opcr_data[index].t1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
-                                                @change="saveRating(opcr_data[index].t1, opcr_data[index].opcr_rating_id, 't1')"
-
-                                                :disabled="
+                                                <!-- :disabled="
                                                     dat.t1_standard === 'No' ||
                                                     dat.t1_standard === null ||
                                                     dat.t1_standard === undefined ||
                                                     Number.isNaN(dat.t1_standard)
-                                                "
+                                                " -->
+                                            <select v-model="opcr_data[index].t1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
+                                                @change="saveRating(opcr_data[index].t1, opcr_data[index].opcr_rating_id, 't1')"
                                                 :style="
                                                     dat.t1_standard === 'No' ||
                                                     dat.t1_standard === null ||
@@ -500,6 +540,7 @@
                                                         ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;'
                                                         : ''
                                                 "
+                                                disabled
                                             >
                                                 <option>1</option>
                                                 <option>2</option>
@@ -512,49 +553,223 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr v-if="opcr_data[index].mov_is_visible && parseFloat(opcr_data[index].count_movs)>0" >
-                                        <th class="no-stripe-bg">
+                                    <!-- PPDO Ratings -->
+                                    <tr :style="{
+                                            backgroundColor: opcr_data[index].mov_is_visible ? '#b8f5fc' : '#fff5d9',
+                                            '--bs-table-accent-bg': opcr_data[index].mov_is_visible ? '#b8f5fc' : '#fff5d9',
+                                            fontWeight: opcr_data[index].mov_is_visible ? 'bold' : 'normal',
+                                        }">
 
+                                        <!-- PPDO Q1 -->
+                                        <td class="review-col-rating">
+
+                                            <select v-model="opcr_data[index].ppdo_q1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
+                                                @change="saveRating(opcr_data[index].ppdo_q1, opcr_data[index].opcr_rating_id, 'ppdo_q1')">
+                                                <option>0</option>
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                            </select>
+                                            <div v-if="submit_attempt==true && !dat.ppdo_q1" style="color: red; font-weight: bold">
+                                                Rating for this field is required to proceed with submission.
+                                            </div>
+                                        </td>
+                                        <!-- PPDO Q2 -->
+                                        <td class="review-col-rating">
+                                            <select v-model="opcr_data[index].ppdo_q2" type="number" class="form-select" style="width: 4.2em; text-align: center;"
+                                                @change="saveRating(opcr_data[index].ppdo_q2, opcr_data[index].opcr_rating_id, 'ppdo_q2')">
+                                                <option>0</option>
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                            </select>
+                                            <div v-if="submit_attempt==true && !dat.ppdo_q2" style="color: red; font-weight: bold">
+                                                Rating for this field is required to proceed with submission.
+                                            </div>
+                                        </td>
+                                        <!-- PPDO Q3 -->
+                                        <td class="review-col-rating">
+                                            <select v-model="opcr_data[index].ppdo_q3" type="number" class="form-select" style="width: 4.2em; text-align: center;"
+                                                @change="saveRating(opcr_data[index].ppdo_q3, opcr_data[index].opcr_rating_id, 'ppdo_q3')">
+                                                <option>0</option>
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                            </select>
+                                            <div v-if="submit_attempt==true && !dat.ppdo_q3" style="color: red; font-weight: bold">
+                                                Rating for this field is required to proceed with submission.
+                                            </div>
+                                        </td>
+                                        <!-- PPDO E1 -->
+                                        <td class="review-col-rating">
+                                            <select v-model="opcr_data[index].ppdo_e1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
+                                                @change="saveRating(opcr_data[index].ppdo_e1, opcr_data[index].opcr_rating_id, 'ppdo_e1')"
+                                                :disabled="dat.e1_standard === 'No'"
+                                                :style="dat.e1_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''">
+                                                <option>0</option>
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                            </select>
+                                            <div v-if="submit_attempt==true && dat.e1_standard === 'Yes' && !dat.ppdo_e1" style="color: red; font-weight: bold">
+                                                Rating for this field is required to proceed with submission.
+                                            </div>
+                                        </td>
+                                        <!-- PPDO E2 -->
+                                        <td class="review-col-rating">
+                                            <select v-model="opcr_data[index].ppdo_e2" type="number" class="form-select" style="width: 4.2em; text-align: center;"
+                                                @change="saveRating(opcr_data[index].ppdo_e2, opcr_data[index].opcr_rating_id, 'ppdo_e2')"
+                                                :disabled="dat.e2_standard === 'No'"
+                                                :style="dat.e2_standard === 'No' ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''">
+                                                <option>0</option>
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                            </select>
+
+
+                                            <div v-if="submit_attempt==true &&
+                                                dat.e2_standard === 'Yes' &&
+                                                !dat.ppdo_e2"
+                                                style="color: red; font-weight: bold">
+                                                Rating for this field is required to proceed with submission.
+                                            </div>
+                                        </td>
+                                        <!-- PPDO E3 -->
+                                        <td class="review-col-rating">
+                                            <!-- rating e3: {{ dat.rating_e }} -->
+                                            <select v-model="opcr_data[index].ppdo_e3" class="form-select" style="width: 4.2em; text-align: center;" type="number"
+                                                @change="saveRating(opcr_data[index].ppdo_e3, opcr_data[index].opcr_rating_id, 'ppdo_e3')"
+                                                :disabled="dat.e3_standard === 'No'"
+                                                :style="dat.e3_standard === 'No' ?
+                                                'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;' : ''">
+                                                <option>0</option>
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                            </select>
+                                            <div v-if="submit_attempt==true && dat.e3_standard === 'Yes' && !dat.ppdo_e3" style="color: red; font-weight: bold">
+                                                Rating for this field is required to proceed with submission.
+                                            </div>
+                                        </td>
+                                        <!-- PPDO T1 -->
+                                        <td class="review-col-rating">
+                                            <!-- dat.ppdo_t1_standard: {{ dat.ppdo_t1_standard }} --
+                                            dat.t1_standard: {{ dat.t1_standard }} -->
+                                            <select v-model="opcr_data[index].ppdo_t1" type="number" class="form-select" style="width: 4.2em; text-align: center;"
+                                                @change="saveRating(opcr_data[index].ppdo_t1, opcr_data[index].opcr_rating_id, 'ppdo_t1')"
+                                                :disabled="
+                                                    dat.t1_standard === 'No' ||
+                                                    dat.t1_standard === null ||
+                                                    dat.t1_standard === undefined ||
+                                                    Number.isNaN(dat.ppdo_t1_standard)
+                                                "
+                                                :style="
+                                                    dat.t1_standard === 'No' ||
+                                                    dat.t1_standard === null ||
+                                                    dat.t1_standard === undefined ||
+                                                    Number.isNaN(dat.ppdo_t1_standard)
+                                                        ? 'background-color: #ABB3BFFF; color: #212427FF; cursor: not-allowed;'
+                                                        : ''
+                                                ">
+                                                <option>0</option>
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                            </select>
+                                            <div v-if="submit_attempt==true && dat.t1_standard === 'Yes' && !dat.ppdo_t1" style="color: red; font-weight: bold">
+                                                Rating for this field is required to proceed with submission.
+                                            </div>
+                                        </td>
+                                        <!-- REMARKS -->
+                                        <td rowspan="1" class="review-col-remarks">
+                                            <p><b>PPDO Remarks</b></p>
+                                            <!-- @input="autoResize($event)" ref="remarksTextarea"-->
+                                            <textarea class="form-control"
+                                                v-model="opcr_data[index].ppdo_remarks"
+                                                @input="markPpdoRemarksUnsaved(opcr_data[index].opcr_rating_id)"
+                                                @change="saveRating(opcr_data[index].ppdo_remarks, opcr_data[index].opcr_rating_id,'ppdo_remarks')"
+                                            />
+                                        </td>
+                                        <!-- MOVS -->
+                                        <td rowspan="1" class="review-col-mov">
+                                            <div class="d-flex justify-content-center px-2">
+                                                <button
+                                                    @click="showModalAccomplishmentMOV(dat.idpaps, dat.department_code, dat.year, dat.sem, dat)"
+                                                    class="btn btn-sm btn-primary mov-btn text-white"
+                                                    title="View MOVs"
+                                                >
+                                                    <i class="fas fa-folder-open me-1"></i>
+                                                    SHOW MOV
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr v-if="opcr_data[index].mov_is_visible && parseFloat(opcr_data[index].count_movs)>0" >
+                                        <th class="bg-secondary text-white">
+                                            <!-- class="no-stripe-bg" -->
                                         </th>
+                                        <!-- FILES LABEL -->
                                         <th class="bg-secondary text-white">
                                             <span v-if="parseFloat(opcr_data[index].count_movs)>1">Files</span>
                                             <span v-else>File</span>
                                         </th>
+                                        <!-- DOWNLOAD LABEL -->
                                         <th class="bg-secondary text-white">
                                             Download
                                         </th>
+                                        <!-- VIEW LABEL -->
                                         <th class="bg-secondary text-white">
                                             View
                                         </th>
                                         <th colspan="7" class="bg-secondary text-white"></th>
-                                        <th></th>
+                                        <th class="bg-secondary text-white"></th>
                                     </tr>
                                     <tr v-if="opcr_data[index].mov_is_visible && parseFloat(opcr_data[index].count_movs)>0" v-for="file in dat.movs">
                                         <td class="no-stripe-bg">
 
                                         </td>
+                                        <!-- FILENAME -->
                                         <td>
                                             <img :src="getPreUploadFileIcon(file.filename.split('.').pop())" alt="file preview" style="width:30px; height:30px; object-fit:cover;"/>&nbsp;
                                             {{ file.filename }}
                                         </td>
-                                        <td><a
-                                            :href="`/movs/download/${file.id}`"
+                                        <!-- MOV ICON -->
+                                        <td>
+                                            <a
+                                                :href="`/movs/download/${file.id}`"
 
-                                            class="inline-flex items-center"
-                                            title="Download"
-                                            target="_blank"
-                                        >
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="20"
-                                                height="20"
-                                                fill="green"
-                                                class="bi bi-cloud-arrow-down-fill"
-                                                viewBox="0 0 16 16"
+                                                class="inline-flex items-center"
+                                                title="Download"
+                                                target="_blank"
                                             >
-                                                <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708"/>
-                                            </svg>
-                                        </a>&nbsp;</td>
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="20"
+                                                    height="20"
+                                                    fill="green"
+                                                    class="bi bi-cloud-arrow-down-fill"
+                                                    viewBox="0 0 16 16"
+                                                >
+                                                    <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708"/>
+                                                </svg>
+                                            </a>&nbsp;
+                                        </td>
+                                        <!-- PREVIEW -->
                                         <td>
                                             <button
                                                 @click="previewFile(file)"
@@ -587,10 +802,37 @@
                                         </td>
                                     </tr>
                                 </template>
+                                <tr class="table-summary-row">
+                                    <td colspan="1"></td>
+                                    <td colspan="3">TOTAL RATING (Office)</td>
+                                    <td>
+                                        {{ getTotalAverage2() }}
+                                    </td>
+                                    <td colspan="3">TOTAL RATING (PPDO)</td>
+                                    <td>
+                                        {{ calculatePpdoTotal()}}
+                                    </td>
+
+                                    <!-- <td colspan="3">TOTAL RATING (DPCR)</td>
+                                    <td>{{ computeDPCRTotal(opcr_data) }}</td> -->
+                                    <td colspan="3"></td>
+                                    <!-- <td></td> -->
+                                </tr>
+                                <tr class="table-summary-row">
+                                    <td colspan="2"></td>
+                                    <td colspan="3">FINAL AVERAGE RATING (Office)</td>
+                                    <td>{{ getAverageAll2() }}</td>
+                                    <td colspan="3">FINAL AVERAGE RATING (PPDO)</td>
+                                    <td>{{ calculatePpdoAverage() }} </td>
+                                    <!-- <td colspan="3">FINAL AVERAGE RATING (DPCR)</td>
+                                    <td>{{ computeDPCRAverage(opcr_data) }}</td> -->
+                                    <td></td>
+                                    <td></td>
+                                </tr>
 
                             </tbody>
                         </table>
-                     </div>
+                    </div>
 
                 </div>
             </div>
@@ -599,8 +841,9 @@
                 <div class="d-flex justify-content-center" >
                     <div class="table-responsive w-100" style="max-width:100%; overflow-x:auto;">
                         <!-- <table class="table table-hover table-bordered border-dark"> -->
-                        <table class="table table-sm table-bordered border-dark table-striped table-hover" style="table-layout: fixed;">
-                            <thead class="sticky-header">
+                        <table class="table table-sm table-bordered border-dark table-striped table-hover modern-rating-table" style="table-layout: fixed;">
+                            <!-- class="sticky-header" -->
+                            <thead >
                                 <tr class="bg-secondary text-white">
                                     <th rowspan="2">Major Final Output</th>
                                     <th rowspan="2">Success Indicators (Targets + Measures)</th>
@@ -614,17 +857,20 @@
                                             :checked="currentRatingType === '0'"
                                             @change="setRatingType('ppdo', opcr_current.id)"
                                         >
-                                        Rating (PPDO Score)
+                                        Rating (Self Rating)
                                         <!-- -{{ opcr_current.id }} -ratingxcxv type - {{ currentRatingType }} -->
                                     </th>
                                     <th colspan="4">
+                                        <!-- @change="setRatingType('dpcr', opcr_current.id)" -->
                                         <input
                                             type="radio"
                                             name="rating"
-                                            :checked="currentRatingType === '1'"
-                                            @change="setRatingType('dpcr', opcr_current.id)"
+                                            :checked="opcr_current.year < 2026
+                                                ? currentRatingType === '1'
+                                                : currentRatingType === '2'"
+                                            @change="setRatingType('ppdo_verification', opcr_current.id)"
                                         >
-                                        Rating (DPCR Score)
+                                        Rating (PPDO Score)
                                     </th>
                                     <th rowspan="2">Remarks</th>
                                     <th rowspan="2">MOV</th>
@@ -666,13 +912,13 @@
                                     <td>
                                         <!-- <textarea v-model="opcr_data[index].accomplishments"
                                             style="height: inherit"></textarea> -->
-                                            {{ opcr_data[index].accomplishments }}
+                                        {{ opcr_data[index].accomplishments }}
                                     </td>
-                                    <!-- PPDO RATING ********************************************* -->
+                                    <!-- SELF RATING ********************************************* -->
                                     <td>
                                         <!-- <input v-model="opcr_data[index].rating_q" class="centered-input" type="number"
                                             min="0" max="5" step="1" disabled> -->
-                                            {{ opcr_data[index].rating_q }}
+                                        {{ opcr_data[index].rating_q }}
                                     </td>
                                     <td>
                                         {{ opcr_data[index].rating_e }}
@@ -680,23 +926,29 @@
                                     <td>
                                         <!-- <input v-model="opcr_data[index].rating_t" class="centered-input" type="number"
                                             min="0" max="5" step="1" disabled> -->
-                                            {{ opcr_data[index].rating_t }}
+                                        {{ opcr_data[index].rating_t }}
                                     </td>
                                     <td>
-                                    <!-- <input :value="computeAverage(opcr_data[index])" class="centered-input" type="number"
-                                       min="0" max="5" step="1" disabled
-                                    > -->
-                                    {{ computeAverage(opcr_data[index]) }}
+                                        <!-- <input :value="computeAverage(opcr_data[index])" class="centered-input" type="number"
+                                        min="0" max="5" step="1" disabled
+                                        > -->
+                                        {{ computeAverage(opcr_data[index]) }}
                                     </td>
-                                    <!-- DPCR RATING ************************************************-->
+                                    <!-- PPDO RATING ************************************************-->
                                      <td>
-                                        {{ computeAverageByType(opcr_data[index].monthly_targets,"q") }}
+                                        {{ format_number_conv(average([opcr.ppdo_q1, opcr.ppdo_q2, opcr.ppdo_q3]),
+                                                2,true
+                                            ) }}
                                     </td>
                                     <td>
-                                        {{ computeAverageByType(opcr_data[index].monthly_targets,"e") }}
+                                        {{ format_number_conv(average([opcr.ppdo_e1, opcr.ppdo_e2, opcr.ppdo_e3]),
+                                                2,true
+                                            ) }}
+                                        <!-- {{ computeAverageByType(opcr_data[index].monthly_targets,"e") }} -->
                                     </td>
                                     <td>
-                                        {{ opcr_data[index].monthly_targets.t1 }}
+                                        {{ opcr.ppdo_t1 }}
+                                        <!-- {{ opcr_data[index].monthly_targets.t1 }} -->
                                     </td>
                                     <td>
                                     <!-- <input :value="computeAverage(opcr_data[index])" class="centered-input" type="number"
@@ -705,9 +957,9 @@
                                         {{
                                             format_number_conv(
                                                 computeAverageQET(
-                                                    computeAverageByType(opcr_data[index].monthly_targets,"q"),
-                                                    computeAverageByType(opcr_data[index].monthly_targets,"e"),
-                                                    opcr_data[index].monthly_targets.t1
+                                                    average([opcr.ppdo_q1, opcr.ppdo_q2, opcr.ppdo_q3]),
+                                                    average([opcr.ppdo_e1, opcr.ppdo_e2, opcr.ppdo_e3]),
+                                                    opcr.ppdo_t1
                                                 ),
                                                 2,true
                                             )
@@ -720,38 +972,152 @@
                                             style="height: inherit"></textarea>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-primary text-white" @click="showModalMOV(opcr_data[index].id)">Upload MOVs</button>
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary text-white"
+                                            @click="showModalMOV(opcr_data[index].id)">Upload MOVs
+                                        </button>
+                                        <hr>
+                                        <button
+                                            @click="showModalAccomplishmentMOV(opcr.idpaps, opcr.department_code, opcr.year, opcr.sem, opcr)"
+                                            class="btn btn-primary text-white"
+                                            title="View MOVs"
+                                        >
+                                            SHOW MOV
+                                        </button>
                                     </td>
                                 </tr>
-                                 <tr>
+                                <!-- TOTALS -->
+                                <tr class="table-summary-row">
                                     <td colspan="5"></td>
-                                    <td colspan="3">TOTAL RATING (PPDO)</td>
-                                    <td>{{ getTotalAverage() }}</td>
+                                    <td colspan="3">TOTAL RATING (Self Rating)</td>
+                                    <td>
+                                        {{ getTotalAverage2() }}
 
-                                    <td colspan="3">TOTAL RATING (DPCR)</td>
-                                    <td>{{ computeDPCRTotal(opcr_data) }}</td>
+                                    </td>
+
+                                    <td colspan="3">TOTAL RATING (PPDO)</td>
+                                    <td>
+                                        {{ calculatePpdoTotal() }}
+                                        <!--DPCR {{ computeDPCRTotal(opcr_data) }} -->
+                                    </td>
                                     <td></td>
                                     <td></td>
                                 </tr>
-                                <tr>
+                                <!-- AVERAGES -->
+                                <tr class="table-summary-row">
                                     <td colspan="5"></td>
+                                    <td colspan="3">FINAL AVERAGE RATING (Self Rating)</td>
+                                    <td>{{ getAverageAll2() }}</td>
                                     <td colspan="3">FINAL AVERAGE RATING (PPDO)</td>
-                                    <td>{{ getAverageAll() }}</td>
-                                    <td colspan="3">FINAL AVERAGE RATING (DPCR)</td>
-                                    <td>{{ computeDPCRAverage(opcr_data) }}</td>
+                                    <td>
+                                        {{ calculatePpdoAverage() }}
+                                        <!-- DPCR -->
+                                        <!-- {{ computeDPCRAverage(opcr_data) }} -->
+                                    </td>
                                     <td></td>
                                     <td></td>
                                 </tr>
                             </tbody>
                         </table>
+
                     </div>
 
                 </div>
             </div>
+            <!-- <table>
+                <tr v-for="(item, index) in opcr_data" :key="index">
+                    <td>Q:
+                            {{ average([
+                            item.ppdo_q1,
+                            item.ppdo_q2,
+                            item.ppdo_q3
+                        ]) }}
+                    </td>
+                    <td>E:
+                        {{
+                            average([
+                                    item.ppdo_e1,
+                                    item.ppdo_e2,
+                                    item.ppdo_e3
+                                ])
+                        }}
+                    </td>
+
+                    <td>T:
+                        {{
+                            average([
+                                    item.ppdo_t1
+                                ])
+                        }}
+                    </td>
+                    <td>
+                        Row:
+                        {{
+                            (() => {
+                                const qAvg = average([
+                                    item.ppdo_q1,
+                                    item.ppdo_q2,
+                                    item.ppdo_q3
+                                ]);
+
+                                const eAvg = average([
+                                    item.ppdo_e1,
+                                    item.ppdo_e2,
+                                    item.ppdo_e3
+                                ]);
+
+                                const tAvg = average([
+                                    item.ppdo_t1
+                                ]);
+
+                                let divisor = 0;
+
+                                if (parseFloat(qAvg) > 0) divisor++;
+                                if (parseFloat(eAvg) > 0) divisor++;
+                                if (parseFloat(tAvg) > 0) divisor++;
+
+                                return divisor > 0
+                                    ? ((qAvg + eAvg + tAvg) / divisor).toFixed(2)
+                                    : '0.00';
+                            })()
+                        }}
+                    </td>
+                    <td>TOTAL: {{ calculatePpdoTotal() }}</td>
+                </tr>
+            </table> -->
             <!-- {{ opcr_data }} -->
-            <div class="d-flex justify-content-center">
-                <label>REMARKS: </label>&nbsp;&nbsp;&nbsp;
-                <input class="form-control" v-model="form.remarks" type="text" /><br />
+            <!-- opcr remarks -->
+            <table v-if="hasOpcrRemarks" class="table table-sm table-bordered border-dark table-striped table-hover modern-rating-table" style="table-layout: fixed;">
+                <thead>
+                    <tr>
+                        <th>Remarks</th>
+                        <th>Created at</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template v-for="remark in opcr_current?.opcr_remarks" :key="remark.id">
+                        <tr v-if="remark.remarks && remark.remarks.trim() !== ''">
+                            <td>{{ remark.remarks }}</td>
+                            <td>{{ remark.created_at }}</td>
+                            <td>
+                                <button
+                                    class="btn btn-sm btn-danger"
+                                    type="button"
+                                    @click="deleteRemark(remark.id)"
+                                >
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-center align-items-center gap-2">
+                <label class="mb-0">REMARKS:</label>
+                <input class="form-control" v-model="form.remarks" type="text" @input="markFinalRemarkUnsaved" />
+                <button class="btn btn-secondary text-white" @click="saveRemarks">Save Remarks</button>
             </div>
             <div>
                 <hr>
@@ -763,6 +1129,9 @@
                     class="btn btn-success text-white">Approve</button>&nbsp;
                 <button @click="returnSubmit()" class="btn btn-danger text-white">Return</button>
             </div>
+
+            <!-- </div>
+        </div> -->
         </Modal>
         <SideModal v-if="displaySideModal"  @close-modal-event="displaySideModal = false" style="z-index: 9999;  ">
             <h2 class="text-lg font-semibold">Preview SideModal</h2>
@@ -825,7 +1194,6 @@
 
 
             </div>
-
             <!-- <br>
             <iframe :src="`/storage/${current_filepath}`"></iframe>
             <br>
@@ -839,6 +1207,89 @@
                 <iframe :src="print_link" style="width:100%; height:400px" />
             </div>
         </PrintModal>
+        <!-- ACCOMPLISHMENT MOV MODAL -->
+         <!-- title="Accomplishment MOV" -->
+        <ModalAccomplishmentMOV
+            v-if="displayModalAccomplishmentMOV"
+            @close-modal-event="closeDisplayModalAccomplishmentMOV"
+            :z-index="1100"
+            style="z-index: 1100;"
+            :backdrop="false"
+        >
+            <div class="sticky-header modal-summary-card">
+                <!-- <div class="d-flex justify-content-end mb-2">
+                    <button
+                        type="button"
+                        class="btn btn-success text-white shadow-sm"
+                        @click="downloadExcel(opcrListId)">
+                        <i class="fas fa-file-excel me-2"></i>
+                        Export to Excel
+                    </button>
+                </div> -->
+                <div>
+                    <!-- paps_cuirrent: {{ paps_current }} -->
+                    <b>PPA:&nbsp;</b> <u>{{ paps_current?.paps_desc }}</u>
+                </div>
+                <div><b>MFO:&nbsp;</b><u>{{ paps_current?.mfo_desc }}</u></div>
+                <div><b>Accomplishments:&nbsp;</b><u>{{ paps_current?.accomplishments }}</u></div>
+                <div><b>OFFICE:&nbsp;</b><u>{{ opcr_current?.office?.FFUNCTION ?? '-' }}</u></div>
+                <div><b>SEMESTER:&nbsp;</b><u>{{ opcr_current.semester }}</u></div>
+                <div><b>PERIOD COVERED:&nbsp;</b><u>{{ opcr_current.opcr_date }}</u></div>
+                <div><b>STATUS:&nbsp;</b><u>{{ getStatus(opcr_current.rating_status) }}</u></div>
+            </div>
+            <table class="table table-bordered table-striped accomplishment-modal-table">
+                <thead>
+                    <tr>
+                        <th width="10%">Date</th>
+                        <th width="20%">Title of Accomplishment</th>
+                        <th width="25%">Brief Description</th>
+                        <th width="20%">Scope</th>
+                        <th width="25%">Images</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr v-for="(item, index) in mov_accomplishment" :key="index">
+                        <td>{{ item.date }}</td>
+
+                        <td>
+                            {{ item.title_of_accomplishment }}
+                        </td>
+
+                        <td>
+                            {{ item.brief_description }}
+                        </td>
+
+                        <td style="white-space: pre-line;">
+                            {{ item.scope }}
+                        </td>
+
+                        <td>
+                            <div class="d-flex flex-wrap">
+                                <img
+                                    v-if="item.image1"
+                                    :src="item.image1"
+                                    class="img-thumbnail mr-2 mb-2"
+                                    style="max-width:180px; max-height:180px;"
+                                >
+                                <img
+                                    v-if="item.image2"
+                                    :src="item.image2"
+                                    class="img-thumbnail mb-2"
+                                    style="max-width:180px; max-height:180px;"
+                                >
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr v-if="mov_accomplishment.length === 0">
+                        <td colspan="5" class="text-center">
+                            No accomplishments found.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </ModalAccomplishmentMOV>
         <!--
         <Modal2 v-if="displayModal2" @close-modal-event="hideModal">
             <button @click="backTo()" class="btn btn-light">
@@ -868,9 +1319,11 @@ import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
 import Modal from "@/Shared/ModalDynamicTitle2";
 import Modal2 from "@/Shared/PrintModal";
-import PrintModal from "@/Shared/ModalDynamicTitle2";
+import PrintModal from "@/Shared/ModalDynamicTitle22";
 import SideModal from "@/Shared/PrintModal";
 import { Inertia } from '@inertiajs/inertia';
+// import ModalAccomplishmentMOV from "@/Shared/ModalDynamicTitle";
+import ModalAccomplishmentMOV from "@/Shared/PrintModal1";
 
 export default {
     props: {
@@ -886,6 +1339,8 @@ export default {
             displayModal2: false,
             displaySideModal: false,
             displayPrintModal: false,
+            displayModalAccomplishmentMOV: false,
+            mov_accomplishment: [],
             opcr_data: [],
             status_val: -3,
             opcr_current: [],
@@ -900,10 +1355,16 @@ export default {
             show_all_not_clicked: false,
             currentRatingType: 0,
             modal_mode: 'Review',
-            print_link: ""
+            print_link: "",
+            opcrListId: "",
+            file_name: "",
+            paps_current: [],
+            unsavedPpdoRemarks: {},
+            unsavedFinalRemark: false
         }
     },
     mounted() {
+        window.addEventListener('beforeunload', this.handleBeforeUnload);
         // auto-resize all rendered textareas on initial load
         this.$nextTick(() => {
             this.$refs.remarksTextarea.forEach((ta) => {
@@ -912,6 +1373,10 @@ export default {
             });
         });
     },
+    beforeUnmount() {
+        window.removeEventListener('beforeunload', this.handleBeforeUnload);
+    },
+
     updated() {
         // auto-resize whenever data changes after updates
         this.$nextTick(() => {
@@ -924,9 +1389,26 @@ export default {
         });
     },
     components: {
-        Pagination, Filtering, Modal, Modal2, SideModal, PrintModal
+        Pagination, Filtering, Modal, Modal2, SideModal, PrintModal, ModalAccomplishmentMOV
     },
+    computed: {
+        // First computed: sum of the three category averages
+        // ppdototalOfAverages() {
+        //     // const avgQ = this.categoryAverage('q');
+        //     // const avgE = this.categoryAverage('e');
+        //     // const avgT = this.categoryAverage('t');
+        //     return
+        // },
+        // // Second computed: mean of the three category averages
+        // ppdoaverageOfAverages() {
+        //     const avgQ = this.categoryAverage('q');
+        //     const avgE = this.categoryAverage('e');
+        //     const avgT = this.categoryAverage('t');
+        //     return (avgQ + avgE + avgT) / 3;
+        // }
 
+
+    },
     methods: {
         // START OF PRINTING
         viewlink(opcr_id1,FFUNCCOD1) {
@@ -967,6 +1449,31 @@ export default {
         hidePrintModal(){
             this.displayPrintModal=false;
         },
+        handleBeforeUnload(event) {
+            const hasUnsaved = this.displayModal && (
+                Object.keys(this.unsavedPpdoRemarks).length > 0 ||
+                this.unsavedFinalRemark
+            );
+            if (hasUnsaved) {
+                event.preventDefault();
+                event.returnValue = '';
+                return '';
+            }
+        },
+        markPpdoRemarksUnsaved(opcr_rating_id) {
+            if (!opcr_rating_id) return;
+            this.unsavedPpdoRemarks = {
+                ...this.unsavedPpdoRemarks,
+                [opcr_rating_id]: true
+            };
+        },
+        markFinalRemarkUnsaved() {
+            this.unsavedFinalRemark = true;
+        },
+        clearUnsavedRemarks() {
+            this.unsavedPpdoRemarks = {};
+            this.unsavedFinalRemark = false;
+        },
         //END OF PRINTING
         updateMOVisVisible(mov_is_visible, index){
             this.opcr_data[index].mov_is_visible = !mov_is_visible
@@ -998,6 +1505,7 @@ export default {
             this.status_val = status
             // alert(this.status_val)
             this.opcr_current = opcr
+            this.opcrListId=opcr_id;
             var url = "/review-approve/ratings/" + opcr_id + "/view/opcr/rating/submission"
             await axios.get(url, {
                 params: {
@@ -1010,11 +1518,13 @@ export default {
             });
             this.displayModal = true;
             this.currentRatingType=this.opcr_current.rating_type
+            this.clearUnsavedRemarks();
         },
         hideModal() {
             this.displayModal = false;
             this.displayModal2 = false;
             this.submit_attempt =false;
+            this.clearUnsavedRemarks();
         },
         showModal2(md) {
             this.hideModal();
@@ -1092,25 +1602,81 @@ export default {
             }
             var url = "/review-approve/ratings/submit/opcr/"+column+"/"+opcr_rating_id+"/"+rating;
             axios.post(url).then(response=>{
-
+                if (column === 'ppdo_remarks' && opcr_rating_id) {
+                    if (this.unsavedPpdoRemarks[opcr_rating_id]) {
+                        const { [opcr_rating_id]: removed, ...rest } = this.unsavedPpdoRemarks;
+                        this.unsavedPpdoRemarks = rest;
+                    }
+                }
             }).finally(response=>{
 
             }).catch(error=>{
 
             });
         },
+        saveRemarks() {
+            if (!this.opcr_current?.id) {
+                return;
+            }
+
+            const payload = {
+                ppdo_remarks: this.opcr_data.map(item => ({
+                    opcr_rating_id: item.opcr_rating_id,
+                    ppdo_remarks: item.ppdo_remarks || ''
+                })),
+                final_remark: this.form.remarks || ''
+            };
+            const url = `/review-approve/ratings/save-remarks/${this.opcr_current.id}`;
+
+            Inertia.patch(url, payload, {
+                preserveState: true,
+                preserveScroll: true,
+                onSuccess: () => {
+                    // alert('Remarks saved successfully.');
+                    this.clearUnsavedRemarks();
+                },
+                onError: (errors) => {
+                    console.error('Failed to save remarks', errors);
+                }
+            });
+        },
+        deleteRemark(remarkId) {
+            if (!remarkId) return;
+
+            if (!confirm('Are you sure you want to delete this remark?')) {
+                return;
+            }
+
+            axios.delete(`/review-approve/ratings/remark/${remarkId}`)
+                .then(() => {
+                    this.opcr_current.opcr_remarks = this.opcr_current.opcr_remarks.filter(
+                        remark => remark.id !== remarkId
+                    );
+                })
+                .catch(error => {
+                    console.error('Failed to delete remark', error);
+                });
+        },
         canSubmit() {
         // loop through each row in opcr_data
             for (let row of this.opcr_data) {
                 // define the mappings of score fields to their standards
+                // { score: row.q1, standard: 'Yes'},
+                //     { score: row.q2, standard: 'Yes'},
+                //     { score: row.q3, standard: 'Yes'},
+                //     { score: row.e1, standard: row.e1_standard },
+                //     { score: row.e2, standard: row.e2_standard },
+                //     { score: row.e3, standard: row.e3_standard },
+                //     { score: row.t1, standard: row.t1_standard },
                 const checks = [
-                    { score: row.q1, standard: 'Yes'},
-                    { score: row.q2, standard: 'Yes'},
-                    { score: row.q3, standard: 'Yes'},
-                    { score: row.e1, standard: row.e1_standard },
-                    { score: row.e2, standard: row.e2_standard },
-                    { score: row.e3, standard: row.e3_standard },
-                    { score: row.t1, standard: row.t1_standard }
+
+                    { score: row.ppdo_q1, standard: 'Yes'},
+                    { score: row.ppdo_q2, standard: 'Yes'},
+                    { score: row.ppdo_q3, standard: 'Yes'},
+                    { score: row.ppdo_e1, standard: row.e1_standard },
+                    { score: row.ppdo_e2, standard: row.e2_standard },
+                    { score: row.ppdo_e3, standard: row.e3_standard },
+                    { score: row.ppdo_t1, standard: row.t1_standard }
                 ];
                 console.log(checks);
 
@@ -1121,7 +1687,7 @@ export default {
                             score === null ||
                             score === "" ||
                             isNaN(score) ||
-                            Number(score) < 1 ||
+                            Number(score) < 0 ||
                             Number(score) > 5
                         ) {
                             // alert("null ang score "+score)
@@ -1267,7 +1833,35 @@ export default {
             // total = "44.44555555";
             // this.total_ave = total;
             return this.format_number_conv(total, 2, true);
+        },
+        getTotalAverage2() {
+            let total = 0;
 
+            this.opcr_data.forEach(item => {
+                var divisor =0;
+                const qAvg = this.average([
+                    item.q1,
+                    item.q2,
+                    item.q3
+                ]);
+
+                const eAvg = this.average([
+                    item.e1,
+                    item.e2,
+                    item.e3
+                ]);
+
+                const tAvg = this.average([
+                    item.t1
+                ]);
+                if(parseFloat(qAvg)>0){divisor+=1}
+                if(parseFloat(eAvg)>0){divisor+=1}
+                if(parseFloat(tAvg)>0){divisor+=1}
+                if(divisor==0){divisor=1}
+                total += (qAvg + eAvg + tAvg)/divisor;
+            });
+
+            return Number(total.toFixed(2));
         },
         computeRowAverage(opcr) {
             const values = [opcr.rating_q, opcr.rating_e, opcr.rating_t];
@@ -1311,6 +1905,76 @@ export default {
             const total = validAverages.reduce((a, b) => a + b, 0);
             return (total / validAverages.length).toFixed(2); // keep 2 decimals
 
+        },
+        getAverageAll2() {
+            // let total = 0;
+            // let count = 0;
+
+            // this.opcr_data.forEach(item => {
+            //     const qAvg = this.average([
+            //         item.q1,
+            //         item.q2,
+            //         item.q3
+            //     ]);
+
+            //     const eAvg = this.average([
+            //         item.e1,
+            //         item.e2,
+            //         item.e3
+            //     ]);
+
+            //     const tAvg = this.average([
+            //         item.t1
+            //     ]);
+
+            //     [qAvg, eAvg, tAvg].forEach(avg => {
+            //         if (avg > 0) {
+            //             total += avg;
+            //             count++;
+            //         }
+            //     });
+            // });
+
+            // const divisor = count || 1; // Avoid division by zero
+            // return Number((total / divisor).toFixed(2));
+            let total = 0;
+            let count = 0;
+
+            let d1=1;
+            let d2=1;
+            let d3=1;
+            let divisor=0;
+            this.opcr_data.forEach(item => {
+                const qAvg = this.average([
+                    item.q1,
+                    item.q2,
+                    item.q3
+                ]);
+
+                const eAvg = this.average([
+                    item.e1,
+                    item.e2,
+                    item.e3
+                ]);
+
+                const tAvg = this.average([
+                    item.t1
+                ]);
+                if(qAvg>0){d1=1}else{d1=0}
+                if(eAvg>0){d2=1}else{d2=0}
+                if(tAvg>0){d3=1}else{d3=0}
+                divisor = d1 + d2 + d3;
+                if(divisor<1){divisor=1}else{count++}
+                total += (qAvg + eAvg + tAvg)/divisor;
+                // [qAvg, eAvg, tAvg].forEach(avg => {
+                //     if (avg > 0) {
+                //         total += avg;
+                //         count++;
+                //     }
+                // });
+            });
+
+            return count ? Number((total / count).toFixed(2)) : 0;
         },
         // *********************************************AVERAGE -DPCR SCORES *********************************************
         computeAverageScore(monthly_ratings) {
@@ -1439,15 +2103,297 @@ export default {
         // SET RATING TYPE
         // ===============================
         setRatingType(rating_type, id) {
-            Inertia.patch(`/review-approve/ratings/set/rating/type/${rating_type}/${id}`, {}, {
-                onSuccess: () => {
-                console.log(`Rating type ${type} updated for ID ${id}`);
-                },
-                onError: (errors) => {
-                console.error(errors);
+                Inertia.patch(`/review-approve/ratings/set/rating/type/${rating_type}/${id}`, {}, {
+                    onSuccess: () => {
+                    console.log(`Rating type ${type} updated for ID ${id}`);
+                    },
+                    onError: (errors) => {
+                    console.error(errors);
+                    }
+            });
+        },
+
+        // DOWNLOAD EXCEL
+        async downloadExcel(opcr_id) {
+            // opcr_list_id must be available, e.g., from a prop or data
+            // const opcrListId = this.opcr_list_id; // adjust to your variable
+            var file_name =this.opcr_current.semester + " - " + this.opcr_current.year + " - "+ this.opcr_current.office.FFUNCTION+".xlsx";
+            try {
+                const response = await axios.get(
+                    `/review-approve-ratings/${opcr_id}/view/opcr/rating/submission`,
+                    { responseType: 'blob' }   // important for file download
+                );
+
+                // Create a blob URL and trigger download
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', file_name);
+                document.body.appendChild(link);
+                link.click();
+
+                // Clean up
+                link.remove();
+                window.URL.revokeObjectURL(url);
+            } catch (error) {
+                console.error('Download failed:', error);
+                // Handle error (e.g., show a notification)
+            }
+        },
+
+
+        //FLEXIBLE TOTAL
+
+        // // AVERAGE
+        // // Method 1: returns sum of the three averages
+        // categoryAverage(type) {
+        //     const values = [];
+
+        //     this.rows.forEach(row => {
+        //         if (type === 't') {
+        //         // Only one 't' column per row
+        //         const val = row.ppdo_t1;
+        //         if (val != null && Number(val) !== 0) {
+        //             values.push(Number(val));
+        //         }
+        //         } else {
+        //         // For 'q' or 'e': three columns (1, 2, 3)
+        //         for (let i = 1; i <= 3; i++) {
+        //             const key = `ppdo_${type}${i}`;
+        //             const val = row[key];
+        //             if (val != null && Number(val) !== 0) {
+        //             values.push(Number(val));
+        //             }
+        //         }
+        //         }
+        //     });
+
+        //     if (values.length === 0) return 0;
+        //     const sum = values.reduce((s, v) => s + v, 0);
+        //     return sum / values.length;
+        // },
+
+        //     /**
+        //     * Method 1: Total of the three category averages
+        //     * returns avgQ + avgE + avgT
+        //     */
+        // ppdototalOfAverages() {
+        //     const avgQ = this.categoryAverage('q');
+        //     const avgE = this.categoryAverage('e');
+        //     const avgT = this.categoryAverage('t');
+        //     return avgQ + avgE + avgT;
+        // },
+
+        //     /**
+        //     * Method 2: Average of the three category averages
+        //     * returns (avgQ + avgE + avgT) / 3
+        //     */
+        // ppdoaverageOfAverages() {
+        //     const avgQ = this.categoryAverage('q');
+        //     const avgE = this.categoryAverage('e');
+        //     const avgT = this.categoryAverage('t');
+        //     return (avgQ + avgE + avgT) / 3;
+        // }
+        average(values) {
+            const valid = values
+                .map(Number)
+                .filter(v => !isNaN(v) && v > 0);
+
+            if (!valid.length) return 0;
+
+            return valid.reduce((sum, val) => sum + val, 0) / valid.length;
+        },
+
+        // Sum of the averages of all OPCR items
+        calculatePpdoTotal() {
+            let total = 0;
+
+            this.opcr_data.forEach(item => {
+                var divisor =0;
+                const qAvg = this.average([
+                    item.ppdo_q1,
+                    item.ppdo_q2,
+                    item.ppdo_q3
+                ]);
+
+                const eAvg = this.average([
+                    item.ppdo_e1,
+                    item.ppdo_e2,
+                    item.ppdo_e3
+                ]);
+
+                const tAvg = this.average([
+                    item.ppdo_t1
+                ]);
+                if(parseFloat(qAvg)>0){divisor+=1}
+                if(parseFloat(eAvg)>0){divisor+=1}
+                if(parseFloat(tAvg)>0){divisor+=1}
+                if(divisor<1){divisor=1}
+                total += (qAvg + eAvg + tAvg)/divisor;
+            });
+
+            return Number(total.toFixed(2));
+        },
+        calculatePpdoTotal2() {
+            var total = 0;
+            for (let i = 0; i < this.opcr_data.length; i++) {
+                var rat_e = this.opcr_data[i].ppdo_rating_e;
+                var rat_q = this.opcr_data[i].ppdo_rating_q;
+                var rat_t = this.opcr_data[i].ppdo_rating_t;
+                var avee = parseFloat(rat_e) + parseFloat(rat_q) + parseFloat(rat_t)
+                // var ave = parseFloat(this.opcrs[ind].rating_e) + parseFloat(this.opcrs[ind].rating_q) + parseFloat(this.opcrs[ind].rating_t);
+                var div = 0;
+                if (parseFloat(rat_e) >= 1) {
+                    div = div + 1;
                 }
-        });
-    }
+                if (parseFloat(rat_q) >= 1) {
+                    div = div + 1;
+                }
+                if (parseFloat(rat_t) >= 1) {
+                    div = div + 1;
+                }
+                if (div == 0) {
+                    div = 1;
+                }
+                total = total + (avee / div);
+            }
+            // total = "44.44555555";
+            // this.total_ave = total;
+            return this.format_number_conv(total, 2, true);
+        },
+        // getTotalAverage2() {
+        //     var total = 0;
+        //     for (let i = 0; i < this.opcr_data.length; i++) {
+        //         var rat_e = this.opcr_data[i].rating_e;
+        //         var rat_q = this.opcr_data[i].rating_q;
+        //         var rat_t = this.opcr_data[i].rating_t;
+        //         var avee = parseFloat(rat_e) + parseFloat(rat_q) + parseFloat(rat_t)
+        //         // var ave = parseFloat(this.opcrs[ind].rating_e) + parseFloat(this.opcrs[ind].rating_q) + parseFloat(this.opcrs[ind].rating_t);
+        //         var div = 0;
+        //         if (parseFloat(rat_e) >= 1) {
+        //             div = div + 1;
+        //         }
+        //         if (parseFloat(rat_q) >= 1) {
+        //             div = div + 1;
+        //         }
+        //         if (parseFloat(rat_t) >= 1) {
+        //             div = div + 1;
+        //         }
+        //         if (div == 0) {
+        //             div = 1;
+        //         }
+        //         total = total + (avee / div);
+        //     }
+        //     // total = "44.44555555";
+        //     // this.total_ave = total;
+        //     return this.format_number_conv(total, 2, true);
+        // },
+        // Average of all averages across the entire OPCR data
+        calculatePpdoAverage() {
+            let total = 0;
+            let count = 0;
+
+            let d1=1;
+            let d2=1;
+            let d3=1;
+            let divisor=0;
+            this.opcr_data.forEach(item => {
+                const qAvg = this.average([
+                    item.ppdo_q1,
+                    item.ppdo_q2,
+                    item.ppdo_q3
+                ]);
+
+                const eAvg = this.average([
+                    item.ppdo_e1,
+                    item.ppdo_e2,
+                    item.ppdo_e3
+                ]);
+
+                const tAvg = this.average([
+                    item.ppdo_t1
+                ]);
+                if(qAvg>0){d1=1}else{d1=0}
+                if(eAvg>0){d2=1}else{d2=0}
+                if(tAvg>0){d3=1}else{d3=0}
+                divisor = d1 + d2 + d3;
+                if(divisor<1){divisor=1}else{count++}
+                total += (qAvg + eAvg + tAvg)/divisor;
+                // [qAvg, eAvg, tAvg].forEach(avg => {
+                //     if (avg > 0) {
+                //         total += avg;
+                //         count++;
+                //     }
+                // });
+            });
+
+            return count ? Number((total / count).toFixed(2)) : 0;
+        },
+        calculatePpdoAverage2() {
+            var total = 0;
+            var counter = 0;
+            for (let i = 0; i < this.opcr_data.length; i++) {
+                var rat_e = this.opcr_data[i].ppdo_rating_e;
+                var rat_q = this.opcr_data[i].ppdo_rating_q;
+                var rat_t = this.opcr_data[i].ppdo_rating_t;
+                var avee = parseFloat(rat_e) + parseFloat(rat_q) + parseFloat(rat_t)
+                // var ave = parseFloat(this.opcrs[ind].rating_e) + parseFloat(this.opcrs[ind].rating_q) + parseFloat(this.opcrs[ind].rating_t);
+                var div = 0;
+                if (parseFloat(rat_e) >= 1) {
+                    div = div + 1;
+                }
+                if (parseFloat(rat_q) >= 1) {
+                    div = div + 1;
+                }
+                if (parseFloat(rat_t) >= 1) {
+                    div = div + 1;
+                }
+                if (div == 0) {
+                    div = 1;
+                }
+                total = total + (avee / div);
+                if(total>0){
+                    counter+=1;
+                }
+            }
+            // total = "44.44555555";
+            // this.total_ave = total;
+            if(counter<0){
+                counter=1;
+            }
+            var ave =total/counter;
+            return this.format_number_conv(ave, 2, true);
+        },
+        // ACCOMPLISHMENT MOV
+        async showModalAccomplishmentMOV(idpaps, department_code,year,semester, paps_param){
+
+            this.displayModalAccomplishmentMOV=true
+            this.displayModal=false;
+            // Optional: clear previous data
+            this.mov_accomplishment = [];
+            // this.opcr_current = opcr;
+            this.paps_current=paps_param
+            try {
+                const response = await axios.get('/api/opcr-mov-api', {
+                    params: {
+                        ppa_id: idpaps,
+                        year: year,
+                        semester: semester,
+                        department_id: department_code,
+                    }
+                });
+
+                this.mov_accomplishment = response.data;
+            } catch (error) {
+                console.error('Failed to fetch MOV accomplishment:', error);
+                this.mov_accomplishment = [];
+            }
+        },
+        closeDisplayModalAccomplishmentMOV(){
+            this.displayModalAccomplishmentMOV=false;
+            this.displayModal=true;
+            // alert(this.displayModal);
+        }
     }
 };
 </script>
@@ -1455,9 +2401,182 @@ export default {
 .sticky-header {
   position: sticky;
   top: 0;
-  background: white; /* Important so header isn’t transparent */
-  z-index: 2;        /* Keeps header above body rows */
+  background: linear-gradient(135deg, #f6fcfd 0%, #ebf8fb 100%);
+  z-index: 2;
+  border: 1px solid #d8eef2;
+  border-radius: 0.75rem;
+  padding: 0.9rem 1rem;
+  box-shadow: 0 4px 16px rgba(2, 102, 115, 0.08);
 }
+
+.modal-summary-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: 1rem;
+}
+
+.modal-summary-card div {
+    color: #0d4b54;
+    font-size: 0.95rem;
+}
+
+/* .modern-rating-table thead.sticky-header {
+    position: sticky;
+    top: 6rem;
+    z-index: 3;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+} */
+
+.modal-summary-card.sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.modern-rating-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(2, 49, 58, 0.08);
+}
+
+.modern-rating-table thead th {
+    background: linear-gradient(135deg, #026673 0%, #038695 100%);
+    color: #fff;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.7rem 0.55rem;
+    vertical-align: middle;
+    border-color: #02595f;
+}
+
+.modern-rating-table tbody td,
+.modern-rating-table tbody th {
+    padding: 0.6rem 0.55rem;
+    vertical-align: top;
+    border-color: #e2ebee;
+}
+
+.modern-rating-table tbody tr:nth-child(even) {
+    background-color: #fcfdfd;
+}
+
+.modern-rating-table tbody tr:hover {
+    background-color: #eef8fb !important;
+}
+
+.modern-rating-table .form-select,
+.modern-rating-table .form-control,
+.modern-rating-table textarea {
+    border: 1px solid #cde2e6;
+    border-radius: 0.5rem;
+    background-color: #fff;
+    font-size: 0.86rem;
+    box-shadow: none;
+}
+
+.modern-rating-table .form-select:focus,
+.modern-rating-table .form-control:focus,
+.modern-rating-table textarea:focus {
+    border-color: #026673;
+    box-shadow: 0 0 0 0.2rem rgba(2, 102, 115, 0.16);
+}
+
+.table-summary-row td {
+    background-color: #f2fafb;
+    color: #02454d;
+    font-weight: 600;
+}
+
+.accomplishment-modal-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(2, 49, 58, 0.08);
+}
+
+.accomplishment-modal-table thead th {
+    background: linear-gradient(135deg, #026673 0%, #038695 100%);
+    color: #fff;
+}
+
+.accomplishment-modal-table tbody td {
+    vertical-align: top;
+}
+
+.accomplishment-modal-table img {
+    border-radius: 0.5rem;
+}
+
+.review-col-mfo,
+.review-col-paps,
+.review-col-accomplishment,
+.review-col-remarks,
+.review-col-mov,
+.review-col-rating {
+    vertical-align: top;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+.review-col-mfo {
+    min-width: 180px;
+    max-width: 220px;
+    width: 180px;
+}
+
+.review-col-paps {
+    min-width: 180px;
+    max-width: 220px;
+    width: 180px;
+}
+
+.review-col-accomplishment {
+    min-width: 260px;
+    max-width: 320px;
+    width: 260px;
+}
+
+.review-col-remarks {
+    min-width: 180px;
+    max-width: 220px;
+    width: 180px;
+}
+
+.review-col-mov {
+    min-width: 110px;
+    max-width: 130px;
+    width: 110px;
+    text-align: center;
+}
+
+.mov-btn {
+    white-space: nowrap;
+    border-radius: 999px;
+    padding: 0.35rem 0.8rem;
+    font-weight: 600;
+    transition: all 0.2s ease-in-out;
+}
+
+.mov-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(2, 102, 115, 0.16);
+}
+
+.review-col-rating {
+    min-width: 95px;
+    max-width: 110px;
+    width: 95px;
+}
+
 .row-centered {
     text-align: center;
 }

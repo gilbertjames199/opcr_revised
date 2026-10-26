@@ -2843,7 +2843,7 @@
                     >
                         Return
                     </button> &nbsp;
-                    <button
+                    <!--<button
                         v-if="['0'].includes(paps.return_request_status)"
                         @click="statusAction(paps, 7)"
                         :style="{
@@ -2857,7 +2857,7 @@
                         }"
                     >
                         Approve Return Request
-                    </button>
+                    </button>-->
                 </span>
                 <span  :style="{
                         display: 'inline-block',

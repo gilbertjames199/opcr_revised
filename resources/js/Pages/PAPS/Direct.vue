@@ -561,14 +561,14 @@ export default {
 .modal-content {
     overflow: visible !important;
 } */
- .table-responsive {
+ /* .table-responsive {
     overflow-x: auto;
     overflow-y: visible;
 }
 
 .table-responsive .dropdown-menu.show {
     position: fixed !important;
-}
+} */
 
 /* .dropdown-menu {
     z-index: 1051 !important;  /* slightly above Bootstrap's default 1050
