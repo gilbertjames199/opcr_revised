@@ -517,7 +517,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 $rating_status =optional(optional($item)->opcrList)->rating_status ?? "0";
                 if ($rating_type == "0") {
 
-                    // dd($item->opcr_rating); 
+                    // dd($item->opcr_rating);
                     $q1 = $item->opcr_rating ? $item->opcr_rating->q1 : null;
                     $q2 = $item->opcr_rating ? $item->opcr_rating->q2 : null;
                     $q3 = $item->opcr_rating ? $item->opcr_rating->q3 : null;
@@ -644,7 +644,7 @@ class OfficePerformanceCommitmentRatingController extends Controller
                         $e3 = optional($rating)->e3;
                         $t1 = optional($rating)->t1;
                     }
-                    
+
                     $rid = optional($rating)->id;
                     // dd($rating);
                     $movs = optional($item->opcr_rating)->movs;
@@ -724,13 +724,8 @@ class OfficePerformanceCommitmentRatingController extends Controller
                     "paps"=>$item->paps
                 ];
             });
-<<<<<<< HEAD
-        dd($opcrs);
-
-=======
         // dd($opcrs);
-        // dd("opcr targets: ", $opcr_targets, "opcrs: ", $opcrs);
->>>>>>> 80a24812078ab5e7caae8d0865a1eaf3c52a6127
+
         //********************************************** */
         $count_pgdh = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
             ->where('role', 'like', '%Department Head%')
