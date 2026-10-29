@@ -724,11 +724,6 @@ class OfficePerformanceCommitmentRatingController extends Controller
                 ];
             });
         // dd($opcrs);
-<<<<<<< HEAD
-
-=======
-        // dd("opcr targets: ", $opcr_targets, "opcrs: ", $opcrs);
->>>>>>> 555190c026a9fb1df0528476bf653274180aa948
         //********************************************** */
         $count_pgdh = Implementing_team::where('FFUNCCOD', $FFUNCCOD)
             ->where('role', 'like', '%Department Head%')
