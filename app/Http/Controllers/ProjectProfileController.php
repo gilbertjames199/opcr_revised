@@ -298,7 +298,7 @@ class ProjectProfileController extends Controller
                 $query->where('FFUNCCOD', $FFUNCCOD)
                     ->orWhereIn('id', $shared_paps);
             })
-            ->whereHas('latestRevisionPlan', function ($q) use ($year) {
+            ->whereHas('revisionPlans', function ($q) use ($year) {
                 $q->whereYear('date_start', $year);
             })
             // ->with([])
@@ -359,97 +359,97 @@ class ProjectProfileController extends Controller
                 ];
             });
 
-        /*$data3 = ProgramAndProject::select(
-            'id',
-            'paps_desc',
-            'FFUNCCOD',
-            'FFUNDCOD',
-            'fund_owner',
-            'agency_name'
-        )
-            // ->where('FFUNCCOD', $FFUNCCOD)
-            ->with([
-                'office',
-                'fundOwner',
-                // 'latestRevisionPlan',
-                'latestRevisionPlan' => function ($q) {
-                    $q->select(
-                        'revision_plans.id',
-                        'revision_plans.idpaps',
-                        'revision_plans.project_title',
-                        'revision_plans.year_period',
-                        'revision_plans.aip_code',
-                        'revision_plans.status',
-                        'revision_plans.type',
-                        'revision_plans.program_id_2',
-                        'revision_plans.date_start',
-                    );
-                },
-                'latestRevisionPlan.budget',
-                'latestRevisionPlan.budget.objectOfExpenditure',
-            ])
-            // ->whereHas('latestRevisionPlan', function ($q) use ($year) {
-            //     $q->where('id', '13');
-            // })
-            ->where('id', '1545')
-            // ->with([])
-            ->where('type', '<>', 'GAS')
-            ->get()
-            ->map(function ($item) {
-                dd($item->latestRevisionPlan);
-                $FFUNDCOD = $item->FFUNDCOD;
-                $latestPlan = $item->latestRevisionPlan;
-                // dd($latestPlan);
-                // if($item->fund_owner!='1121'){
-                //     dd($item);
-                // }
-                $categoryTotals = $this->getTotalByCategory($latestPlan);
-                $mooe = $categoryTotals['Maintenance, Operating, and Other Expenses'];
-                $co   = $categoryTotals['Capital Outlay'];
-                $ps   = $categoryTotals['Personnel Services'];
-                $fe   = $categoryTotals['Financial Expenses'];
-                // dd($latestPlan);
-                return [
-                    'id' => $item->id,
-                    'paps_desc' => $item->paps_desc,
-                    'FFUNCCOD' => $item->FFUNCCOD,
-                    'FFUNCTION' => optional($item->fundOwner)->FFUNCTION,
-                    'department_code' => optional($item->office)->department_code,
-                    'fund_owner' => $item->fund_owner,
-                    'agency_name' => $item->agency_name,
-                    'aip_code' => optional($latestPlan)->aip_code,
-                    'mooe' => $mooe,
-                    'co' => $co,
-                    'ps' => $ps,
-                    'fe' => $fe,
-                    'program_id' => $latestPlan ? $latestPlan->program_id_2 : null,
-                    'latest_revision_plan' => $item->latestRevisionPlan ? [
-                        'id' => $item->latestRevisionPlan->id,
-                        'idpaps' => $item->latestRevisionPlan->idpaps,
-                        'project_title' => $item->latestRevisionPlan->project_title,
-                        'year' => $item->latestRevisionPlan->year_period,
-                        'type' => $item->latestRevisionPlan->type,
-                        'budget' => $latestPlan->budget ? $latestPlan->budget->map(function ($budgetItem) use ($FFUNDCOD) {
-                            return [
-                                'idooe' => $budgetItem->idooe,
-                                'FOOEDESC' => $budgetItem->objectOfExpenditure ? $budgetItem->objectOfExpenditure->FOOEDESC : null,
-                                'particulars' => $budgetItem->particulars,
-                                'account_code' => $budgetItem->account_code,
-                                'FFUNDCOD' => $FFUNDCOD,
-                                'amount' => $budgetItem->amount,
-                                'proposed_budget' => $budgetItem->proposed_budget,
-                                'category' => $budgetItem->category,
-                                'category_abbreviation' => \App\Helpers\BudgetHelper::getCategoryAbbreviation($budgetItem->category),
-                                'category_gad' => $budgetItem->category_gad,
-                                'source' => $budgetItem->source,
-                                'remarks' => $budgetItem->remarks,
-                                'sip_number' => $budgetItem->sip_number,
-                            ];
-                        })->toArray() : [],
-                    ] : null,
-                    'status' => $latestPlan ? $latestPlan->status : null,
-                ];
-            });*/
+        // $data3 = ProgramAndProject::select(
+        //     'id',
+        //     'paps_desc',
+        //     'FFUNCCOD',
+        //     'FFUNDCOD',
+        //     'fund_owner',
+        //     'agency_name'
+        // )
+        //     // ->where('FFUNCCOD', $FFUNCCOD)
+        //     ->with([
+        //         'office',
+        //         'fundOwner',
+        //         // 'latestRevisionPlan',
+        //         'latestRevisionPlan' => function ($q) {
+        //             $q->select(
+        //                 'revision_plans.id',
+        //                 'revision_plans.idpaps',
+        //                 'revision_plans.project_title',
+        //                 'revision_plans.year_period',
+        //                 'revision_plans.aip_code',
+        //                 'revision_plans.status',
+        //                 'revision_plans.type',
+        //                 'revision_plans.program_id_2',
+        //                 'revision_plans.date_start',
+        //             );
+        //         },
+        //         'latestRevisionPlan.budget',
+        //         'latestRevisionPlan.budget.objectOfExpenditure',
+        //     ])
+        //     ->whereHas('revisionPlans', function ($q) use ($year) {
+        //         $q->whereYear('date_start', $year);
+        //     })
+        //     ->where('id', '1545')
+        //     // ->with([])
+        //     ->where('type', '<>', 'GAS')
+        //     ->get()
+        //     ->map(function ($item) {
+        //         // dd($item->latestRevisionPlan);
+        //         $FFUNDCOD = $item->FFUNDCOD;
+        //         $latestPlan = $item->latestRevisionPlan;
+        //         // dd($latestPlan);
+        //         // if($item->fund_owner!='1121'){
+        //         //     dd($item);
+        //         // }
+        //         $categoryTotals = $this->getTotalByCategory($latestPlan);
+        //         $mooe = $categoryTotals['Maintenance, Operating, and Other Expenses'];
+        //         $co   = $categoryTotals['Capital Outlay'];
+        //         $ps   = $categoryTotals['Personnel Services'];
+        //         $fe   = $categoryTotals['Financial Expenses'];
+        //         // dd($latestPlan);
+        //         return [
+        //             'id' => $item->id,
+        //             'paps_desc' => $item->paps_desc,
+        //             'FFUNCCOD' => $item->FFUNCCOD,
+        //             'FFUNCTION' => optional($item->fundOwner)->FFUNCTION,
+        //             'department_code' => optional($item->office)->department_code,
+        //             'fund_owner' => $item->fund_owner,
+        //             'agency_name' => $item->agency_name,
+        //             'aip_code' => optional($latestPlan)->aip_code,
+        //             'mooe' => $mooe,
+        //             'co' => $co,
+        //             'ps' => $ps,
+        //             'fe' => $fe,
+        //             'program_id' => $latestPlan ? $latestPlan->program_id_2 : null,
+        //             'latest_revision_plan' => $item->latestRevisionPlan ? [
+        //                 'id' => $item->latestRevisionPlan->id,
+        //                 'idpaps' => $item->latestRevisionPlan->idpaps,
+        //                 'project_title' => $item->latestRevisionPlan->project_title,
+        //                 'year' => $item->latestRevisionPlan->year_period,
+        //                 'type' => $item->latestRevisionPlan->type,
+        //                 'budget' => $latestPlan->budget ? $latestPlan->budget->map(function ($budgetItem) use ($FFUNDCOD) {
+        //                     return [
+        //                         'idooe' => $budgetItem->idooe,
+        //                         'FOOEDESC' => $budgetItem->objectOfExpenditure ? $budgetItem->objectOfExpenditure->FOOEDESC : null,
+        //                         'particulars' => $budgetItem->particulars,
+        //                         'account_code' => $budgetItem->account_code,
+        //                         'FFUNDCOD' => $FFUNDCOD,
+        //                         'amount' => $budgetItem->amount,
+        //                         'proposed_budget' => $budgetItem->proposed_budget,
+        //                         'category' => $budgetItem->category,
+        //                         'category_abbreviation' => \App\Helpers\BudgetHelper::getCategoryAbbreviation($budgetItem->category),
+        //                         'category_gad' => $budgetItem->category_gad,
+        //                         'source' => $budgetItem->source,
+        //                         'remarks' => $budgetItem->remarks,
+        //                         'sip_number' => $budgetItem->sip_number,
+        //                     ];
+        //                 })->toArray() : [],
+        //             ] : null,
+        //             'status' => $latestPlan ? $latestPlan->status : null,
+        //         ];
+        //     });
 
         // dd($data, $gas_data, $data3);
         return $data->concat($gas_data)

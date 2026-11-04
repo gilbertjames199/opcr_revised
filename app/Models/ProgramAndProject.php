@@ -118,4 +118,19 @@ class ProgramAndProject extends Model
                 $query->where('status', ">", -1);
             });
     }
+
+    public function revisionPlans()
+    {
+        return $this->hasMany(
+            RevisionPlan::class,
+            'idpaps',
+            'id'
+        );
+    }
+    public function revisionPlanForYear($year)
+    {
+        return $this->revisionPlans()
+            ->whereYear('date_start', $year)
+            ->latest('created_at');
+    }
 }
