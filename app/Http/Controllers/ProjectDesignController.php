@@ -44,7 +44,7 @@ class ProjectDesignController extends Controller
         // Check if budget prep is ready
 
         $response = Http::get(
-            'https://dev.davaodeoro.gov.ph/api/reports/lb2/approved',
+            'https://budget-prep.davaodeoro.gov.ph/api/reports/lb2/approved',
             [
                 'revision_plan_id' => $id,
             ]
@@ -61,7 +61,7 @@ class ProjectDesignController extends Controller
                 });
 
             if ($categories->isEmpty()) {
-                $msg= 'Budget Prep not ready';
+                $msg = 'Budget Prep not ready';
                 return redirect()->back()->with('error', $msg);
             }
 
@@ -376,8 +376,9 @@ class ProjectDesignController extends Controller
         // return [$new];
     }
 
-    protected function syncWithBudgetPrep($revisionPlanId, $referencePlanId){
-        $url = 'https://dev.davaodeoro.gov.ph/api/reports/lb2/approved';
+    protected function syncWithBudgetPrep($revisionPlanId, $referencePlanId)
+    {
+        $url = 'https://budget-prep.davaodeoro.gov.ph/api/reports/lb2/approved';
         $ref_plan_id = $referencePlanId;
         // $response = Http::timeout(60)
         //     ->acceptJson()
@@ -446,40 +447,40 @@ class ProjectDesignController extends Controller
                 foreach ($category['rows'] ?? [] as $row) {
                     $rows[] = [
                         'budget_preparation_id' =>
-                            $row['budget_preparation_id'] ?? $preparationId,
+                        $row['budget_preparation_id'] ?? $preparationId,
 
                         'revision_plan_id' => $revisionPlanId,
                         'reference_profile_id' => $referenceProfileId,
 
                         'object_of_expenditure' =>
-                            $row['object_of_expenditure'] ?? null,
+                        $row['object_of_expenditure'] ?? null,
 
                         'account_code' =>
-                            $row['account_code'] ?? null,
+                        $row['account_code'] ?? null,
 
                         'sub_particular' =>
-                            $row['sub_particular'] ?? null,
+                        $row['sub_particular'] ?? null,
 
                         'past_year' =>
-                            $row['past_year'] ?? null,
+                        $row['past_year'] ?? null,
 
                         'first_semester_actual' =>
-                            $row['first_semester_actual'] ?? null,
+                        $row['first_semester_actual'] ?? null,
 
                         'second_semester_estimate' =>
-                            $row['second_semester_estimate'] ?? null,
+                        $row['second_semester_estimate'] ?? null,
 
                         'current_year_total' =>
-                            $row['current_year_total'] ?? null,
+                        $row['current_year_total'] ?? null,
 
                         'budget_year' =>
-                            $row['budget_year'] ?? null,
+                        $row['budget_year'] ?? null,
 
                         'category' =>
-                            $category['category'] ?? null,
+                        $category['category'] ?? null,
 
                         'category_label' =>
-                            $category['category_label'] ?? null,
+                        $category['category_label'] ?? null,
 
                         'created_at' => now(),
                         'updated_at' => now(),

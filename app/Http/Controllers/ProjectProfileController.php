@@ -173,6 +173,8 @@ class ProjectProfileController extends Controller
         // $FFUNCCOD = $request->FFUNCCOD;
         $department_code = $request->department_code;
         $year = $request->year;
+
+        dd($department_code, $year);
         // dd($FFUNCCOD);
         $office = Office::where('department_code', $department_code)->first();
         $FFUNCCOD = $office->ffunccod;
@@ -352,7 +354,7 @@ class ProjectProfileController extends Controller
                     'status' => $latestPlan ? $latestPlan->status : null,
                 ];
             });
-
+        // dd($data, $gas_data);
         return $data->concat($gas_data)
             ->where('status', 1)
             ->values();
