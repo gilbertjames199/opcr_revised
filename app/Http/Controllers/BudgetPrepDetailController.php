@@ -15,7 +15,7 @@ class BudgetPrepDetailController extends Controller
         $revisionPlan = RevisionPlan::findOrFail($revisionPlanId);
         // dd($revisionPlan->reference_profile_id); // Debugging line to inspect the RevisionPlan object
         // Fetch approved LB2 budget preparation data from the API.
-        $url = 'https://dev.davaodeoro.gov.ph/api/reports/lb2/approved';
+        $url = 'https://budget-prep.davaodeoro.gov.ph/api/reports/lb2/approved';
         $ref_plan_id = $revisionPlan->reference_profile_id;
         // $response = Http::timeout(60)
         //     ->acceptJson()
