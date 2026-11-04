@@ -277,21 +277,30 @@ class ProjectProfileController extends Controller
                 'office',
                 'fundOwner',
                 // 'latestRevisionPlan',
-                'latestRevisionPlan' => function ($q) {
-                    $q->select(
-                        'revision_plans.id',
-                        'revision_plans.idpaps',
-                        'revision_plans.project_title',
-                        'revision_plans.year_period',
-                        'revision_plans.aip_code',
-                        'revision_plans.status',
-                        'revision_plans.type',
-                        'revision_plans.program_id_2',
-                        'revision_plans.date_start',
-                    );
+                'revisionPlans' => function ($q) use ($year) {
+                    $q->where('status', 1)
+                        ->whereYear('date_start', $year)
+                        ->orderBy('created_at', 'desc')
+                        ->with([
+                            'budget',
+                            'budget.objectOfExpenditure'
+                        ]);
                 },
-                'latestRevisionPlan.budget',
-                'latestRevisionPlan.budget.objectOfExpenditure',
+                // 'latestRevisionPlan' => function ($q) {
+                //     $q->select(
+                //         'revision_plans.id',
+                //         'revision_plans.idpaps',
+                //         'revision_plans.project_title',
+                //         'revision_plans.year_period',
+                //         'revision_plans.aip_code',
+                //         'revision_plans.status',
+                //         'revision_plans.type',
+                //         'revision_plans.program_id_2',
+                //         'revision_plans.date_start',
+                //     );
+                // },
+                // 'latestRevisionPlan.budget',
+                // 'latestRevisionPlan.budget.objectOfExpenditure',
             ])
             ->where(function ($query) use ($FFUNCCOD, $shared_paps) {
 
@@ -306,7 +315,9 @@ class ProjectProfileController extends Controller
             ->get()
             ->map(function ($item) {
                 $FFUNDCOD = $item->FFUNDCOD;
-                $latestPlan = $item->latestRevisionPlan;
+                // $latestPlan = $item->latestRevisionPlan;
+                $latestPlan = $item->revisionPlans->first();
+
                 // dd($latestPlan);
                 // if($item->fund_owner!='1121'){
                 //     dd($item);
@@ -331,12 +342,12 @@ class ProjectProfileController extends Controller
                     'ps' => $ps,
                     'fe' => $fe,
                     'program_id' => $latestPlan ? $latestPlan->program_id_2 : null,
-                    'latest_revision_plan' => $item->latestRevisionPlan ? [
-                        'id' => $item->latestRevisionPlan->id,
-                        'idpaps' => $item->latestRevisionPlan->idpaps,
-                        'project_title' => $item->latestRevisionPlan->project_title,
-                        'year' => $item->latestRevisionPlan->year_period,
-                        'type' => $item->latestRevisionPlan->type,
+                    'latest_revision_plan' => $item->revisionPlans->first() ? [
+                        'id' => $item->revisionPlans->first()->id,
+                        'idpaps' => $item->revisionPlans->first()->idpaps,
+                        'project_title' => $item->revisionPlans->first()->project_title,
+                        'year' => $item->revisionPlans->first()->year_period,
+                        'type' => $item->revisionPlans->first()->type,
                         'budget' => $latestPlan->budget ? $latestPlan->budget->map(function ($budgetItem) use ($FFUNDCOD) {
                             return [
                                 'idooe' => $budgetItem->idooe,
