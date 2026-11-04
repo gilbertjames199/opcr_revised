@@ -34,4 +34,9 @@ class ActivityProject extends Model
     {
         return $this->belongsTo(RevisionPlan::class,'project_id','id');
     }
+
+    public function referenceActivityProject()
+    {
+        return $this->belongsTo(ActivityProject::class, 'reference_activity_project_id', 'id');
+    }
 }

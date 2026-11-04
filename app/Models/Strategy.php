@@ -14,7 +14,9 @@ class Strategy extends Model
     protected $fillable = [
         'description',
         'idpaps',
-        'idmfo'
+        'idmfo',
+        'status',
+        'strategy_activity_request_id',
     ];
     public function paps()
     {
@@ -40,4 +42,5 @@ class Strategy extends Model
     {
         return $this->hasMany(ExpectedRevisedOutcome::class, 'strategy_id', 'id');
     }
+
 }

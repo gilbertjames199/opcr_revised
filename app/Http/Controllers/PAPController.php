@@ -366,7 +366,7 @@ class PAPController extends Controller
         ]);
         // dd($data);
         if ($data->revisionPlan && $data->revisionPlan->where('status', '<', 1)->isNotEmpty()) {
-            return redirect()->back()->with('error', 'Unable to edit. The PPA is associated with existing Project Profiles');
+            // return redirect()->back()->with('error', 'Unable to edit. The PPA is associated with existing Project Profiles');
         }
         // dd($data);
         $functions = AccountAccess::select('ff.FFUNCCOD', 'ff.FFUNCTION')

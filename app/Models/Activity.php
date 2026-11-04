@@ -13,7 +13,9 @@ class Activity extends Model
     protected $table = 'activities';
     protected $fillable = [
         'description',
-        'strategy_id'
+        'strategy_id',
+        'status',
+        'strategy_activity_request_id',
     ];
 
 

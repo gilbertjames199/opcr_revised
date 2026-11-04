@@ -100,6 +100,8 @@
                                     <!-- <td>
                                         <input v-model="form.opcrs[index].rating_q" class="centered-input" type="number"
                                             min="0" max="5" step="1">
+<<<<<<< HEAD
+=======
                                         <select v-model="form.opcrs[index].rating_q" class="form-select">
                                             <option>1</option>
                                             <option>2</option>
@@ -107,10 +109,13 @@
                                             <option>4</option>
                                             <option>5</option>
                                         </select>
+>>>>>>> 80a24812078ab5e7caae8d0865a1eaf3c52a6127
                                     </td>
                                     <td>
                                         <input v-model="form.opcrs[index].rating_e" class="centered-input" type="number"
                                             min="0" max="5" step="1">
+<<<<<<< HEAD
+=======
                                         <select v-model="form.opcrs[index].rating_e" class="form-select">
                                             <option>1</option>
                                             <option>2</option>
@@ -118,10 +123,13 @@
                                             <option>4</option>
                                             <option>5</option>
                                         </select>
+>>>>>>> 80a24812078ab5e7caae8d0865a1eaf3c52a6127
                                     </td>
                                     <td>
                                         <input v-model="form.opcrs[index].rating_t" class="centered-input" type="number"
                                             min="0" max="5" step="1">
+<<<<<<< HEAD
+=======
                                         <select v-model="form.opcrs[index].rating_t" class="form-select">
                                             <option>1</option>
                                             <option>2</option>
@@ -129,6 +137,7 @@
                                             <option>4</option>
                                             <option>5</option>
                                         </select>
+>>>>>>> 80a24812078ab5e7caae8d0865a1eaf3c52a6127
                                     </td>
                                     <td>
                                     <input :value="computeAverage(form.opcrs[index])" class="centered-input" type="number"

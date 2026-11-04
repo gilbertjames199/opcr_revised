@@ -60,16 +60,16 @@ class ProjectProfileController extends Controller
             ->where('FFUNCCOD', $FFUNCCOD)
             ->where('type', 'GAS')
             ->get()
-            ->map(function ($item)use($year) {
+            ->map(function ($item) use ($year) {
                 // dd($item->FFUNCCOD);
                 $latestPlan = RevisionPlan::where('FFUNCCOD', $item->FFUNCCOD)
                     // ->where('status', '1')
-                    ->where(function($query)  {
+                    ->where(function ($query) {
                         $query->where('status', '1')
                             ->orWhere('status', '0');
                     })
                     ->whereYear(('date_start'), $year)
-                    ->where('idpaps',0)
+                    ->where('idpaps', 0)
                     ->with('budget')
                     ->orderBY('created_at', 'desc')
                     ->first();
@@ -186,8 +186,9 @@ class ProjectProfileController extends Controller
             'paps_desc',
             'FFUNCCOD',
             'FFUNDCOD',
-            'fund_owner'
-        )   ->with(['office', 'fundOwner'])
+            'fund_owner',
+            'agency_name'
+        )->with(['office', 'fundOwner'])
             ->where('FFUNCCOD', $FFUNCCOD)
             ->where('type', 'GAS')
             ->get()
@@ -202,8 +203,8 @@ class ProjectProfileController extends Controller
                             ->orWhere('status', '0');
                     })
                     ->whereYear(('date_start'), $year)
-                    ->where(function($query) {
-                        $query->where('idpaps',0)
+                    ->where(function ($query) {
+                        $query->where('idpaps', 0)
                             ->orWhere('scope', 'GAS');
                     })
                     // ->where('idpaps',0)
@@ -218,16 +219,17 @@ class ProjectProfileController extends Controller
                 // dd($latestPlan);
                 $FFUNDCOD = $item->FFUNDCOD;
                 // $latestPlan = $item->latestRevisionPlan;
-
+                // dd($item);
 
                 return [
                     'id' => $item->id,
                     'paps_desc' => $item->paps_desc,
                     'FFUNCCOD' => $item->FFUNCCOD,
                     'FFUNCTION' => optional($item->fundOwner)->FFUNCTION,
-                    'department_code'=>optional($item->office)->department_code,
+                    'department_code' => optional($item->office)->department_code,
                     'fund_owner' => $item->fund_owner,
-                    'aip_code' =>optional($latestPlan)->aip_code,
+                    'agency_name' => $item->agency_name,
+                    'aip_code' => optional($latestPlan)->aip_code,
                     'mooe' => $mooe,
                     'co' => $co,
                     'ps' => $ps,
@@ -241,7 +243,7 @@ class ProjectProfileController extends Controller
                         'budget' => $latestPlan->budget ? $latestPlan->budget->map(function ($budgetItem) use ($FFUNDCOD) {
                             return [
                                 'idooe' => $budgetItem->idooe,
-                                'FOOEDESC'=> $budgetItem->objectOfExpenditure ? $budgetItem->objectOfExpenditure->FOOEDESC : null,
+                                'FOOEDESC' => $budgetItem->objectOfExpenditure ? $budgetItem->objectOfExpenditure->FOOEDESC : null,
                                 'particulars' => $budgetItem->particulars,
                                 'account_code' => $budgetItem->account_code,
                                 'FFUNDCOD' => $FFUNDCOD,
@@ -261,15 +263,16 @@ class ProjectProfileController extends Controller
             });
 
         $data = ProgramAndProject::select(
-                'id',
-                'paps_desc',
-                'FFUNCCOD',
-                'FFUNDCOD',
-                'fund_owner',
-            )
+            'id',
+            'paps_desc',
+            'FFUNCCOD',
+            'FFUNDCOD',
+            'fund_owner',
+            'agency_name'
+        )
             // ->where('FFUNCCOD', $FFUNCCOD)
             ->with(['office', 'fundOwner'])
-            ->where(function($query) use ($FFUNCCOD, $shared_paps) {
+            ->where(function ($query) use ($FFUNCCOD, $shared_paps) {
 
                 $query->where('FFUNCCOD', $FFUNCCOD)
                     ->orWhereIn('id', $shared_paps);
@@ -293,7 +296,7 @@ class ProjectProfileController extends Controller
                 'latestRevisionPlan.budget',
                 'latestRevisionPlan.budget.objectOfExpenditure',
             ])
-            ->where('type','<>', 'GAS')
+            ->where('type', '<>', 'GAS')
             ->get()
             ->map(function ($item) {
                 $FFUNDCOD = $item->FFUNDCOD;
@@ -313,9 +316,10 @@ class ProjectProfileController extends Controller
                     'paps_desc' => $item->paps_desc,
                     'FFUNCCOD' => $item->FFUNCCOD,
                     'FFUNCTION' => optional($item->fundOwner)->FFUNCTION,
-                    'department_code'=>optional($item->office)->department_code,
+                    'department_code' => optional($item->office)->department_code,
                     'fund_owner' => $item->fund_owner,
-                    'aip_code' =>optional($latestPlan)->aip_code,
+                    'agency_name' => $item->agency_name,
+                    'aip_code' => optional($latestPlan)->aip_code,
                     'mooe' => $mooe,
                     'co' => $co,
                     'ps' => $ps,
@@ -330,7 +334,7 @@ class ProjectProfileController extends Controller
                         'budget' => $latestPlan->budget ? $latestPlan->budget->map(function ($budgetItem) use ($FFUNDCOD) {
                             return [
                                 'idooe' => $budgetItem->idooe,
-                                'FOOEDESC'=> $budgetItem->objectOfExpenditure ? $budgetItem->objectOfExpenditure->FOOEDESC : null,
+                                'FOOEDESC' => $budgetItem->objectOfExpenditure ? $budgetItem->objectOfExpenditure->FOOEDESC : null,
                                 'particulars' => $budgetItem->particulars,
                                 'account_code' => $budgetItem->account_code,
                                 'FFUNDCOD' => $FFUNDCOD,
@@ -345,16 +349,17 @@ class ProjectProfileController extends Controller
                             ];
                         })->toArray() : [],
                     ] : null,
-                    'status'=>$latestPlan ? $latestPlan->status : null,
+                    'status' => $latestPlan ? $latestPlan->status : null,
                 ];
             });
 
         return $data->concat($gas_data)
-                ->where('status', 1)
-                ->values();
+            ->where('status', 1)
+            ->values();
         // ->pluck('status');
     }
-    protected function getTotalByCategory($latestPlan){
+    protected function getTotalByCategory($latestPlan)
+    {
         $categoryTotals = [
             'Maintenance, Operating, and Other Expenses' => 0,
             'Capital Outlay' => 0,
@@ -373,5 +378,4 @@ class ProjectProfileController extends Controller
         }
         return $categoryTotals;
     }
-
 }
