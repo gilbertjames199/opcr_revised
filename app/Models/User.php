@@ -33,6 +33,7 @@ class User extends Authenticatable implements HasMedia
         'FullName',
         'UserName',
         'UserPassword',
+        'laravel_password',
         'UserType',
         'email',
         'department_code',
@@ -43,6 +44,7 @@ class User extends Authenticatable implements HasMedia
     public $timestamps = false;
     protected $hidden = [
         'password',
+        'laravel_password',
         'remember_token',
     ];
 
@@ -65,7 +67,12 @@ class User extends Authenticatable implements HasMedia
 
     public function setPasswordAttribute($value)
     {
-        $this->attributes['password'] = bcrypt($value);
+        $this->attributes['laravel_password'] = bcrypt($value);
+    }
+
+    public function getAuthPassword()
+    {
+        return $this->laravel_password;
     }
     //,'user_id','permission_id'
     // public function permissions()

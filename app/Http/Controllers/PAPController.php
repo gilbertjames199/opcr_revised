@@ -364,8 +364,10 @@ class PAPController extends Controller
             'aip_code',
             'agency_name'
         ]);
+        $disable_all = false;
         // dd($data);
         if ($data->revisionPlan && $data->revisionPlan->where('status', '<', 1)->isNotEmpty()) {
+            $disable_all = true;
             // return redirect()->back()->with('error', 'Unable to edit. The PPA is associated with existing Project Profiles');
         }
         // dd($data);
@@ -396,6 +398,7 @@ class PAPController extends Controller
             "functions" => $functions,
             'years' => $year_object,
             'popsp_agencies' => $popsp_agencies,
+            'disable_all'=> $disable_all,
             'can' => [
                 'can_access_validation' => Auth::user()->can('can_access_validation', User::class),
                 'can_access_indicators' => Auth::user()->can('can_access_indicators', User::class)
